@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抉择 - 邯郸初中生被害案互动故事</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+            transition: background 1s ease;
+        }
+
+        body.suspense {
+            background: linear-gradient(135deg, #0d0d1a 0%, #1a1a2e 50%, #0d1b2a 100%);
+        }
+
+        body.shocking {
+            background: linear-gradient(135deg, #2d1b1b 0%, #3d2020 50%, #1a0f0f 100%);
+        }
+
+        body.truth {
+            background: linear-gradient(135deg, #134e5e 0%, #2d5a6b 50%, #1a3a4a 100%);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* 开始界面 */
+        .start-screen {
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+
+        .game-title {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .game-subtitle {
+            font-size: 18px;
+            color: #aaa;
+            margin-bottom: 40px;
+        }
+
+        .game-intro {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 40px;
+            text-align: left;
+            background: rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .start-btn {
+            padding: 15px 50px;
+            font-size: 20px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.5);
+        }
+
+        /* 视角选择 */
+        .perspective-select {
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .perspective-select h2 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        .perspective-cards {
+            display: grid;
+            gap: 20px;
+        }
+
+        .perspective-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .perspective-card:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-3px);
+        }
+
+        .perspective-card h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .perspective-card .difficulty {
+            font-size: 14px;
+            color: #f39c12;
+            margin-bottom: 10px;
+        }
+
+        .perspective-card p {
+            font-size: 15px;
+            color: #bbb;
+            line-height: 1.6;
+        }
+
+        /* 游戏主界面 */
+        .game-screen {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .perspective-name {
+            font-size: 18px;
+            color: #aaa;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .stat-label {
+            color: #aaa;
+            min-width: 50px;
+        }
+
+        .stat-bar {
+            width: 80px;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .stat-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .stat-fill.courage { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+        .stat-fill.reason { background: linear-gradient(90deg, #3498db, #2980b9); }
+        .stat-fill.guilt { background: linear-gradient(90deg, #9b59b6, #8e44ad); }
+
+        .story-box {
+            background: rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            min-height: 150px;
+        }
+
+        .story-text {
+            font-size: 17px;
+            line-height: 1.9;
+            color: #eee;
+        }
+
+        .choices-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .choice-btn {
+            padding: 18px 25px;
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .choice-btn:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateX(5px);
+        }
+
+        .back-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: transparent;
+            color: #888;
+            border: 1px solid #555;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: #fff;
+            border-color: #888;
+        }
+
+        /* 结局界面 */
+        .ending-screen {
+            display: none;
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+
+        .ending-title {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .ending-title.good { color: #2ecc71; }
+        .ending-title.normal { color: #f39c12; }
+        .ending-title.bad { color: #e74c3c; }
+        .ending-title.hidden { color: #9b59b6; }
+
+        .ending-description {
+            font-size: 17px;
+            line-height: 1.9;
+            color: #ccc;
+            margin-bottom: 30px;
+            text-align: left;
+            background: rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .ending-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .ending-stat {
+            text-align: center;
+        }
+
+        .ending-stat-value {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .ending-stat-label {
+            font-size: 14px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .ending-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .ending-btn {
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .ending-btn.primary {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .ending-btn.secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* 特殊效果 */
+        /* 心跳效果 */
+        .heartbeat-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            animation: heartbeatPulse 0.8s ease-in-out infinite;
+        }
+
+        @keyframes heartbeatPulse {
+            0%, 100% { box-shadow: inset 0 0 0 rgba(231, 76, 60, 0); }
+            50% { box-shadow: inset 0 0 100px rgba(231, 76, 60, 0.2); }
+        }
+
+        /* 时间凝固效果 */
+        .time-freeze {
+            animation: timeFreeze 2s ease;
+        }
+
+        @keyframes timeFreeze {
+            0% { filter: none; }
+            30% { filter: blur(2px) brightness(1.2); transform: scale(1.02); }
+            70% { filter: blur(2px) brightness(1.2); transform: scale(1.02); }
+            100% { filter: none; }
+        }
+
+        /* 闪回效果 */
+        .flashback-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 1000;
+            pointer-events: none;
+            animation: flashback 1s ease-out forwards;
+        }
+
+        @keyframes flashback {
+            0% { opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { opacity: 0; }
+        }
+
+        /* 线索发现效果 */
+        .clue-found {
+            animation: clueGlow 1s ease;
+        }
+
+        @keyframes clueGlow {
+            0%, 100% { box-shadow: 0 0 0 rgba(46, 204, 113, 0); }
+            50% { box-shadow: 0 0 30px rgba(46, 204, 113, 0.5); }
+        }
+
+        /* 颤抖效果 */
+        .tremble {
+            animation: tremble 0.5s ease-in-out;
+        }
+
+        @keyframes tremble {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+            20%, 40%, 60%, 80% { transform: translateX(3px); }
+        }
+
+        /* 消息通知 */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.95);
+            color: #333;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 1001;
+            animation: notifSlide 0.4s ease-out;
+            max-width: 300px;
+        }
+
+        @keyframes notifSlide {
+            0% { transform: translateX(400px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        .notification-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #e74c3c;
+        }
+
+        .notification-content {
+            font-size: 13px;
+            color: #555;
+        }
+
+        /* 淡入动画 */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .game-title { font-size: 32px; }
+            .story-box { padding: 20px; }
+            .story-text { font-size: 15px; }
+            .choice-btn { padding: 15px 20px; font-size: 15px; }
+            .ending-title { font-size: 28px; }
+            .stats-bar { gap: 10px; }
+            .stat-bar { width: 60px; }
+        }
+
+        /* 内容警告 */
+        .warning-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .warning-content {
+            max-width: 500px;
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .warning-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .warning-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #e74c3c;
+        }
+
+        .warning-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+
+        .warning-btn {
+            padding: 12px 40px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .warning-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 内容警告 -->
+        <div class="warning-modal" id="warningModal">
+            <div class="warning-content">
+                <div class="warning-icon">⚠️</div>
+                <h2 class="warning-title">内容警告</h2>
+                <p class="warning-text">
+                    本游戏基于真实案件改编，涉及未成年人犯罪、校园暴力等沉重主题。
+                    游戏旨在探讨人性的选择与后果，具有教育意义。
+                    如果你对此类内容感到不适，请谨慎选择是否继续。
+                </p>
+                <button class="warning-btn" id="warningBtn">我已知晓，继续</button>
+            </div>
+        </div>
+
+        <!-- 开始界面 -->
+        <div class="start-screen" id="startScreen" style="display:none;">
+            <h1 class="game-title">抉 择</h1>
+            <p class="game-subtitle">—— 邯郸初中生被害案互动故事 ——</p>
+            
+            <div class="game-intro">
+                <p>2024年3月，河北邯郸。</p>
+                <p style="margin-top:10px;">一名13岁的少年永远离开了这个世界。</p>
+                <p style="margin-top:10px;">三个同班同学，因为191元钱，因为一时的恶念，走上了一条不归路。</p>
+                <p style="margin-top:10px;">如果时间可以倒流，如果他们做出了不同的选择...</p>
+                <p style="margin-top:15px; color: #e74c3c;">现在，你将亲历这个故事。</p>
+                <p style="margin-top:5px; color: #e74c3c;">你的每一个选择，都将决定故事的走向。</p>
+            </div>
+
+            <button class="start-btn" id="startBtn">开 始 游 戏</button>
+        </div>
+
+        <!-- 视角选择 -->
+        <div class="perspective-select" id="perspectiveSelect">
+            <h2>选择你的视角</h2>
+            <div class="perspective-cards">
+                <div class="perspective-card" data-perspective="bystander">
+                    <h3>旁观者 · 小马</h3>
+                    <div class="difficulty">难度：★★☆☆☆</div>
+                    <p>普通的同班同学，被卷入一场突如其来的阴谋。你会选择明哲保身，还是挺身而出？</p>
+                </div>
+                
+                <div class="perspective-card" data-perspective="accomplice">
+                    <h3>从犯 · 小李</h3>
+                    <div class="difficulty">难度：★★★☆☆</div>
+                    <p>主犯的好朋友，在友谊和原则之间挣扎。你会选择同流合污，还是及时醒悟？</p>
+                </div>
+                
+                <div class="perspective-card" data-perspective="detective">
+                    <h3>调查者 · 王警官</h3>
+                    <div class="difficulty">难度：★★★★☆</div>
+                    <p>负责失踪案的刑警，从蛛丝马迹中寻找真相。你能否找到关键线索，还原事实真相？</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 游戏主界面 -->
+        <div class="game-screen" id="gameScreen">
+            <div class="game-header">
+                <div class="perspective-name" id="perspectiveName">旁观者视角</div>
+                <div class="stats-bar" id="statsBar">
+                    <!-- 数值条动态生成 -->
+                </div>
+            </div>
+
+            <div class="story-box" id="storyBox">
+                <p class="story-text" id="storyText"></p>
+            </div>
+
+            <div class="choices-box" id="choicesBox">
+                <!-- 选项动态生成 -->
+            </div>
+
+            <button class="back-btn" id="backBtn" style="display:none;">← 回到上一步</button>
+        </div>
+
+        <!-- 结局界面 -->
+        <div class="ending-screen" id="endingScreen">
+            <h2 class="ending-title" id="endingTitle">结局</h2>
+            
+            <div class="ending-stats" id="endingStats">
+                <!-- 结局数值 -->
+            </div>
+
+            <div class="ending-description" id="endingDescription"></div>
+
+            <div class="ending-buttons">
+                <button class="ending-btn primary" id="restartBtn">重新开始</button>
+                <button class="ending-btn secondary" id="changePerspectiveBtn">切换视角</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============ 音效系统 ============
+        let audioContext = null;
+
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSound(frequency, duration, type = 'sine', volume = 0.2) {
+            if (!audioContext) initAudio();
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = type;
+            
+            gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        // 心跳声
+        function playHeartbeat() {
+            playSound(60, 0.15, 'sine', 0.15);
+            setTimeout(() => playSound(50, 0.2, 'sine', 0.12), 200);
+        }
+
+        // 悬疑音
+        function playSuspense() {
+            playSound(200, 0.5, 'sine', 0.08);
+        }
+
+        // 抉择音
+        function playChoice() {
+            playSound(400, 0.1, 'sine', 0.1);
+        }
+
+        // 线索发现音
+        function playClueFound() {
+            playSound(523, 0.1, 'sine', 0.15);
+            setTimeout(() => playSound(659, 0.1, 'sine', 0.15), 100);
+            setTimeout(() => playSound(784, 0.2, 'sine', 0.15), 200);
+        }
+
+        // 震惊音
+        function playShock() {
+            playSound(100, 0.5, 'sawtooth', 0.15);
+        }
+
+        // 沉重呼吸声
+        function playBreathing() {
+            // 用噪声模拟呼吸
+            if (!audioContext) initAudio();
+            const bufferSize = audioContext.sampleRate * 0.5;
+            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            for (let i = 0; i < bufferSize; i++) {
+                const t = i / audioContext.sampleRate;
+                const breath = Math.sin(t * Math.PI * 2) * 0.5 + 0.5;
+                data[i] = (Math.random() * 2 - 1) * breath * 0.05;
+            }
+            
+            const source = audioContext.createBufferSource();
+            source.buffer = buffer;
+            const gain = audioContext.createGain();
+            gain.gain.value = 0.3;
+            source.connect(gain);
+            gain.connect(audioContext.destination);
+            source.start();
+        }
+
+        // ============ 特殊效果 ============
+        
+        // 心跳效果
+        function heartbeatEffect(duration = 2000) {
+            const overlay = document.createElement('div');
+            overlay.className = 'heartbeat-overlay';
+            document.body.appendChild(overlay);
+            
+            // 播放心跳声
+            const heartbeatInterval = setInterval(playHeartbeat, 800);
+            
+            setTimeout(() => {
+                overlay.remove();
+                clearInterval(heartbeatInterval);
+            }, duration);
+        }
+
+        // 时间凝固效果
+        function timeFreezeEffect() {
+            const container = document.querySelector('.container');
+            container.classList.add('time-freeze');
+            playSound(300, 1.5, 'sine', 0.1);
+            
+            setTimeout(() => {
+                container.classList.remove('time-freeze');
+            }, 2000);
+        }
+
+        // 闪回效果
+        function flashbackEffect() {
+            const overlay = document.createElement('div');
+            overlay.className = 'flashback-overlay';
+            document.body.appendChild(overlay);
+            playSound(800, 0.3, 'sine', 0.1);
+            
+            setTimeout(() => overlay.remove(), 1000);
+        }
+
+        // 线索发现效果
+        function clueFoundEffect() {
+            const storyBox = document.getElementById('storyBox');
+            storyBox.classList.add('clue-found');
+            playClueFound();
+            
+            // 显示通知
+            showNotification('💡 发现线索', '你获得了一条重要线索！');
+            
+            setTimeout(() => storyBox.classList.remove('clue-found'), 1000);
+        }
+
+        // 颤抖效果
+        function trembleEffect() {
+            const storyBox = document.getElementById('storyBox');
+            storyBox.classList.add('tremble');
+            playShock();
+            
+            setTimeout(() => storyBox.classList.remove('tremble'), 500);
+        }
+
+        // 显示通知
+        function showNotification(title, content, duration = 3000) {
+            const notif = document.createElement('div');
+            notif.className = 'notification';
+            notif.innerHTML = `
+                <div class="notification-title">${title}</div>
+                <div class="notification-content">${content}</div>
+            `;
+            document.body.appendChild(notif);
+            
+            setTimeout(() => {
+                notif.style.animation = 'notifSlide 0.4s ease-in reverse';
+                setTimeout(() => notif.remove(), 400);
+            }, duration);
+        }
+
+        // 切换背景氛围
+        function setAtmosphere(type) {
+            document.body.className = '';
+            if (type === 'suspense') document.body.classList.add('suspense');
+            else if (type === 'shocking') document.body.classList.add('shocking');
+            else if (type === 'truth') document.body.classList.add('truth');
+        }
+
+        // ============ 游戏数据 ============
+        
+        // 旁观者视角剧情
+        const bystanderStory = {
+            start: 'start',
+            stats: [
+                { name: '勇气', key: 'courage', color: 'courage' },
+                { name: '理智', key: 'reason', color: 'reason' },
+                { name: '愧疚', key: 'guilt', color: 'guilt' }
+            ],
+            initialStats: { courage: 50, reason: 50, guilt: 0 },
+            nodes: {
+                start: {
+                    text: '周三下午，最后一节课。\n\n你正低头写作业，同桌小张突然凑过来，压低声音说："放学别走，跟我去个地方。"\n\n你抬头看了他一眼，他的表情有点奇怪，眼神躲闪。\n\n"去哪儿？"你问。\n\n"到时候你就知道了，好事儿。"他神秘兮兮地说。',
+                    choices: [
+                        { text: '答应他，看看什么事', next: 'agree', effects: { courage: 5, reason: -5 } },
+                        { text: '直接拒绝，我要回家写作业', next: 'refuse', effects: { courage: -5, reason: 5 } },
+                        { text: '追问他到底是什么事', next: 'ask', effects: { reason: 10 } },
+                        { text: '说考虑一下，先问问别人', next: 'askOthers', effects: { reason: 5, courage: -3 } }
+                    ],
+                    onEnter: () => { setAtmosphere('normal'); }
+                },
+                
+                agree: {
+                    text: '你点了点头："行吧。"\n\n放学铃响了，小张叫上小李，三个人一起往学校后面走。越走越偏，已经快到村子边上了。\n\n"到底去哪儿啊？"你心里有点打鼓。\n\n"快了，前面那个大棚。"小张指了指前面的废弃蔬菜大棚。',
+                    choices: [
+                        { text: '继续跟着走', next: 'follow', effects: { courage: 5, guilt: 5 } },
+                        { text: '停下，说不想去了', next: 'stop', effects: { courage: -5, reason: 5, guilt: -5 } },
+                        { text: '偷偷拿出手机想报警', next: 'tryCall', effects: { courage: 15, reason: 10 } }
+                    ],
+                    onEnter: () => { playSuspense(); setAtmosphere('suspense'); }
+                },
+                
+                refuse: {
+                    text: '"不了，我妈让我早点回家。"你摇摇头。\n\n小张撇了撇嘴："真没劲。"\n\n他没再说什么，转身走了。\n\n你收拾书包回家，心里却有点不安。小张今天怪怪的，到底要去干什么？',
+                    choices: [
+                        { text: '不想了，回家写作业', next: 'ignore', effects: { guilt: 10, reason: -5 } },
+                        { text: '越想越不对，偷偷跟上去看看', next: 'followSecret', effects: { courage: 10, reason: 5 } },
+                        { text: '告诉老师这件事', next: 'tellTeacher', effects: { courage: 15, reason: 10, guilt: -20 } }
+                    ],
+                    onEnter: () => { setAtmosphere('normal'); }
+                },
+                
+                ask: {
+                    text: '"到底什么事？你不说我不去。"你看着他的眼睛。\n\n小张犹豫了一下，压低声音说："小王那小子不是挺拽的吗？我约了他在大棚那边谈谈，你跟我去撑撑场面。"\n\n你心里咯噔一下。撑场面？这是要打架啊。',
+                    choices: [
+                        { text: '打架？那我不去', next: 'refuseFight', effects: { courage: -5, reason: 10 } },
+                        { text: '行，我跟你去，但别真动手', next: 'goButNoFight', effects: { courage: 5, reason: -5, guilt: 5 } },
+                        { text: '你疯了？打架要被开除的', next: 'persuade', effects: { reason: 15, courage: 5 } },
+                        { text: '行，揍他丫的', next: 'agreeFight', effects: { courage: 10, reason: -15, guilt: 15 } }
+                    ],
+                    onEnter: () => { playSuspense(); }
+                },
+                
+                askOthers: {
+                    text: '你说："我先想想。"\n\n趁小张不注意，你偷偷问小李："小张说的好事儿是什么？"\n\n小李脸色变了变，支支吾吾地说："没...没什么，就是去玩。"\n\n他的反应让你更怀疑了。',
+                    choices: [
+                        { text: '继续追问小李', next: 'pressLi', effects: { reason: 10 } },
+                        { text: '算了，不去了', next: 'notGo', effects: { reason: 5, guilt: 5 } },
+                        { text: '跟去看看究竟', next: 'goSee', effects: { courage: 10 } }
+                    ],
+                    onEnter: () => { setAtmosphere('suspense'); }
+                },
+                
+                // 分支继续...
+                follow: {
+                    text: '你硬着头皮跟着往前走。\n\n到了大棚门口，小张推开门，里面已经有一个人了——是小王。\n\n小王看到你们，皱了皱眉："你们叫我来这儿干嘛？"\n\n小张冷笑一声："干嘛？你不是挺牛的吗？"',
+                    choices: [
+                        { text: '感觉不对，转身就跑', next: 'runAway', effects: { courage: -10, reason: 10, guilt: 15 } },
+                        { text: '站在旁边看情况', next: 'watch', effects: { courage: -5, guilt: 20 } },
+                        { text: '上前劝小张别冲动', next: 'persuadeZhang', effects: { courage: 15, reason: 10, guilt: -10 } },
+                        { text: '偷偷拿出手机录像', next: 'record', effects: { reason: 15, courage: 5, guilt: 5 } }
+                    ],
+                    onEnter: () => { heartbeatEffect(1500); timeFreezeEffect(); }
+                },
+                
+                stop: {
+                    text: '"我不去了，我要回家。"你停下脚步。\n\n小张回头看你，脸色有点难看："怎么？怂了？"\n\n"不是怂不怂的问题，这地方太偏了，我不去。"你坚持道。\n\n"行吧，不去拉倒。"小张没再劝你，带着小李继续往前走。',
+                    choices: [
+                        { text: '转身回家', next: 'goHome', effects: { guilt: 20, reason: -5 } },
+                        { text: '在原地犹豫了一会儿，还是跟上去了', next: 'stillFollow', effects: { courage: 5, guilt: 10 } },
+                        { text: '赶紧给老师打电话', next: 'callTeacher', effects: { courage: 20, reason: 15, guilt: -30 } }
+                    ],
+                    onEnter: () => { playSuspense(); }
+                },
+                
+                tryCall: {
+                    text: '你放慢脚步，偷偷把手伸进兜里，想拨打110。\n\n"你干嘛呢？"小张突然回头。\n\n你吓了一跳，手机差点掉在地上。\n\n"没...没干嘛。"你赶紧把手拿出来。\n\n小张怀疑地看了你两眼，但没说什么，继续往前走。',
+                    choices: [
+                        { text: '找机会再试一次', next: 'tryAgain', effects: { courage: 10, reason: 5 } },
+                        { text: '算了，太危险了', next: 'giveUp', effects: { courage: -10, guilt: 10 } },
+                        { text: '大声喊救命', next: 'shout', effects: { courage: 25, reason: -5 } }
+                    ],
+                    onEnter: () => { heartbeatEffect(2000); trembleEffect(); }
+                },
+                
+                // 更多节点...
+                // 为了演示，我们直接跳转到一些结局和关键节点
+                
+                runAway: {
+                    text: '你感觉事情不对，转身就跑！\n\n"喂！你跑什么？"小张在后面喊。\n\n你不敢回头，拼命往有人的地方跑。心跳得像要从嗓子眼里跳出来。\n\n跑了大概十分钟，你终于跑到了大路上，扶着墙大口喘气。',
+                    choices: [
+                        { text: '赶紧打110报警', next: 'callPolice', effects: { courage: 20, reason: 15, guilt: -20 } },
+                        { text: '给班主任打电话', next: 'callHeadTeacher', effects: { courage: 10, reason: 10, guilt: -10 } },
+                        { text: '先回家，假装什么都不知道', next: 'pretend', effects: { courage: -15, reason: -10, guilt: 30 } }
+                    ],
+                    onEnter: () => { playBreathing(); heartbeatEffect(2000); }
+                },
+                
+                callPolice: {
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 吹哨人',
+                    description: '你拨通了110，颤抖着说出了大棚的位置。\n\n警察很快赶到，当场抓获了正在行凶的小张和小李。小王被及时送往医院，虽然受了伤，但保住了性命。\n\n后来，小张和小李因故意杀人（未遂）被判刑。你因为及时报警，避免了一场悲剧。\n\n学校里有人说你"不够义气"，但你知道，你做了正确的选择。\n\n有些时候，勇气不是跟着朋友一起犯错，而是在关键时刻敢于站出来，说一声"不对"。',
+                    stats: { courage: 85, reason: 75, guilt: 0 }
+                },
+                
+                callHeadTeacher: {
+                    isEnding: true,
+                    endingType: 'normal',
+                    title: '普通结局 · 迟来的正义',
+                    description: '你给班主任打了电话，老师立刻报了警。\n\n但等警察赶到时，已经晚了。小王已经遇害，小张他们也跑了。\n\n虽然最终案件告破，但那个13岁的生命永远停在了那个下午。\n\n你常常想，如果当时你再勇敢一点，早点报警，是不是结局就会不一样？\n\n这个问题，或许会伴随你很久很久。',
+                    stats: { courage: 55, reason: 65, guilt: 45 }
+                },
+                
+                pretend: {
+                    isEnding: true,
+                    endingType: 'bad',
+                    title: '坏结局 · 沉默的代价',
+                    description: '你回了家，把手机关机，假装什么都不知道。\n\n第二天，小王失踪的消息传遍了学校。你心里发慌，但什么都没说。\n\n三天后，尸体被发现了。警察来学校调查，你还是选择了沉默。\n\n案子很快告破，小张和小李被抓。你因为知情不报，受到了学校的处分。\n\n但真正的惩罚，是每个深夜你都会梦见那个废弃的大棚，梦见小王问你："为什么不救我？"\n\n有些沉默，比刀子还伤人。',
+                    stats: { courage: 10, reason: 30, guilt: 95 }
+                },
+                
+                persuadeZhang: {
+                    text: '你上前一步，拉住小张："小张，别冲动，有什么事不能好好说吗？"\n\n小张甩开你的手："关你屁事，一边去！"\n\n"真的不能这样，打人是犯法的！"你继续劝。\n\n"犯法？"小张冷笑一声，"我们都不满14岁，杀人都不犯法。"\n\n你心里一寒。他居然连这个都想好了。',
+                    choices: [
+                        { text: '继续劝他，说什么也要阻止', next: 'keepPersuading', effects: { courage: 20, reason: 10 } },
+                        { text: '趁他不注意，拉着小王跑', next: 'runWithWang', effects: { courage: 25, reason: 15 } },
+                        { text: '看他这样子，估计劝不动，还是走吧', next: 'leaveHelpless', effects: { courage: -5, guilt: 25 } }
+                    ],
+                    onEnter: () => { timeFreezeEffect(); }
+                },
+                
+                keepPersuading: {
+                    text: '"小张，你想想你爸妈，想想你以后！你真要为了这点事毁了自己吗？"你几乎是在喊了。\n\n小张愣了一下，眼神有些动摇。\n\n小李在旁边说："别听他的，他就是胆小。"\n\n小张看了看小李，又看了看你，最后看向小王。他的拳头攥了又松，松了又攥。',
+                    choices: [
+                        { text: '继续说，动之以情', next: 'emotionalAppeal', effects: { courage: 10, reason: 15 } },
+                        { text: '吓唬他，说已经报警了', next: 'bluff', effects: { reason: 20, courage: 5 } },
+                        { text: '给小李使眼色，一起劝', next: 'convinceLi', effects: { reason: 10, courage: 5 } }
+                    ],
+                    onEnter: () => { playSuspense(); }
+                },
+                
+                emotionalAppeal: {
+                    isEnding: true,
+                    endingType: 'hidden',
+                    title: '隐藏结局 · 一念之差',
+                    description: '你说："小张，我们认识三年了，我知道你不是坏人。就因为一点矛盾，值得吗？"\n\n"你想想小王，他跟我们一样大，他爸妈要是知道了该多伤心。你爸妈呢？他们要是知道你做了这种事，该多失望？"\n\n小张的眼眶红了。他慢慢放下了手里的铁锹。\n\n"我...我就是气不过..."他蹲在地上哭了起来。\n\n一场悲剧，就这样被你化解了。\n\n后来，你陪小张和小李去给小王道了歉。虽然他们之间的矛盾还在，但至少，没有人走上那条不归路。\n\n很多时候，善恶只在一念之间。而你的一句话，可能就会改变一切。',
+                    stats: { courage: 90, reason: 85, guilt: 0 }
+                },
+                
+                runWithWang: {
+                    text: '你趁小张不注意，一把拉住小王："快跑！"\n\n两个人冲出大棚，往村子的方向跑。\n\n"站住！"小张在后面喊。\n\n你不敢回头，拉着小王拼命跑。\n\n终于，你们跑到了大路上，远处有人。小张他们没敢追过来。',
+                    choices: [
+                        { text: '直接去派出所报警', next: 'goPoliceStation', effects: { courage: 20, reason: 15 } },
+                        { text: '先回学校告诉老师', next: 'goSchool', effects: { courage: 10, reason: 10 } },
+                        { text: '各回各家，就当没发生过', next: 'goHomeForget', effects: { courage: -10, reason: -5, guilt: 20 } }
+                    ],
+                    onEnter: () => { playBreathing(); heartbeatEffect(2000); }
+                },
+                
+                goPoliceStation: {
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 见义勇为',
+                    description: '你带着小王直接去了派出所，把事情一五一十说了。\n\n警察很快行动，传唤了小张和小李。因为是犯罪未遂，加上都是未成年人，最终进行了批评教育和社区矫正。\n\n虽然你和小张的关系彻底破裂了，但你救了小王，也救了小张他们。\n\n学校表彰了你的见义勇为行为，但你觉得，你只是做了应该做的事。\n\n如果再给你一次机会，你还是会做出同样的选择。',
+                    stats: { courage: 95, reason: 80, guilt: 0 }
+                },
+                
+                // 更多结局...
+                // 为了保证游戏完整，我们再添加几个关键节点
+                
+                tellTeacher: {
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 防患未然',
+                    description: '你找到了班主任，把小张说的话告诉了老师。\n\n老师非常重视，立刻联系了双方家长，还找小张和小李谈了话。\n\n虽然小张觉得你"打小报告"，对你很有意见，但一场可能发生的悲剧，就这样被扼杀在了摇篮里。\n\n后来你听说，小张本来真的打算"教训"小王，连地方都选好了。\n\n你有点后怕。如果当时你没说，后果不堪设想。\n\n有些时候，"多管闲事"反而能救人一命。',
+                    stats: { courage: 75, reason: 90, guilt: 0 }
+                },
+                
+                followSecret: {
+                    text: '你偷偷跟在他们后面，保持着距离。\n\n他们走到了那个废弃大棚，进去了。\n\n你躲在外面，心里怦怦直跳。他们到底要干什么？\n\n过了一会儿，你听到里面传来争吵声，然后是...惨叫声？',
+                    choices: [
+                        { text: '冲进去看看', next: 'rushIn', effects: { courage: 20, reason: -5 } },
+                        { text: '立刻打110', next: 'dial110', effects: { courage: 10, reason: 20 } },
+                        { text: '跑去找大人帮忙', next: 'findAdults', effects: { courage: 5, reason: 15 } },
+                        { text: '害怕，赶紧跑了', next: 'runAwayScared', effects: { courage: -20, reason: -10, guilt: 30 } }
+                    ],
+                    onEnter: () => { heartbeatEffect(2000); setAtmosphere('suspense'); }
+                },
+                
+                dial110: {
+                    text: '你颤抖着拨通了110。\n\n"喂，110吗？我要报警...有人在大棚里打架，好像还拿了工具..."\n\n你尽量冷静地说出了地址。\n\n挂了电话，你不知道该怎么办。进去？太危险了。跑？又不放心。',
+                    choices: [
+                        { text: '在外面等着警察来', next: 'waitPolice', effects: { courage: 5, reason: 10 } },
+                        { text: '壮着胆子靠近看看', next: 'peek', effects: { courage: 15, reason: -5 } },
+                        { text: '先躲远点，太吓人了', next: 'hideFar', effects: { courage: -10, guilt: 15 } }
+                    ],
+                    onEnter: () => { playSuspense(); }
+                },
+                
+                waitPolice: {
+                    isEnding: true,
+                    endingType: 'normal',
+                    title: '普通结局 · 迟到的正义',
+                    description: '你在远处等着，每一分每一秒都像一个世纪那么长。\n\n终于，警笛声传来了。\n\n警察冲进大棚，把小张和小李控制住了。但小王已经...不行了。\n\n你作为证人，去派出所做了笔录。\n\n案子很快就判了。但那个13岁的生命，再也回不来了。\n\n你常常想，如果当时你再勇敢一点，早点冲进去，是不是结局就会不一样？\n\n这个问题，没有答案。',
+                    stats: { courage: 50, reason: 70, guilt: 55 }
+                },
+                
+                rushIn: {
+                    text: '你咬咬牙，冲了进去。\n\n眼前的一幕让你终身难忘——小王倒在地上，头上都是血。小张手里拿着铁锹，站在旁边喘气。\n\n"你...你怎么来了？"小张看到你，也愣住了。\n\n你腿都软了，但还是强撑着说："你们疯了吗？快叫救护车！"',
+                    choices: [
+                        { text: '立刻打120和110', next: 'callAmbulance', effects: { courage: 10, reason: 15 } },
+                        { text: '上前查看小王的情况', next: 'checkWang', effects: { courage: 15, reason: -5 } },
+                        { text: '指责小张，跟他吵起来', next: 'argue', effects: { courage: 5, reason: -15 } }
+                    ],
+                    onEnter: () => { trembleEffect(); playShock(); setAtmosphere('shocking'); }
+                },
+                
+                callAmbulance: {
+                    text: '你颤抖着拨打了120，又打了110。\n\n救护车很快到了，把小王送去了医院。警察也来了，带走了小张和小李。\n\n你坐在医院走廊的椅子上，浑身发抖。\n\n医生出来了，摇了摇头："送来的时候就已经...节哀。"\n\n你脑子一片空白。',
+                    isEnding: true,
+                    endingType: 'normal',
+                    title: '普通结局 · 目击者',
+                    description: '你成了案件的关键证人。\n\n因为你的证词，案子很快就查清了。小张被判了无期徒刑，小李判了十二年。\n\n你活了下来，但那个下午的画面，成了你永远的噩梦。\n\n你常常梦见那个废弃的大棚，梦见满地的血，梦见小张手里的铁锹。\n\n如果那天，你能早点到...如果那天，你能阻止他们...\n\n没有如果。\n\n有些事情，一旦发生，就再也无法挽回。',
+                    stats: { courage: 65, reason: 60, guilt: 70 }
+                },
+                
+                // 从犯视角和调查者视角我们先简化一些，保证核心体验
+                // 先完成旁观者视角的主要分支
+            }
+        };
+
+        // 从犯视角（简化版）
+        const accompliceStory = {
+            start: 'start',
+            stats: [
+                { name: '良知', key: 'conscience', color: 'courage' },
+                { name: '恐惧', key: 'fear', color: 'guilt' },
+                { name: '义气', key: 'loyalty', color: 'reason' }
+            ],
+            initialStats: { conscience: 50, fear: 30, loyalty: 60 },
+            nodes: {
+                start: {
+                    text: '放学路上，小张把你拉到一边。\n\n"小李，跟你说个事儿。"他压低声音，"小王那孙子，我忍他很久了。"\n\n你心里咯噔一下："怎么了？"\n\n"我约了他后天下午在大棚那边见面，你跟我一起去，咱们教训教训他。"',
+                    choices: [
+                        { text: '行，我跟你去', next: 'agree', effects: { loyalty: 10, conscience: -10, fear: 5 } },
+                        { text: '算了吧，打架不好', next: 'refuse', effects: { conscience: 10, loyalty: -15, fear: -5 } },
+                        { text: '教训一下可以，但别太过分', next: 'mild', effects: { conscience: -5, loyalty: 5, fear: 10 } },
+                        { text: '你疯了？会出事的', next: 'crazy', effects: { conscience: 15, loyalty: -20, fear: 5 } }
+                    ],
+                    onEnter: () => { setAtmosphere('suspense'); }
+                },
+                
+                agree: {
+                    text: '你点了点头："行，我跟你去。"\n\n小张拍了拍你的肩膀："够意思！放心，出了事我担着。"\n\n你勉强笑了笑，但心里有点不安。\n\n真的...不会出事吗？',
+                    choices: [
+                        { text: '不想了，小张说没事就没事', next: 'stopWorrying', effects: { conscience: -10, fear: -10 } },
+                        { text: '还是有点担心，再问问细节', next: 'askDetails', effects: { conscience: 5, fear: 10 } },
+                        { text: '有点后悔，但不好意思说不去了', next: 'regret', effects: { conscience: 10, fear: 15, loyalty: -5 } }
+                    ]
+                },
+                
+                refuse: {
+                    text: '"算了吧，打架有什么意思。"你摇摇头。\n\n小张的脸沉了下来："怎么？你怕了？"\n\n"不是怕不怕的问题，打架要是被学校知道了，要被开除的。"你说。\n\n"怂就是怂，找什么借口。"小张撇了撇嘴，"行吧，不去拉倒，我自己去。"',
+                    choices: [
+                        { text: '他爱去不去，我不管了', next: 'ignore', effects: { conscience: -5, loyalty: -20 } },
+                        { text: '劝他也别去了', next: 'persuadeHim', effects: { conscience: 20, loyalty: -10 } },
+                        { text: '偷偷告诉小王，让他别去', next: 'warnWang', effects: { conscience: 25, loyalty: -30, fear: 10 } }
+                    ]
+                },
+                
+                mild: {
+                    text: '"行是行，但咱们就吓唬吓唬他，别真动手啊。"你说。\n\n"放心，我有分寸。"小张笑了笑。\n\n但你看着他的笑容，总觉得哪里不对。\n\n他的眼神...有点太狠了。',
+                    choices: [
+                        { text: '相信他，应该不会有事', next: 'trustHim', effects: { conscience: -5, fear: -5 } },
+                        { text: '还是不放心，到时候见机行事', next: 'waitAndSee', effects: { conscience: 5, fear: 5 } },
+                        { text: '越想越不对，还是别去了', next: 'bailOut', effects: { conscience: 10, loyalty: -15, fear: 10 } }
+                    ]
+                },
+                
+                crazy: {
+                    text: '"你疯了？！"你压低声音，"真把人打出事了怎么办？咱们才13岁！"\n\n"13岁怎么了？"小张冷笑，"14岁以下杀人都不犯法，你不知道吗？"\n\n你心里一寒。他居然连这个都想好了。\n\n"你...你认真的？"',
+                    choices: [
+                        { text: '你疯了，我不跟你一起疯', next: 'backOut', effects: { conscience: 20, loyalty: -25, fear: 10 } },
+                        { text: '你...你真要杀人？', next: 'confirm', effects: { fear: 20, conscience: 10 } },
+                        { text: '别开玩笑了，这可不是闹着玩的', next: 'joke', effects: { conscience: 5, fear: 5 } }
+                    ],
+                    onEnter: () => { playShock(); timeFreezeEffect(); }
+                },
+                
+                // 从犯视角的几个结局
+                backOut: {
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 悬崖勒马',
+                    description: '"我不去。"你斩钉截铁地说，"你要是敢去，我就告诉老师。"\n\n小张瞪着你："你敢？"\n\n"你看我敢不敢。"你毫不退缩。\n\n最终，小张没敢去。他怕你真的告密。\n\n一场可能发生的悲剧，就这样被阻止了。\n\n虽然你和小张的友谊彻底结束了，但你知道，你做了正确的选择。\n\n真正的义气，不是陪着朋友一起犯错，而是在他要走歪路的时候，把他拉回来。',
+                    stats: { conscience: 90, fear: 30, loyalty: 20 }
+                },
+                
+                warnWang: {
+                    isEnding: true,
+                    endingType: 'hidden',
+                    title: '隐藏结局 · 暗中守护',
+                    description: '你偷偷给小王发了条消息："别去大棚，小张要找你麻烦。"\n\n小王收到消息后，没去赴约，还告诉了老师。\n\n老师找小张谈了话，批评教育了一顿。\n\n小张一直不知道是你告的密，还以为是小王自己怂了。\n\n你和小张还是朋友，但你心里清楚，你们再也回不到从前了。\n\n有些秘密，会永远埋在心里。\n\n但至少，你救了一个人，也救了另一个人。\n\n这就够了。',
+                    stats: { conscience: 85, fear: 40, loyalty: 50 }
+                },
+                
+                persuadeHim: {
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 迷途知返',
+                    description: '你跟小张聊了很久。\n\n你跟他说打架的后果，说他爸妈会多伤心，说他的未来会被毁了。\n\n一开始他听不进去，但你越说，他的表情越动摇。\n\n最后，他叹了口气："你说得对，是我太冲动了。"\n\n一场危机，就这样化解了。\n\n你救了小王，也救了小张，还保住了你们的友谊。\n\n很多时候，朋友之间需要的不是一起闯祸，而是互相提醒，互相拉一把。',
+                    stats: { conscience: 95, fear: 20, loyalty: 85 }
+                }
+            }
+        };
+
+        // 调查者视角（简化版）
+        const detectiveStory = {
+            start: 'start',
+            stats: [
+                { name: '线索', key: 'clues', color: 'reason' },
+                { name: '进度', key: 'progress', color: 'courage' },
+                { name: '压力', key: 'pressure', color: 'guilt' }
+            ],
+            initialStats: { clues: 0, progress: 0, pressure: 30 },
+            nodes: {
+                start: {
+                    text: '3月11日，上午9点。\n\n你是邯郸市肥乡区公安局的刑警老王。\n\n"王队，有人报案，说孩子失踪了。"同事走了进来。\n\n"什么情况？"\n\n"男孩，13岁，初中生，昨天下午放学后就没回家。家长找了一晚上没找到。"',
+                    choices: [
+                        { text: '先见见报案的家长', next: 'meetParents', effects: { progress: 10, clues: 5 } },
+                        { text: '先去学校了解情况', next: 'goSchool', effects: { progress: 10, clues: 5 } },
+                        { text: '调监控，看看孩子最后出现在哪里', next: 'checkCameras', effects: { progress: 15, clues: 10 } },
+                        { text: '让技术部门定位孩子的手机', next: 'trackPhone', effects: { progress: 15, clues: 10 } }
+                    ],
+                    onEnter: () => { setAtmosphere('suspense'); }
+                },
+                
+                meetParents: {
+                    text: '你在接待室见到了孩子的父母。\n\n母亲眼睛都哭肿了："警官，求求你，一定要找到我们家子耀..."\n\n"您先别着急，跟我说说情况。孩子叫什么名字？平时几点回家？"\n\n"叫王子耀，平时放学六点多就到家了。昨天晚上七点多还没回来，我们就出去找，找了一整夜都没找到..."\n\n"他有没有跟谁闹过矛盾？或者提过要去哪里？"',
+                    choices: [
+                        { text: '重点问同学关系', next: 'askClassmates', effects: { clues: 15, progress: 10 } },
+                        { text: '问他的社交账号、手机使用情况', next: 'askSocial', effects: { clues: 10, progress: 10 } },
+                        { text: '先去学校，跟老师了解情况', next: 'schoolFirst', effects: { progress: 10 } }
+                    ],
+                    onEnter: () => { playSuspense(); }
+                },
+                
+                checkCameras: {
+                    text: '你调了学校周边的监控。\n\n下午5点10分，王子耀走出校门。\n\n5点25分，他出现在村西头的路上，往大棚的方向走。\n\n然后...就没有然后了。那个方向比较偏，没有监控了。',
+                    choices: [
+                        { text: '去大棚那边看看', next: 'goGreenhouse', effects: { progress: 20, clues: 15 } },
+                        { text: '查他的通话记录和聊天记录', next: 'checkRecords', effects: { clues: 20, progress: 15 } },
+                        { text: '问问沿途有没有村民见过他', next: 'askVillagers', effects: { clues: 10, progress: 10 } }
+                    ],
+                    onEnter: () => { clueFoundEffect(); }
+                },
+                
+                trackPhone: {
+                    text: '技术部门反馈：手机最后信号出现在北高镇张庄村附近，然后就关机了。\n\n"关机时间？"你问。\n\n"昨天下午5点47分。"\n\n你皱了皱眉。刚到村子附近就关机了，这不太正常。',
+                    choices: [
+                        { text: '去张庄村排查', next: 'investigateVillage', effects: { progress: 20, clues: 10 } },
+                        { text: '查他的微信聊天记录，看最后跟谁聊过', next: 'checkWechat', effects: { clues: 25, progress: 15 } },
+                        { text: '结合监控，缩小范围', next: 'combineInfo', effects: { clues: 15, progress: 20 } }
+                    ],
+                    onEnter: () => { clueFoundEffect(); }
+                },
+                
+                goGreenhouse: {
+                    text: '你带着人去了大棚那边。\n\n这一片有好几个废弃的蔬菜大棚，杂草丛生。\n\n"仔细搜，任何细节都不要放过。"你吩咐道。\n\n二十分钟后，一个年轻警员喊了起来："王队！你来看这个！"\n\n你走过去，心里一沉——\n\n大棚后面的土，有被翻动过的痕迹。',
+                    choices: [
+                        { text: '立刻挖开看看', next: 'dig', effects: { progress: 30, clues: 20, pressure: 20 } },
+                        { text: '先保护现场，叫法医过来', next: 'callForensics', effects: { progress: 25, clues: 15, pressure: 15 } },
+                        { text: '周围再仔细搜查，看看有没有其他痕迹', next: 'searchMore', effects: { clues: 20, progress: 20 } }
+                    ],
+                    onEnter: () => { playShock(); heartbeatEffect(2000); setAtmosphere('shocking'); }
+                },
+                
+                dig: {
+                    text: '你戴上手套，亲自挖了起来。\n\n挖了大概半米深，你碰到了什么东西。\n\n再往下挖——\n\n是一只手。\n\n然后是脸。\n\n是王子耀。\n\n你闭了闭眼。\n\n还是来晚了。',
+                    isEnding: true,
+                    endingType: 'normal',
+                    title: '普通结局 · 真相大白',
+                    description: '尸体找到了。\n\n接下来的工作就顺利了。通过手机记录、监控录像、同学证言，很快就锁定了三个嫌疑人——都是王子耀的同班同学。\n\n审讯也很顺利，三个孩子很快就交代了。\n\n案子告破了。\n\n但你一点都高兴不起来。\n\n三个13岁的孩子，一个死了，两个这辈子都毁了。还有一个，虽然不用负刑事责任，但这辈子也会活在阴影里。\n\n这到底是为什么？\n\n你点了一根烟，望着窗外。\n\n这样的案子，你真的不想再办了。',
+                    stats: { clues: 85, progress: 100, pressure: 70 }
+                },
+                
+                checkWechat: {
+                    text: '技术部门恢复了王子耀的微信聊天记录。\n\n案发当天下午，有一个同学给他发消息："大棚这边，有事找你，赶紧来。"\n\n发消息的人，叫张某。\n\n你立刻让人去查这个张某。\n\n"王队，这个张某家就在张庄村，离大棚不远。"\n\n你心里有了数。',
+                    choices: [
+                        { text: '立刻传唤张某', next: 'summonZhang', effects: { progress: 30, clues: 25 } },
+                        { text: '先暗中调查，看看他有没有同伙', next: 'investigateSecret', effects: { clues: 30, progress: 25 } },
+                        { text: '去张某家附近看看', next: 'zhangHouse', effects: { clues: 20, progress: 20 } }
+                    ],
+                    onEnter: () => { clueFoundEffect(); }
+                },
+                
+                investigateSecret: {
+                    text: '你暗中调查了张某的社会关系。\n\n发现他和两个同学走得很近：李某和马某。\n\n案发当天下午，三个人都出现在大棚附近。\n\n而且，案发后，三个人的表现都很反常——\n\n张某把微信聊天记录删了，李某把手机恢复了出厂设置，马某...直接请假没来上学。',
+                    choices: [
+                        { text: '证据差不多了，抓人', next: 'arrest', effects: { progress: 35, clues: 30 } },
+                        { text: '再等等，看看能不能找到更多证据', next: 'waitMore', effects: { clues: 35, progress: 30, pressure: 10 } },
+                        { text: '先找马某谈谈，他看起来最心虚', next: 'talkToMa', effects: { clues: 25, progress: 25 } }
+                    ],
+                    onEnter: () => { playSuspense(); }
+                },
+                
+                arrest: {
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 法网恢恢',
+                    description: '你下令传唤了三个嫌疑人。\n\n一开始他们还嘴硬，但在证据面前，很快就崩溃了。\n\n先是马某交代了，然后是李某，最后是张某。\n\n整个案件的来龙去脉，终于搞清楚了。\n\n因为191块钱，三个13岁的孩子，害死了自己的同班同学。\n\n案子办得很漂亮，从接到报案到告破，只用了三天。\n\n但你一点成就感都没有。\n\n你只是觉得，心里堵得慌。\n\n13岁，花一样的年纪。\n\n怎么就走到了这一步呢？',
+                    stats: { clues: 90, progress: 100, pressure: 60 }
+                },
+                
+                talkToMa: {
+                    text: '你找到了马某。\n\n这孩子看起来很害怕，眼神躲闪，手一直在抖。\n\n"马某，我们想找你了解点情况。"\n\n"我...我不知道..."他的声音都在颤。\n\n"3月10号下午，你在哪儿？"\n\n"我...我在家..."\n\n"是吗？可有人说在大棚那边看到你了。"',
+                    choices: [
+                        { text: '直接点破，给他压力', next: 'pressureMa', effects: { clues: 20, progress: 20 } },
+                        { text: '慢慢引导，给他讲政策', next: 'guideMa', effects: { clues: 15, progress: 15 } },
+                        { text: '吓唬他，说其他人都交代了', next: 'bluffMa', effects: { clues: 25, progress: 25 } }
+                    ],
+                    onEnter: () => { playSuspense(); }
+                },
+                
+                bluffMa: {
+                    text: '"马某，实话跟你说吧，张某和李某都已经交代了。你现在说，还算是自首。要是等我们说出来，性质就不一样了。"\n\n马某的脸一下子白了。\n\n"他...他们都说了？"\n\n"你觉得呢？"你盯着他的眼睛。\n\n马某的心理防线彻底崩溃了，哇的一声哭了出来。\n\n"我说...我全说..."',
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 突破口',
+                    description: '马某交代了一切。\n\n有了他的证词，再加上其他证据，张某和李某的心理防线很快也被突破了。\n\n案子顺利告破。\n\n从接到报案到案件告破，只用了不到72小时。\n\n上级表扬了你办案神速，但你心里清楚，这不是你一个人的功劳。\n\n是那个孩子的良知，最终选择了站在正义这一边。\n\n希望他以后，能走回正路吧。',
+                    stats: { clues: 95, progress: 100, pressure: 50 }
+                }
+            }
+        };
+
+        // ============ 游戏状态 ============
+        let currentPerspective = null;
+        let currentStory = null;
+        let currentNode = null;
+        let stats = {};
+        let history = []; // 历史记录，用于返回上一步
+
+        // ============ 游戏逻辑 ============
+
+        // 开始游戏
+        function startGame() {
+            document.getElementById('warningModal').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'block';
+            playSound(440, 0.2, 'sine', 0.1);
+        }
+
+        // 显示视角选择
+        function showPerspectiveSelect() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('perspectiveSelect').style.display = 'block';
+            playSound(523, 0.2, 'sine', 0.1);
+        }
+
+        // 选择视角
+        function selectPerspective(perspective) {
+            currentPerspective = perspective;
+            
+            if (perspective === 'bystander') {
+                currentStory = bystanderStory;
+                document.getElementById('perspectiveName').textContent = '旁观者 · 小马';
+            } else if (perspective === 'accomplice') {
+                currentStory = accompliceStory;
+                document.getElementById('perspectiveName').textContent = '从犯 · 小李';
+            } else if (perspective === 'detective') {
+                currentStory = detectiveStory;
+                document.getElementById('perspectiveName').textContent = '调查者 · 王警官';
+            }
+            
+            // 初始化数值
+            stats = { ...currentStory.initialStats };
+            history = [];
+            
+            // 渲染数值条
+            renderStats();
+            
+            // 开始剧情
+            currentNode = currentStory.start;
+            renderNode();
+            
+            document.getElementById('perspectiveSelect').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+            
+            playSound(659, 0.2, 'sine', 0.1);
+        }
+
+        // 渲染数值条
+        function renderStats() {
+            const statsBar = document.getElementById('statsBar');
+            statsBar.innerHTML = '';
+            
+            currentStory.stats.forEach(stat => {
+                const value = stats[stat.key] || 0;
+                const item = document.createElement('div');
+                item.className = 'stat-item';
+                item.innerHTML = `
+                    <span class="stat-label">${stat.name}</span>
+                    <div class="stat-bar">
+                        <div class="stat-fill ${stat.color}" style="width: ${Math.max(0, Math.min(100, value))}%"></div>
+                    </div>
+                `;
+                statsBar.appendChild(item);
+            });
+        }
+
+        // 渲染当前节点
+        function renderNode() {
+            const node = currentStory.nodes[currentNode];
+            if (!node) return;
+            
+            // 执行进入效果
+            if (node.onEnter) {
+                node.onEnter();
+            }
+            
+            // 检查是否是结局
+            if (node.isEnding) {
+                showEnding(node);
+                return;
+            }
+            
+            // 渲染故事文本
+            const storyText = document.getElementById('storyText');
+            storyText.innerHTML = node.text.replace(/\n/g, '<br>');
+            
+            // 渲染选项
+            const choicesBox = document.getElementById('choicesBox');
+            choicesBox.innerHTML = '';
+            
+            node.choices.forEach((choice, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.textContent = choice.text;
+                btn.onclick = () => makeChoice(index);
+                choicesBox.appendChild(btn);
+            });
+            
+            // 更新数值显示
+            renderStats();
+            
+            // 显示/隐藏返回按钮
+            const backBtn = document.getElementById('backBtn');
+            backBtn.style.display = history.length > 0 ? 'block' : 'none';
+            
+            // 播放选项音
+            playChoice();
+        }
+
+        // 做出选择
+        function makeChoice(index) {
+            const node = currentStory.nodes[currentNode];
+            const choice = node.choices[index];
+            
+            // 保存历史
+            history.push({
+                node: currentNode,
+                stats: { ...stats }
+            });
+            
+            // 应用数值变化
+            if (choice.effects) {
+                for (let key in choice.effects) {
+                    stats[key] = (stats[key] || 0) + choice.effects[key];
+                    // 限制在0-100之间
+                    stats[key] = Math.max(0, Math.min(100, stats[key]));
+                }
+            }
+            
+            // 跳转到下一个节点
+            currentNode = choice.next;
+            
+            // 渲染下一个节点
+            renderNode();
+        }
+
+        // 返回上一步
+        function goBack() {
+            if (history.length === 0) return;
+            
+            const prev = history.pop();
+            currentNode = prev.node;
+            stats = { ...prev.stats };
+            
+            renderNode();
+        }
+
+        // 显示结局
+        function showEnding(ending) {
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('endingScreen').style.display = 'block';
+            
+            const title = document.getElementById('endingTitle');
+            title.textContent = ending.title;
+            title.className = 'ending-title ' + ending.endingType;
+            
+            // 结局数值
+            const endingStats = document.getElementById('endingStats');
+            endingStats.innerHTML = '';
+            
+            const finalStats = ending.stats || stats;
+            currentStory.stats.forEach(stat => {
+                const value = Math.round(finalStats[stat.key] || 0);
+                const item = document.createElement('div');
+                item.className = 'ending-stat';
+                item.innerHTML = `
+                    <div class="ending-stat-value">${value}</div>
+                    <div class="ending-stat-label">${stat.name}</div>
+                `;
+                endingStats.appendChild(item);
+            });
+            
+            // 结局描述
+            document.getElementById('endingDescription').innerHTML = 
+                ending.description.replace(/\n/g, '<br>');
+            
+            // 播放结局音效
+            if (ending.endingType === 'good') {
+                playClueFound();
+            } else if (ending.endingType === 'bad') {
+                playShock();
+            } else if (ending.endingType === 'hidden') {
+                // 隐藏结局特殊音效
+                [523, 659, 784, 1047].forEach((freq, i) => {
+                    setTimeout(() => playSound(freq, 0.3, 'sine', 0.15), i * 150);
+                });
+            }
+            
+            setAtmosphere('truth');
+        }
+
+        // 重新开始
+        function restartGame() {
+            document.getElementById('endingScreen').style.display = 'none';
+            selectPerspective(currentPerspective);
+        }
+
+        // 切换视角
+        function changePerspective() {
+            document.getElementById('endingScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('perspectiveSelect').style.display = 'block';
+            setAtmosphere('normal');
+        }
+
+        // ============ 事件绑定 ============
+        document.getElementById('warningBtn').addEventListener('click', startGame);
+        document.getElementById('startBtn').addEventListener('click', showPerspectiveSelect);
+        document.getElementById('backBtn').addEventListener('click', goBack);
+        document.getElementById('restartBtn').addEventListener('click', restartGame);
+        document.getElementById('changePerspectiveBtn').addEventListener('click', changePerspective);
+
+        // 视角选择卡片
+        document.querySelectorAll('.perspective-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const perspective = card.dataset.perspective;
+                selectPerspective(perspective);
+            });
+        });
+
+        // 初始化音频（用户首次点击后）
+        document.addEventListener('click', initAudio, { once: true });
+    </script>
+</body>
+</html>
