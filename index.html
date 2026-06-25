@@ -998,6 +998,246 @@
                     stats: { courage: 65, reason: 60, guilt: 70 }
                 },
                 
+                // ===== 补充缺失的节点 =====
+                
+                ignore: {
+                    text: '你摇了摇头，想把这件事赶出脑海。\n\n"可能就是去玩吧，我瞎想什么呢。"你自言自语。\n\n回到家，你像往常一样写作业、吃饭、睡觉。\n\n但心里总有点不安。小张的表情，小李的支支吾吾...总觉得哪里不对。\n\n第二天早上，你刚到学校，就听到了一个让你浑身发冷的消息——\n\n小王失踪了。',
+                    isEnding: true,
+                    endingType: 'bad',
+                    title: '坏结局 · 迟来的醒悟',
+                    description: '你选择了不去想，选择了逃避。\n\n但该来的还是来了。小王的尸体三天后在大棚后面被挖了出来。\n\n你听说了整件事的经过——小张约小王去大棚，用铁锹把他打死了，埋在了后面。小李帮忙按着，你...你本来也应该在的。\n\n警察来学校调查，你说了小张叫你去的事。\n\n"那你为什么没去？"警察问。\n\n"我...我就是不想去。"你低着头说。\n\n你没说你其实怀疑过什么，但你选择了无视。\n\n这个秘密，你会藏一辈子。\n\n但每个深夜，你都会问自己：如果那天你去了，如果那天你报了警，是不是一切就会不一样？\n\n这个问题，没有答案。',
+                    stats: { courage: 20, reason: 35, guilt: 80 }
+                },
+                
+                refuseFight: {
+                    text: '"打架？我不去。"你摇摇头。\n\n"怂货。"小张撇了撇嘴。\n\n他没再劝你，转身走了。\n\n你看着他的背影，心里有点不安。他那样子，不只是想"教训"一下那么简单...\n\n你该怎么办？',
+                    choices: [
+                        { text: '算了，不管了', next: 'ignore', effects: { guilt: 15, reason: -5 } },
+                        { text: '偷偷告诉老师', next: 'tellTeacher', effects: { courage: 15, reason: 10, guilt: -20 } },
+                        { text: '偷偷跟去看看', next: 'followSecret', effects: { courage: 10, reason: 5 } }
+                    ]
+                },
+                
+                goButNoFight: {
+                    text: '"行吧，我跟你去，但咱们就吓唬吓唬他，别真动手。"你说。\n\n"放心，我有分寸。"小张笑了笑。\n\n但你看着他的笑容，心里有点发毛。\n\n他的眼神里，有一种你看不懂的东西...狠？还是别的什么？',
+                    choices: [
+                        { text: '相信他，应该没事', next: 'follow', effects: { reason: -10, guilt: 10 } },
+                        { text: '到时候见机行事', next: 'follow', effects: { reason: 5, guilt: 5 } },
+                        { text: '越想越不对，还是不去了', next: 'stop', effects: { reason: 10, courage: -5 } }
+                    ]
+                },
+                
+                persuade: {
+                    text: '"你疯了？打架要被开除的！"你压低声音。\n\n"开除？"小张冷笑，"你以为我在乎？那小子太嚣张了，我必须给他点颜色看看。"\n\n"可是..."\n\n"别可是了，你到底去不去？"他看着你。',
+                    choices: [
+                        { text: '不去，你也别去了', next: 'refuseFight', effects: { conscience: 10, loyalty: -15 } },
+                        { text: '行吧，我跟你去', next: 'goButNoFight', effects: { loyalty: 10, conscience: -10 } },
+                        { text: '你要真敢去，我就告诉老师', next: 'tellTeacher', effects: { courage: 20, loyalty: -25 } }
+                    ]
+                },
+                
+                agreeFight: {
+                    text: '"行！揍他丫的！"你装作很拽的样子。\n\n其实你心里有点虚。你从来没打过架。\n\n但小张是你哥们儿，哥们儿有事，你得撑场子。\n\n"够意思！"小张拍了拍你的肩膀。\n\n你勉强笑了笑。\n\n希望...不会出什么事吧。',
+                    choices: [
+                        { text: '跟着去', next: 'follow', effects: { courage: 5, guilt: 20, reason: -10 } }
+                    ]
+                },
+                
+                pressLi: {
+                    text: '"你跟我说实话，到底什么事？"你盯着小李。\n\n小李脸色更白了，支支吾吾地说："真...真没什么，就是...就是小张想教训一下小王。"\n\n"教训？怎么教训？"你追问。\n\n"就...就是打一顿呗。"小李不敢看你的眼睛。\n\n你心里一沉。看小李的反应，恐怕不止"打一顿"那么简单。',
+                    choices: [
+                        { text: '不去了，太危险了', next: 'notGo', effects: { reason: 15, courage: -5 } },
+                        { text: '跟去看看，万一出事也好阻止', next: 'goSee', effects: { courage: 15, reason: 5 } },
+                        { text: '告诉老师', next: 'tellTeacher', effects: { courage: 20, reason: 15, guilt: -20 } }
+                    ]
+                },
+                
+                notGo: {
+                    text: '你决定不去了。\n\n太危险了。看小张那样子，搞不好真会出事。\n\n你收拾书包回了家。\n\n但心里总是七上八下的。\n\n小张他们...不会真出什么事吧？',
+                    isEnding: true,
+                    endingType: 'normal',
+                    title: '普通结局 · 旁观者',
+                    description: '你选择了不去，选择了明哲保身。\n\n第二天，小王失踪的消息传遍了学校。\n\n你心里咯噔一下。果然...出事了。\n\n三天后，尸体被找到了。案子很快告破，小张和小李被抓。\n\n你因为没参与，也不知情，所以没什么事。\n\n但你心里清楚，你其实是知道一点的。你猜到了可能会出事，但你选择了沉默，选择了置身事外。\n\n你没有做错什么，法律上你完全清白。\n\n但不知道为什么，你总觉得心里有点空落落的。\n\n如果那天，你多说一句话，多做一件事...\n\n会不会，结局就不一样？',
+                    stats: { courage: 35, reason: 70, guilt: 55 }
+                },
+                
+                goSee: {
+                    text: '你决定跟去看看。\n\n万一真出事了，你也好帮忙，或者...至少能报个警。\n\n你远远地跟在他们后面。\n\n越走越偏，越走越偏。\n\n最后，他们进了那个废弃的蔬菜大棚。\n\n你躲在外面，心里怦怦直跳。\n\n里面会发生什么？',
+                    choices: [
+                        { text: '偷偷溜到门口听听', next: 'followSecret', effects: { courage: 10, reason: 5 } },
+                        { text: '太吓人了，还是走吧', next: 'runAwayScared', effects: { courage: -15, guilt: 20 } },
+                        { text: '直接报警', next: 'callPolice', effects: { courage: 20, reason: 15, guilt: -20 } }
+                    ]
+                },
+                
+                watch: {
+                    text: '你站在旁边，看着。\n\n小张一步步走向小王，手里...拿着一把铁锹？！\n\n你心里一紧。他拿铁锹干嘛？\n\n"小张，你..."你话还没说完。\n\n小张已经举起了铁锹，朝着小王的头砸了下去！\n\n"砰——"\n\n小王哼都没哼一声，倒在了地上。血，流了一地。',
+                    choices: [
+                        { text: '吓得转身就跑', next: 'runAway', effects: { courage: -15, reason: 5, guilt: 25 } },
+                        { text: '大喊着冲上去阻止', next: 'persuadeZhang', effects: { courage: 25, reason: -10 } },
+                        { text: '吓得腿软，站在原地发抖', next: 'record', effects: { courage: -20, guilt: 30 } }
+                    ],
+                    onEnter: () => { playShock(); trembleEffect(); setAtmosphere('shocking'); }
+                },
+                
+                record: {
+                    text: '你吓得腿都软了，站在原地发抖。\n\n手无意识地伸进兜里，摸到了手机。\n\n对...录像...要留证据...\n\n你颤抖着拿出手机，偷偷录着。\n\n小张埋完尸体，转过身，看到了你。\n\n"你...你都看到了？"他的眼睛红红的。\n\n你吓得说不出话。',
+                    choices: [
+                        { text: '转身拼命跑', next: 'runAway', effects: { courage: -10, reason: 10, guilt: 20 } },
+                        { text: '强装镇定，说我什么都没看到', next: 'pretend', effects: { courage: -20, reason: 5, guilt: 35 } },
+                        { text: '劝他去自首', next: 'persuadeZhang', effects: { courage: 20, reason: 10 } }
+                    ],
+                    onEnter: () => { heartbeatEffect(2000); playBreathing(); }
+                },
+                
+                goHome: {
+                    text: '你转身往家走。\n\n走得很快，几乎是在跑。\n\n心里怦怦直跳。\n\n小张他们...到底要去干嘛？\n\n你不敢想，也不想想。\n\n就当...就当不知道吧。',
+                    isEnding: true,
+                    endingType: 'normal',
+                    title: '普通结局 · 侥幸',
+                    description: '你回了家，把这件事抛在了脑后。\n\n第二天，小王失踪了。\n\n你心里有点慌，但你安慰自己：跟我没关系，我又没去。\n\n三天后，尸体被发现了。案子很快告破。\n\n警察来找你问话，你说了小张叫你去，但你没去。\n\n因为你确实没参与，所以没你什么事。\n\n你躲过了一劫。\n\n但不知道为什么，你总觉得心里有点不踏实。\n\n如果那天你去了呢？如果那天你阻止了呢？\n\n这些问题，会偶尔在深夜里冒出来，让你睡不着觉。\n\n你是幸运的。但这份幸运，总让你觉得有点沉重。',
+                    stats: { courage: 30, reason: 55, guilt: 50 }
+                },
+                
+                stillFollow: {
+                    text: '你在原地站了一会儿。\n\n心里七上八下的。\n\n走了吧，好像不太够意思。小张平时对你还不错。\n\n回去吧，又觉得那地方太偏了，有点吓人。\n\n犹豫了半天，你还是抬脚跟了上去。\n\n"就去看看，应该没事。"你给自己打气。',
+                    choices: [
+                        { text: '继续跟着', next: 'follow', effects: { courage: 5, guilt: 10 } }
+                    ]
+                },
+                
+                callTeacher: {
+                    text: '你赶紧拿出手机，给班主任打了电话。\n\n"老师！小张和小李去村西头那个废弃大棚了，好像要找小王打架！您快来！"\n\n"什么？！你别急，我马上过来！你先别靠近，注意安全！"老师的声音很着急。\n\n你挂了电话，在远处等着。\n\n心，怦怦直跳。',
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 及时雨',
+                    description: '老师很快就赶来了，还报了警。\n\n你们赶到大棚的时候，小张和小李正把小王往坑里拖。\n\n"住手！"老师大喝一声。\n\n小张和小李吓了一跳，看到老师和警察，脸都白了。\n\n小王虽然受了伤，但还好，命保住了。\n\n因为你及时通知老师，一场悲剧被扼杀在了中途。\n\n学校表彰了你的行为，但你觉得，你只是做了应该做的事。\n\n很多时候，善恶只在一念之间。而你的一个电话，救了三个人的人生。',
+                    stats: { courage: 80, reason: 85, guilt: 0 }
+                },
+                
+                tryAgain: {
+                    text: '你放慢脚步，假装系鞋带，偷偷又拿出手机。\n\n这次小张没回头。\n\n你快速按下了 110，刚要拨号——\n\n"你磨磨蹭蹭干嘛呢？"小张又回头了。\n\n你赶紧把手机塞回兜里："没...没干嘛，鞋带开了。"\n\n他怀疑地看了你两眼，但没说什么。\n\n你心里怦怦直跳。\n\n怎么办？',
+                    choices: [
+                        { text: '找机会再试', next: 'follow', effects: { courage: 10, reason: 5 } },
+                        { text: '算了，太危险了', next: 'giveUp', effects: { courage: -10, guilt: 15 } },
+                        { text: '趁他不注意，撒腿就跑', next: 'runAway', effects: { courage: 5, reason: 10, guilt: 10 } }
+                    ]
+                },
+                
+                giveUp: {
+                    text: '你放弃了。\n\n太危险了。要是被小张发现，不知道他会对你怎么样。\n\n你低着头，默默地跟着往前走。\n\n心里很乱。\n\n你不敢想接下来会发生什么。\n\n你只希望...希望不要出什么大事。',
+                    choices: [
+                        { text: '继续跟着', next: 'follow', effects: { courage: -5, guilt: 15 } }
+                    ]
+                },
+                
+                shout: {
+                    text: '你深吸一口气，突然大喊："救命啊！杀人啦！"\n\n声音在空旷的田野里回荡。\n\n小张和小李都吓了一跳。\n\n"你疯了？！"小张冲过来，想捂住你的嘴。\n\n你转身就跑，边跑边喊。\n\n远处，好像有人往这边看了。',
+                    choices: [
+                        { text: '往有人的地方跑', next: 'runAway', effects: { courage: 25, reason: 5, guilt: -10 } }
+                    ],
+                    onEnter: () => { playShock(); }
+                },
+                
+                leaveHelpless: {
+                    text: '你看小张那样子，知道劝不动了。\n\n"你...你好自为之吧。"你叹了口气，转身往外走。\n\n身后，传来小张的冷笑。\n\n你走出大棚，阳光刺得你睁不开眼。\n\n你该怎么办？\n\n就这么走了吗？',
+                    choices: [
+                        { text: '直接走，不管了', next: 'goHome', effects: { guilt: 30, reason: -10 } },
+                        { text: '去报警', next: 'callPolice', effects: { courage: 20, reason: 15, guilt: -20 } },
+                        { text: '在外面等等，看看情况', next: 'followSecret', effects: { courage: 5, reason: 5, guilt: 15 } }
+                    ]
+                },
+                
+                bluff: {
+                    text: '"小张，你别傻了！我来之前已经告诉老师了，老师马上就到！"你故意装得很镇定。\n\n小张脸色一变："你...你真告诉老师了？"\n\n"不信你等着，五分钟之内老师肯定到。"你盯着他的眼睛。\n\n小张犹豫了。他看了看地上的铁锹，又看了看你。\n\n"走！"他冲小李使了个眼色。\n\n两个人匆匆忙忙跑了。',
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 空城计',
+                    description: '你成功吓跑了小张和小李。\n\n等他们跑远了，你腿一软，坐在了地上。\n\n后背全是汗。\n\n你根本没告诉老师，你就是在吓唬他。\n\n还好，他信了。\n\n你赶紧给老师打了电话，又打了120。\n\n小王虽然受了伤，但还好，没有生命危险。\n\n后来，小张和小李被学校处分了，也受到了法律的惩罚。\n\n你用你的机智，避免了一场更大的悲剧。\n\n有时候，勇气不一定是硬碰硬。智慧，也是一种勇气。',
+                    stats: { courage: 75, reason: 95, guilt: 0 }
+                },
+                
+                convinceLi: {
+                    text: '你给小李使了个眼色，又冲他摇了摇头。\n\n小李犹豫了一下，走到小张身边："小张，要不...算了吧。真出了事就晚了。"\n\n"你也怂了？"小张瞪着他。\n\n"不是怂不怂的问题，真的不值得。"小李小声说。\n\n小张看了看小李，又看了看你，脸色很难看。\n\n三个人僵持着。',
+                    choices: [
+                        { text: '趁热打铁，继续劝', next: 'emotionalAppeal', effects: { courage: 10, reason: 10 } },
+                        { text: '拉着小王赶紧走', next: 'runWithWang', effects: { courage: 15, reason: 10 } }
+                    ]
+                },
+                
+                goSchool: {
+                    text: '你拉着小王往学校跑。\n\n还好，学校不远，很快就到了。\n\n你们直接去了班主任办公室。\n\n"老师！小张要打我们，还拿了铁锹！"你气喘吁吁地说。\n\n老师脸色一变，立刻站了起来。',
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 寻求保护',
+                    description: '老师非常重视这件事，立刻联系了双方家长，还报了警。\n\n小张和小李很快就被找到了。因为是犯罪未遂，加上都是未成年人，进行了批评教育和社区矫正。\n\n虽然你和小张的关系彻底破裂了，但你保护了小王，也保护了你自己。\n\n遇到危险的时候，及时向大人求助，不是懦弱，而是最聪明的选择。\n\n你做得对。',
+                    stats: { courage: 70, reason: 90, guilt: 0 }
+                },
+                
+                goHomeForget: {
+                    text: '"各回各家吧，就当今天没见过。"你对小王说。\n\n小王点了点头，两个人在路口分开了。\n\n你回了家，心跳慢慢平复下来。\n\n还好，没出事。\n\n但你心里总有点不安。\n\n小张...不会善罢甘休吧？',
+                    isEnding: true,
+                    endingType: 'normal',
+                    title: '普通结局 · 躲过一劫',
+                    description: '你躲过了这一次。\n\n但小张并没有就此罢休。一周后，他又找了个机会堵了小王。\n\n这一次，没那么幸运了。\n\n当你听到小王的死讯时，你愣住了。\n\n你想起那天，你拉着小王跑掉了。你以为没事了。\n\n原来，你只是把悲剧推迟了几天而已。\n\n如果那天你报了警，如果那天你告诉了老师...\n\n是不是，结局就会不一样？\n\n这个问题，会伴随你很久很久。',
+                    stats: { courage: 50, reason: 55, guilt: 65 }
+                },
+                
+                findAdults: {
+                    text: '你转身往村子里跑，想找大人帮忙。\n\n一边跑一边喊："来人啊！出事了！"\n\n终于，有个村民从家里出来了："怎么了？喊什么呢？"\n\n"叔！大棚那边...大棚那边出事了！好像有人被打了！"你气喘吁吁地说。\n\n"什么？走！去看看！"村民拿起锄头就跟着你往回走。',
+                    isEnding: true,
+                    endingType: 'normal',
+                    title: '普通结局 · 求助',
+                    description: '你们赶到的时候，小张和小李已经跑了。\n\n大棚里，小王倒在地上，头上都是血。\n\n村民立刻打了120和110。\n\n但还是晚了。小王送到医院的时候，已经没有生命体征了。\n\n你成了案件的证人。因为你及时找来了大人，案子很快就破了。\n\n你做了你能做的。\n\n但你还是会想，如果当时你再勇敢一点，直接冲进去，是不是就能阻止？\n\n这个问题，没有答案。',
+                    stats: { courage: 60, reason: 70, guilt: 50 }
+                },
+                
+                runAwayScared: {
+                    text: '你越想越怕，转身就跑。\n\n太吓人了。\n\n你不敢想里面会发生什么。\n\n你只想回家，只想把这一切都忘掉。',
+                    isEnding: true,
+                    endingType: 'bad',
+                    title: '坏结局 · 逃兵',
+                    description: '你跑回了家，关上门，蒙上被子。\n\n你告诉自己：跟我没关系，我什么都不知道。\n\n但你骗不了自己。\n\n第二天，小王失踪的消息传遍了学校。你心里清楚，他在哪里。\n\n但你什么都没说。\n\n三天后，尸体被发现了。案子很快告破。\n\n警察来找你问话，你还是说你什么都不知道。\n\n你逃过了法律的惩罚。\n\n但你逃不过自己的良心。\n\n每个深夜，你都会梦见那个大棚，梦见小王的脸。\n\n你是个懦夫。\n\n这个念头，会跟着你一辈子。',
+                    stats: { courage: 10, reason: 40, guilt: 90 }
+                },
+                
+                peek: {
+                    text: '你壮着胆子，悄悄凑到大棚门口，往里看。\n\n这一看，你魂都吓飞了——\n\n小王倒在地上，头上都是血。小张手里拿着铁锹，站在旁边喘气。小李蹲在一边，浑身发抖。\n\n"埋...埋了吧。"小张的声音有点抖。\n\n你捂住嘴，差点叫出声来。\n\n杀人...他们居然杀人了...',
+                    choices: [
+                        { text: '赶紧跑，去报警', next: 'runAway', effects: { courage: 10, reason: 15, guilt: 10 } },
+                        { text: '继续躲着，等他们走了再说', next: 'waitPolice', effects: { courage: -10, reason: 5, guilt: 25 } }
+                    ],
+                    onEnter: () => { playShock(); trembleEffect(); setAtmosphere('shocking'); }
+                },
+                
+                hideFar: {
+                    text: '你跑远了一点，躲在一棵大树后面。\n\n心怦怦直跳，快要从嗓子眼里跳出来了。\n\n警察怎么还不来？\n\n每一分每一秒，都像一个世纪那么漫长。\n\n你不敢靠近，也不敢走。\n\n只能等着。',
+                    isEnding: true,
+                    endingType: 'normal',
+                    title: '普通结局 · 等待',
+                    description: '你等了好像有一个世纪那么久。\n\n终于，警笛声传来了。\n\n你从树后面出来，给警察指了方向。\n\n警察冲进大棚，控制住了小张和小李。但小王，已经没了。\n\n你作为证人，去派出所做了笔录。\n\n你做了你能做的。你报了警，你指了路。\n\n但你还是会想，如果当时你再勇敢一点，冲进去，是不是就能救他？\n\n这个问题，没有答案。\n\n你只是一个普通人。你害怕，你胆怯，你做不到完美。\n\n但至少，你做了对的事。',
+                    stats: { courage: 40, reason: 65, guilt: 55 }
+                },
+                
+                checkWang: {
+                    text: '你腿软着走过去，蹲下来看小王。\n\n他的眼睛闭着，头上的血还在流。\n\n"小王？小王？"你小声叫他。\n\n他没有反应。\n\n你伸出颤抖的手，探了探他的鼻息...\n\n没有。\n\n你吓得坐在了地上。\n\n死了...他死了...',
+                    choices: [
+                        { text: '赶紧打110和120', next: 'callAmbulance', effects: { courage: 10, reason: 10 } },
+                        { text: '吓得站起来就跑', next: 'runAway', effects: { courage: -15, reason: -5, guilt: 25 } }
+                    ],
+                    onEnter: () => { playShock(); heartbeatEffect(2000); }
+                },
+                
+                argue: {
+                    text: '"你疯了吗？！你把他打死了！"你冲小张喊。\n\n"关你屁事！"小张红着眼睛瞪着你，"是你自己要跟来的！"\n\n"你会坐牢的你知道吗？"\n\n"坐牢？我们都不满14岁，坐个屁牢！"他冷笑。\n\n你看着他，突然觉得这个认识了三年的朋友，好陌生。',
+                    choices: [
+                        { text: '你会后悔的！说完转身就走', next: 'runAway', effects: { courage: 5, reason: 5, guilt: 20 } },
+                        { text: '我要去报警！', next: 'callPolice', effects: { courage: 20, reason: 10, guilt: -10 } },
+                        { text: '帮他一起...不，不行', next: 'callAmbulance', effects: { courage: -5, guilt: 30 } }
+                    ]
+                },
+                
+                // 旁观者视角节点结束
                 // 从犯视角和调查者视角我们先简化一些，保证核心体验
                 // 先完成旁观者视角的主要分支
             }
@@ -1084,6 +1324,135 @@
                     title: '好结局 · 迷途知返',
                     description: '你跟小张聊了很久。\n\n你跟他说打架的后果，说他爸妈会多伤心，说他的未来会被毁了。\n\n一开始他听不进去，但你越说，他的表情越动摇。\n\n最后，他叹了口气："你说得对，是我太冲动了。"\n\n一场危机，就这样化解了。\n\n你救了小王，也救了小张，还保住了你们的友谊。\n\n很多时候，朋友之间需要的不是一起闯祸，而是互相提醒，互相拉一把。',
                     stats: { conscience: 95, fear: 20, loyalty: 85 }
+                },
+                
+                // ===== 补充缺失的节点 =====
+                
+                stopWorrying: {
+                    text: '你摇了摇头，把不安甩开。\n\n"小张说没事就没事，我瞎担心什么呢。"你自言自语。\n\n接下来的两天，你照常上课、打球、玩游戏。\n\n你甚至有点期待——教训一下小王那小子，也好，谁让他那么拽。\n\n时间很快就到了约定的那天下午。',
+                    choices: [
+                        { text: '跟小张一起去', next: 'goWithZhang', effects: { conscience: -15, loyalty: 10, fear: 10 } }
+                    ]
+                },
+                
+                askDetails: {
+                    text: '"你打算怎么教训他？"你问。\n\n小张笑了笑："也没什么，就是打他一顿，让他知道谁是老大。"\n\n"就...打一顿？"你有点不确定。\n\n"不然呢？你还想怎么样？"小张拍了拍你的肩膀，"放心，出了事我担着。"\n\n你还是有点不放心。他的眼神...有点太狠了。',
+                    choices: [
+                        { text: '行吧，应该没事', next: 'stopWorrying', effects: { conscience: -10, fear: -5 } },
+                        { text: '还是有点怕，不想去了', next: 'regret', effects: { conscience: 10, fear: 15, loyalty: -10 } }
+                    ]
+                },
+                
+                regret: {
+                    text: '你有点后悔答应他了。\n\n万一真出事了怎么办？\n\n可是...已经答应了，现在说不去，会不会太不够意思了？\n\n你心里很纠结。',
+                    choices: [
+                        { text: '硬着头皮去吧', next: 'goWithZhang', effects: { conscience: -10, loyalty: 10, fear: 15 } },
+                        { text: '还是跟他说不去了', next: 'bailOut', effects: { conscience: 15, loyalty: -20, fear: -10 } }
+                    ]
+                },
+                
+                ignore: {
+                    text: '"他爱去不去，跟我没关系。"你耸耸肩。\n\n你转身走了。\n\n管他呢，反正我不去。\n\n但不知道为什么，你心里总有点不安。\n\n小张...不会真闹出什么事吧？',
+                    isEnding: true,
+                    endingType: 'normal',
+                    title: '普通结局 · 旁观者',
+                    description: '你选择了置身事外。\n\n两天后，小王失踪的消息传遍了学校。\n\n你心里咯噔一下。\n\n果然...出事了。\n\n三天后，尸体被找到了。小张被抓了。\n\n警察来找你问话，你说了小张找过你，但你没去。\n\n因为你确实没参与，所以没你什么事。\n\n但你心里清楚，你是知道一点的。你猜到了可能会出事，但你选择了沉默，选择了什么都不做。\n\n你没有错。\n\n但不知道为什么，你总觉得心里有点空落落的。\n\n如果那天，你多说一句话，多劝他一句...\n\n会不会，结局就不一样？',
+                    stats: { conscience: 50, fear: 40, loyalty: 30 }
+                },
+                
+                trustHim: {
+                    text: '"行吧，我相信你。"你点了点头。\n\n小张笑了笑："放心吧，我有分寸。"\n\n你勉强笑了笑。\n\n希望...他真的有分寸吧。',
+                    choices: [
+                        { text: '到时候再说吧', next: 'goWithZhang', effects: { conscience: -10, fear: 5, loyalty: 10 } }
+                    ]
+                },
+                
+                waitAndSee: {
+                    text: '你决定到时候见机行事。\n\n如果只是吓唬吓唬，那就没事。\n\n如果真要动手，你再劝也不迟。\n\n你觉得这样比较稳妥。\n\n既不会不够意思，也不会真闹出大事。',
+                    choices: [
+                        { text: '到时候见机行事', next: 'goWithZhang', effects: { conscience: 5, fear: 10, loyalty: 5 } }
+                    ]
+                },
+                
+                bailOut: {
+                    text: '"算了，我还是不去了。"你说。\n\n小张的脸沉了下来："怎么？你也怕了？"\n\n"不是怕不怕的问题，我觉得真没必要。"你说。\n\n"怂就是怂，找什么借口。"小张撇了撇嘴，"行吧，不去拉倒，我自己去。"\n\n他转身走了。\n\n你看着他的背影，心里有点不是滋味。\n\n但你知道，你做了正确的选择。',
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 及时抽身',
+                    description: '你选择了不去。\n\n虽然小张对你很有意见，觉得你不够意思。\n\n但你知道，你做了对的事。\n\n两天后，小王失踪了。\n\n你心里一沉。果然出事了。\n\n三天后，尸体被发现了。小张被抓了。\n\n你听说了判决结果：无期徒刑。\n\n你有点后怕。\n\n如果那天你去了，现在会怎么样？\n\n也许，你也会站在被告席上。\n\n你躲过了一劫。\n\n但你一点都不觉得庆幸。\n\n因为你的朋友，毁了自己的一生。',
+                    stats: { conscience: 75, fear: 50, loyalty: 25 }
+                },
+                
+                confirm: {
+                    text: '"你...你真要杀人？"你的声音都在抖。\n\n小张冷笑一声："怎么？怕了？"\n\n"可是...可是那是一条人命啊！"你说。\n\n"人命？"小张看着你，"我们都不满14岁，杀人不犯法的，你不知道吗？"\n\n你看着他的眼睛，那里面没有一丝玩笑的意味。\n\n他是认真的。\n\n他真的要杀人。',
+                    choices: [
+                        { text: '你疯了，我不跟你一起疯', next: 'backOut', effects: { conscience: 25, loyalty: -30, fear: 15 } },
+                        { text: '我...我想想', next: 'regret', effects: { conscience: 10, fear: 25, loyalty: -5 } },
+                        { text: '你别吓唬我', next: 'joke', effects: { conscience: -5, fear: 10, loyalty: 5 } }
+                    ]
+                },
+                
+                joke: {
+                    text: '"别开玩笑了，这可不是闹着玩的。"你勉强笑了笑。\n\n小张看着你，脸上没有一丝笑意。\n\n"谁跟你开玩笑了。"他说。\n\n你心里一寒。\n\n他不是在开玩笑。\n\n他是认真的。',
+                    choices: [
+                        { text: '不行，我不能让你这么做', next: 'persuadeHim', effects: { conscience: 25, loyalty: -15, fear: 10 } },
+                        { text: '我...我不去了', next: 'backOut', effects: { conscience: 20, loyalty: -25, fear: 15 } },
+                        { text: '偷偷告诉小王', next: 'warnWang', effects: { conscience: 30, loyalty: -35, fear: 15 } }
+                    ]
+                },
+                
+                goWithZhang: {
+                    text: '约定的时间到了。\n\n你和小张一起往大棚走。\n\n小张手里拿着一把铁锹。\n\n"你拿铁锹干嘛？"你心里有点发毛。\n\n"挖个坑，吓唬吓唬他。"小张漫不经心地说。\n\n你心里更不安了。\n\n挖个坑？吓唬人需要挖坑吗？\n\n但你没敢问。\n\n很快，你们到了大棚。小王已经在那儿了。',
+                    choices: [
+                        { text: '按计划来', next: 'theIncident', effects: { conscience: -20, fear: 20, loyalty: 10 } },
+                        { text: '临阵退缩，说我不去了', next: 'bailOut', effects: { conscience: 15, loyalty: -30, fear: -10 } },
+                        { text: '偷偷给小王使眼色，让他快跑', next: 'warnWang', effects: { conscience: 25, loyalty: -35, fear: 20 } }
+                    ],
+                    onEnter: () => { playSuspense(); setAtmosphere('suspense'); }
+                },
+                
+                theIncident: {
+                    text: '"你找我干嘛？"小王皱着眉问。\n\n小张没说话，一步步走过去。\n\n突然，他举起了铁锹，朝着小王的头砸了下去！\n\n"砰——"\n\n小王哼都没哼一声，倒在了地上。血，流了一地。\n\n你吓得腿都软了，坐在了地上。\n\n"你...你真把他打死了？！"你的声音在抖。\n\n小张喘着气，看了你一眼："愣着干嘛？过来帮忙埋了。"',
+                    choices: [
+                        { text: '吓得转身就跑', next: 'runAway', effects: { conscience: 10, fear: 30, loyalty: -20 } },
+                        { text: '颤抖着过去帮忙', next: 'helpBury', effects: { conscience: -40, fear: 40, loyalty: 20 } },
+                        { text: '你疯了！我要去报警！', next: 'callPolice', effects: { conscience: 30, loyalty: -50, fear: 20 } }
+                    ],
+                    onEnter: () => { playShock(); trembleEffect(); setAtmosphere('shocking'); }
+                },
+                
+                runAway: {
+                    text: '你吓得转身就跑。\n\n你不敢回头，拼命地跑。\n\n身后传来小张的喊声，但你不敢停下。\n\n你跑啊跑，跑了不知道多久，终于跑到了大路上。\n\n你扶着墙，大口大口地喘气。\n\n怎么办？\n\n你该怎么办？',
+                    choices: [
+                        { text: '打110报警', next: 'callPolice', effects: { conscience: 20, fear: 10, loyalty: -30 } },
+                        { text: '回家，假装什么都不知道', next: 'pretend', effects: { conscience: -30, fear: 30, loyalty: 10 } }
+                    ],
+                    onEnter: () => { playBreathing(); heartbeatEffect(2000); }
+                },
+                
+                callPolice: {
+                    isEnding: true,
+                    endingType: 'normal',
+                    title: '普通结局 · 戴罪立功',
+                    description: '你颤抖着拨通了110。\n\n警察很快赶到，当场抓获了正在埋尸的小张。\n\n你作为证人，也作为从犯，被带走了。\n\n因为你及时报警，有立功表现，加上你是被胁迫的，而且你没有直接动手，最终你被判了有期徒刑三年，缓刑四年。\n\n你不用坐牢，但你的人生，已经留下了永远的污点。\n\n你常常想，如果那天你坚决不去，会不会就不一样了？\n\n可惜，没有如果。\n\n有些路，一旦踏上了，就再也回不了头。',
+                    stats: { conscience: 65, fear: 70, loyalty: 10 }
+                },
+                
+                pretend: {
+                    isEnding: true,
+                    endingType: 'bad',
+                    title: '坏结局 · 共犯',
+                    description: '你回了家，把自己关在房间里。\n\n你告诉自己：跟我没关系，我什么都没做。\n\n但你骗不了自己。\n\n你在场。你看着他打死了人。你什么都没做。\n\n三天后，尸体被发现了。案子很快告破。\n\n警察来抓你的时候，你没有反抗。\n\n你知道，你活该。\n\n最终，你因故意杀人罪（从犯），被判了有期徒刑十二年。\n\n十二年。\n\n你最好的青春，都要在监狱里度过了。\n\n你常常想起那天下午。\n\n如果那天，你说一句"我不去"...\n\n会不会，一切都不一样？',
+                    stats: { conscience: 10, fear: 80, loyalty: 30 }
+                },
+                
+                helpBury: {
+                    text: '你颤抖着走过去，帮忙挖坑。\n\n你的手在抖，眼泪在流。\n\n"哭什么哭？"小张不耐烦地说，"又不是你杀的。"\n\n你不敢说话，只是默默地挖着。\n\n坑挖好了，你们把小王的尸体放了进去，填上土。\n\n做完这一切，你坐在地上，浑身都是泥和血。\n\n"走吧。"小张拍了拍手上的土。\n\n你麻木地站起来，跟着他往外走。',
+                    isEnding: true,
+                    endingType: 'bad',
+                    title: '坏结局 · 深渊',
+                    description: '你跟着小张回了家。\n\n你们约好，谁都不说。\n\n你以为，你们能瞒过去。\n\n但三天后，尸体就被发现了。\n\n案子很快就破了。你们俩都被抓了。\n\n法庭上，你站在被告席上，听着判决。\n\n小张，无期徒刑。\n\n你，有期徒刑十二年。\n\n十二年。\n\n你才13岁。你的人生，才刚刚开始，就已经结束了。\n\n你看着旁听席上哭成泪人的爸妈，心里说不出是什么滋味。\n\n如果那天，你说一句"我不去"...\n\n可惜，没有如果。\n\n有些选择，一旦做错了，就要用一辈子来偿还。',
+                    stats: { conscience: 5, fear: 90, loyalty: 50 }
                 }
             }
         };
@@ -1203,6 +1572,214 @@
                     title: '好结局 · 突破口',
                     description: '马某交代了一切。\n\n有了他的证词，再加上其他证据，张某和李某的心理防线很快也被突破了。\n\n案子顺利告破。\n\n从接到报案到案件告破，只用了不到72小时。\n\n上级表扬了你办案神速，但你心里清楚，这不是你一个人的功劳。\n\n是那个孩子的良知，最终选择了站在正义这一边。\n\n希望他以后，能走回正路吧。',
                     stats: { clues: 95, progress: 100, pressure: 50 }
+                },
+                
+                // ===== 补充缺失的节点 =====
+                
+                askClassmates: {
+                    text: '"他跟同学关系怎么样？有没有跟谁闹过矛盾？"你问。\n\n母亲想了想："好像...有个叫张某的，之前跟他打过架。但那都是半年前的事了。"\n\n"还有吗？"\n\n"其他的...我就不知道了。孩子不太愿意跟我们说学校的事。"\n\n你点了点头。\n\n张某...这个名字，先记下来。',
+                    choices: [
+                        { text: '去学校，找老师和同学了解情况', next: 'goSchool', effects: { progress: 15, clues: 10 } },
+                        { text: '调监控，看看孩子最后去了哪儿', next: 'checkCameras', effects: { progress: 20, clues: 15 } },
+                        { text: '查他的手机和社交账号', next: 'askSocial', effects: { clues: 15, progress: 10 } }
+                    ]
+                },
+                
+                askSocial: {
+                    text: '"他平时用手机多吗？都玩些什么？"你问。\n\n"就是聊聊天，玩玩游戏吧。"父亲说，"微信、QQ，还有什么快手之类的。"\n\n"他的手机呢？"\n\n"找不到了。昨天出去的时候还带着的，现在不见了。"\n\n你皱了皱眉。\n\n手机不见了...这有点可疑。',
+                    choices: [
+                        { text: '让技术部门定位手机', next: 'trackPhone', effects: { progress: 20, clues: 15 } },
+                        { text: '去学校了解情况', next: 'goSchool', effects: { progress: 15, clues: 10 } },
+                        { text: '调监控', next: 'checkCameras', effects: { progress: 20, clues: 15 } }
+                    ]
+                },
+                
+                schoolFirst: {
+                    text: '你决定先去学校。\n\n"走，去学校看看。"你对同事说。\n\n学校离得不远，十几分钟就到了。\n\n班主任已经在门口等着了，脸色很难看。\n\n"王警官，您可来了..."',
+                    choices: [
+                        { text: '先找班主任了解情况', next: 'talkToTeacher', effects: { progress: 15, clues: 10 } },
+                        { text: '找他的同学问问', next: 'askClassmates', effects: { clues: 15, progress: 10 } },
+                        { text: '调学校的监控', next: 'checkCameras', effects: { progress: 20, clues: 15 } }
+                    ]
+                },
+                
+                goSchool: {
+                    text: '你来到了王子耀所在的学校。\n\n班主任已经在门口等着了，脸色很凝重。\n\n"王警官，子耀他...不会出什么事吧？"\n\n"现在还不好说。"你说，"先跟我说说他的情况。"\n\n班主任叹了口气："这孩子平时挺老实的，学习也还行。就是...最近好像跟几个同学走得比较近，有点学坏了。"',
+                    choices: [
+                        { text: '哪几个同学？', next: 'askClassmates', effects: { clues: 20, progress: 15 } },
+                        { text: '调学校周边的监控', next: 'checkCameras', effects: { progress: 20, clues: 15 } },
+                        { text: '查他的手机', next: 'trackPhone', effects: { progress: 15, clues: 10 } }
+                    ],
+                    onEnter: () => { playSuspense(); }
+                },
+                
+                talkToTeacher: {
+                    text: '"王子耀这孩子，平时表现怎么样？"你问班主任。\n\n"挺老实的，学习中等，不惹事。"班主任说，"不过最近...我感觉他有点不对劲。"\n\n"怎么不对劲？"\n\n"好像有点怕什么人。上课经常走神，下课也不怎么出去玩了。我问过他，他说没事。"\n\n你皱了皱眉。\n\n怕什么人...这是个线索。',
+                    choices: [
+                        { text: '问他跟谁有矛盾', next: 'askClassmates', effects: { clues: 15, progress: 10 } },
+                        { text: '调监控', next: 'checkCameras', effects: { progress: 20, clues: 15 } },
+                        { text: '查手机', next: 'trackPhone', effects: { progress: 15, clues: 10 } }
+                    ]
+                },
+                
+                checkRecords: {
+                    text: '你让技术部门查了王子耀的通话记录和聊天记录。\n\n通话记录不多，大多是跟家里打的。\n\n聊天记录...微信的聊天记录被删了。\n\n"能恢复吗？"你问。\n\n"试试吧，需要点时间。"技术人员说。\n\n你点了点头。\n\n聊天记录被删了...这本身就很可疑。',
+                    choices: [
+                        { text: '不等了，先去大棚那边看看', next: 'goGreenhouse', effects: { progress: 20, clues: 15 } },
+                        { text: '继续查，看看还能找到什么', next: 'checkWechat', effects: { clues: 25, progress: 15 } },
+                        { text: '去村子里问问', next: 'askVillagers', effects: { clues: 10, progress: 10 } }
+                    ]
+                },
+                
+                askVillagers: {
+                    text: '你带着人在村子里走访。\n\n问了几个村民，都说没见过这个孩子。\n\n就在你有点失望的时候，一个老太太说："昨天下午好像是有个小孩往大棚那边走了，我还以为是谁家的孩子去玩呢。"\n\n"大棚？哪个大棚？"你赶紧问。\n\n"就是村西头那几个废弃的蔬菜大棚。"\n\n你心里一动。\n\n大棚...',
+                    choices: [
+                        { text: '去大棚那边看看', next: 'goGreenhouse', effects: { progress: 25, clues: 20 } },
+                        { text: '再问问其他人，确认一下', next: 'investigateVillage', effects: { clues: 15, progress: 15 } }
+                    ],
+                    onEnter: () => { clueFoundEffect(); }
+                },
+                
+                investigateVillage: {
+                    text: '你在村子里继续排查。\n\n又有几个村民说，昨天下午好像看到几个小孩往大棚那边去了。\n\n"几个小孩？"你问。\n\n"三四个吧，都是半大孩子。"村民说。\n\n你心里有了数。\n\n三四个孩子...王子耀不是一个人去的。\n\n而且，去的是废弃大棚那种偏僻的地方。\n\n恐怕...凶多吉少。',
+                    choices: [
+                        { text: '立刻去大棚', next: 'goGreenhouse', effects: { progress: 30, clues: 25, pressure: 10 } },
+                        { text: '先调监控确认一下', next: 'checkCameras', effects: { progress: 20, clues: 20 } }
+                    ]
+                },
+                
+                combineInfo: {
+                    text: '你把监控和手机定位的信息结合起来分析。\n\n王子耀下午5点10分走出校门，5点25分出现在村西头路上，5点47分手机在张庄村附近关机。\n\n时间线很清晰。\n\n而且，你注意到一个细节——\n\n在王子耀的身影出现在监控里的同时，还有另外两个孩子，也往同一个方向走了。\n\n"放大看看。"你说。\n\n技术人员把画面放大。\n\n是两个男孩，穿着和王子耀一样的校服。',
+                    choices: [
+                        { text: '去学校查这两个孩子是谁', next: 'goSchool', effects: { progress: 25, clues: 25 } },
+                        { text: '直接去大棚', next: 'goGreenhouse', effects: { progress: 30, clues: 20, pressure: 10 } },
+                        { text: '查王子耀的微信', next: 'checkWechat', effects: { clues: 30, progress: 20 } }
+                    ],
+                    onEnter: () => { clueFoundEffect(); }
+                },
+                
+                callForensics: {
+                    text: '"先别动，保护现场！叫法医过来！"你下令。\n\n同事们立刻拉起了警戒线。\n\n你蹲下来，仔细观察着那片被翻动过的土。\n\n土是新的，颜色和周围不一样。\n\n而且...你好像闻到了什么味道。\n\n你心里一沉。\n\n希望...不是你想的那样。',
+                    choices: [
+                        { text: '等法医来再挖', next: 'waitForensics', effects: { progress: 25, clues: 20, pressure: 15 } },
+                        { text: '等不及了，先挖开看看', next: 'dig', effects: { progress: 35, clues: 25, pressure: 25 } },
+                        { text: '周围再搜查一下', next: 'searchMore', effects: { clues: 25, progress: 25 } }
+                    ]
+                },
+                
+                searchMore: {
+                    text: '你让同事们在周围仔细搜查。\n\n二十分钟后，有了发现——\n\n"王队！这边有脚印！"\n\n你走过去一看，大棚旁边的泥地上，有几个新鲜的脚印。\n\n有大人的，也有小孩的。\n\n而且，不止一个人的。\n\n你皱了皱眉。\n\n看来，不止一个人来过这里。',
+                    choices: [
+                        { text: '把脚印取样，继续挖', next: 'dig', effects: { progress: 30, clues: 30, pressure: 20 } },
+                        { text: '顺着脚印追踪', next: 'followFootprints', effects: { clues: 25, progress: 25 } }
+                    ],
+                    onEnter: () => { clueFoundEffect(); }
+                },
+                
+                waitForensics: {
+                    text: '你在现场等着法医。\n\n时间一分一秒地过去。\n\n每一分每一秒，都很煎熬。\n\n终于，法医到了。\n\n"王队。"\n\n"嗯，挖吧。"你点了点头。\n\n法医戴上手套，小心翼翼地挖了起来。\n\n挖了没一会儿，他停了下来。\n\n"王队...有了。"',
+                    isEnding: true,
+                    endingType: 'normal',
+                    title: '普通结局 · 按部就班',
+                    description: '尸体被挖了出来。\n\n确认是王子耀。\n\n接下来的工作，就按部就班地进行了。\n\n法医鉴定死亡时间和死因，技术部门恢复聊天记录，你们排查嫌疑人。\n\n虽然花的时间长了一点，但案子最终还是告破了。\n\n三个嫌疑人全部落网。\n\n案子办得很稳，没有出任何纰漏。\n\n但你心里还是堵得慌。\n\n多好的孩子啊...\n\n怎么就没了呢？',
+                    stats: { clues: 90, progress: 100, pressure: 65 }
+                },
+                
+                followFootprints: {
+                    text: '你顺着脚印追踪。\n\n脚印从大棚出来，往村子的方向去了。\n\n一直追到村口，脚印消失在了大路上。\n\n"王队，看来是往村子里去了。"同事说。\n\n你点了点头。\n\n张庄村...\n\n看来，凶手很可能就是这个村子里的人。\n\n或者，至少有村子里的人参与。',
+                    choices: [
+                        { text: '回大棚，挖开看看', next: 'dig', effects: { progress: 30, clues: 25, pressure: 20 } },
+                        { text: '在村子里排查', next: 'investigateVillage', effects: { progress: 25, clues: 20 } }
+                    ]
+                },
+                
+                summonZhang: {
+                    text: '你下令传唤张某。\n\n很快，张某被带到了派出所。\n\n这孩子看起来很镇定，甚至有点满不在乎。\n\n"警官，你找我干嘛？"他翘着二郎腿。\n\n"3月10号下午，你在哪儿？"你问。\n\n"在家啊。"他漫不经心地说。\n\n"是吗？可有人说在大棚那边看到你了。"\n\n他的脸色微微变了一下，但很快又恢复了镇定。\n\n"谁看到了？让他出来跟我对质。"',
+                    choices: [
+                        { text: '给他看证据', next: 'showEvidence', effects: { clues: 30, progress: 30 } },
+                        { text: '慢慢来，先跟他耗着', next: 'interrogateSlow', effects: { clues: 25, progress: 25, pressure: 10 } },
+                        { text: '先放他回去，暗中观察', next: 'investigateSecret', effects: { clues: 30, progress: 25 } }
+                    ]
+                },
+                
+                zhangHouse: {
+                    text: '你来到了张某家附近。\n\n这是一个普通的农家院。\n\n你在周围转了转，没发现什么异常。\n\n就在你准备离开的时候，你注意到——\n\n张家后院的墙角，好像有什么东西。\n\n你走过去一看。\n\n是一把铁锹，上面沾着泥。\n\n泥的颜色...好像和大棚那边的土，有点像。',
+                    choices: [
+                        { text: '把铁锹带回去化验', next: 'testShovel', effects: { clues: 35, progress: 25 } },
+                        { text: '直接传唤张某', next: 'summonZhang', effects: { progress: 30, clues: 25 } },
+                        { text: '先不急，继续暗中观察', next: 'investigateSecret', effects: { clues: 30, progress: 25 } }
+                    ],
+                    onEnter: () => { clueFoundEffect(); }
+                },
+                
+                testShovel: {
+                    text: '你把铁锹带回了局里，让技术部门化验。\n\n很快，结果出来了——\n\n铁锹上的泥土，和大棚那边的土壤成分完全一致。\n\n而且，铁锹上还检测到了微量的血迹。\n\nDNA比对结果：是王子耀的。\n\n你握紧了拳头。\n\n证据确凿了。',
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 铁证如山',
+                    description: '有了铁锹这个铁证，张某的心理防线很快就崩溃了。\n\n他交代了一切，还供出了李某和马某。\n\n案子顺利告破。\n\n从接到报案到案件告破，只用了三天。\n\n办得很漂亮。\n\n但你一点都高兴不起来。\n\n你看着审讯室里那个还没长开的孩子，心里说不出是什么滋味。\n\n13岁。\n\n怎么就走到了这一步呢？\n\n这个问题，你想了很久，都没有答案。',
+                    stats: { clues: 100, progress: 100, pressure: 55 }
+                },
+                
+                showEvidence: {
+                    text: '"张某，你看看这个。"你把微信聊天记录的截图推到他面前。\n\n他的脸色一下子变了。\n\n"还有这个。"你又拿出了监控截图。\n\n他的脸更白了。\n\n"还有这个。"你拿出了铁锹的照片。\n\n他的心理防线，彻底崩溃了。\n\n"我...我..."他的嘴唇在抖。',
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 证据链',
+                    description: '在铁证面前，张某交代了一切。\n\n李某和马某也很快落网。\n\n案子办得很漂亮，证据链完整，零口供也能定罪。\n\n上级表扬了你。\n\n但你心里清楚，这不是什么值得高兴的事。\n\n四个家庭，就这么毁了。\n\n死者的父母，凶手的父母，还有那个虽然不用负刑事责任，但这辈子都活在阴影里的孩子。\n\n这到底是为什么呢？\n\n你点了一根烟，望着窗外。\n\n这样的案子，你真的不想再办了。',
+                    stats: { clues: 100, progress: 100, pressure: 60 }
+                },
+                
+                interrogateSlow: {
+                    text: '你不着急，慢慢跟他聊。\n\n你跟他聊学校，聊游戏，聊他的朋友。\n\n他一开始还很警惕，但聊着聊着，就放松了下来。\n\n然后，你话锋一转——\n\n"王子耀，你认识吧？"\n\n他的脸色一下子变了。\n\n"认...认识，怎么了？"\n\n"他失踪了。"你盯着他的眼睛，"你知道他去哪儿了吗？"',
+                    choices: [
+                        { text: '继续施压', next: 'pressureZhang', effects: { clues: 30, progress: 30 } },
+                        { text: '给他讲政策，坦白从宽', next: 'guideZhang', effects: { clues: 25, progress: 25 } }
+                    ]
+                },
+                
+                pressureZhang: {
+                    text: '"张某，我们已经掌握了所有证据。"你盯着他的眼睛，"现在说，还算是自首。等我们把所有证据都摆出来，性质就不一样了。"\n\n他的嘴唇在抖。\n\n"我...我没有..."\n\n"没有？"你冷笑一声，"那你说说，案发当天下午，你为什么在大棚那边？"\n\n"我...我..."\n\n他说不出来了。\n\n豆大的汗珠，从他额头上滚了下来。',
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 心理战',
+                    description: '在你的强大心理攻势下，张某的心理防线彻底崩溃了。\n\n他交代了一切。\n\n李某和马某也很快落网。\n\n案子顺利告破。\n\n从接到报案到案件告破，只用了不到三天。\n\n你又一次漂亮地完成了任务。\n\n但你一点成就感都没有。\n\n你只是觉得累。\n\n从什么时候开始，13岁的孩子，也会杀人了呢？\n\n这个问题，没有人能回答你。',
+                    stats: { clues: 90, progress: 100, pressure: 55 }
+                },
+                
+                guideZhang: {
+                    text: '"张某，你还小，未来的路还很长。"你语气温和地说，"做错了事不可怕，可怕的是一错再错。"\n\n他低着头，不说话。\n\n"你现在坦白，还算是自首，法律会从轻处理。但要是一直瞒着，等我们查出来，那就不一样了。"\n\n他还是不说话。\n\n但你注意到，他的肩膀，在微微发抖。\n\n他的心理防线，已经在动摇了。',
+                    choices: [
+                        { text: '继续引导', next: 'pressureZhang', effects: { clues: 25, progress: 30 } },
+                        { text: '给他点时间，先带下去', next: 'investigateSecret', effects: { clues: 30, progress: 25 } }
+                    ]
+                },
+                
+                waitMore: {
+                    text: '你决定再等等，看看能不能找到更多证据。\n\n毕竟，人命关天，证据越充分越好。\n\n你让技术部门继续恢复聊天记录，让同事们继续走访调查。\n\n一天过去了。\n\n两天过去了。\n\n第三天，有了重大突破——\n\n技术部门恢复了一段被删除的语音消息。\n\n里面是张某的声音："大棚这边，赶紧来，不来你等着。"',
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 铁证',
+                    description: '有了这段语音消息，证据链就完整了。\n\n你下令抓人。\n\n三个嫌疑人全部落网。\n\n在铁证面前，他们很快就交代了一切。\n\n案子办得很漂亮，证据确凿，零口供也能定罪。\n\n但你心里还是堵得慌。\n\n你听着那段语音，听着那个还带着稚气的声音，心里说不出是什么滋味。\n\n13岁。\n\n花一样的年纪。\n\n怎么就走到了这一步呢？',
+                    stats: { clues: 100, progress: 100, pressure: 65 }
+                },
+                
+                pressureMa: {
+                    text: '"马某，我们已经掌握了所有证据。"你盯着他的眼睛，"张某和李某都已经交代了，你现在说，还算是自首。"\n\n他的脸更白了。\n\n"我...我没有杀人..."他的声音在抖。\n\n"我知道你没有。"你说，"但你在场，对不对？你看着他们做的，对不对？"\n\n他哇的一声哭了出来。\n\n"我...我当时害怕...我不敢说..."',
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 击溃防线',
+                    description: '马某的心理防线彻底崩溃了，他交代了一切。\n\n有了他的证词，再加上其他证据，张某和李某也很快就招了。\n\n案子顺利告破。\n\n从接到报案到案件告破，只用了不到72小时。\n\n办得很漂亮。\n\n但你一点都高兴不起来。\n\n你看着那个哭得上气不接下气的孩子，心里说不出是什么滋味。\n\n他也是受害者。\n\n虽然他没有动手，但这件事，会成为他一辈子的阴影。\n\n四个家庭，就这么毁了。',
+                    stats: { clues: 95, progress: 100, pressure: 55 }
+                },
+                
+                guideMa: {
+                    text: '"马某，你别害怕。"你语气温和地说，"我们知道你是个好孩子。这件事，跟你没关系，对不对？"\n\n他抬起头，泪眼婆娑地看着你。\n\n"你只要把你知道的告诉我们就好了。"你继续说，"说了，你就可以回家了。"\n\n"真...真的吗？"他小声问。\n\n"真的。"你点了点头。\n\n他犹豫了一下，终于开口了——\n\n"那天...小张叫我跟他去个地方..."',
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 温柔的力量',
+                    description: '马某慢慢地说出了一切。\n\n他说得很详细，从张某怎么叫他，到他们怎么把小王骗到大棚，到最后怎么埋的...\n\n你静静地听着，心里越来越沉。\n\n有了他的详细证词，案子很快就告破了。\n\n张某和李某全部落网。\n\n案子办得很顺利。\n\n但你一点都高兴不起来。\n\n你只是觉得，心里堵得慌。\n\n这些孩子...\n\n他们到底在想什么呢？',
+                    stats: { clues: 100, progress: 100, pressure: 50 }
                 }
             }
         };
