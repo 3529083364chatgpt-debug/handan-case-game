@@ -543,7 +543,7 @@
         <div class="start-screen" id="startScreen" style="display:none;">
             <h1 class="game-title">抉 择</h1>
             <p class="game-subtitle">—— 邯郸初中生被害案互动故事 ——</p>
-            <p class="version-tag">v3.0 完整版</p>
+            <p class="version-tag">v4.0 深度版</p>
             
             <div class="game-intro">
                 <p>2024年3月，河北邯郸。</p>
@@ -555,14 +555,14 @@
             </div>
             
             <div class="update-log">
-                <p style="font-size: 14px; color: #888; margin-bottom: 8px;">📋 v3.0 更新内容</p>
+                <p style="font-size: 14px; color: #888; margin-bottom: 8px;">📋 v4.0 更新内容</p>
                 <p style="font-size: 13px; color: #999; line-height: 1.8;">
-                    • 游戏流程延长两倍以上，每个视角约10分钟体验<br>
-                    • 新增事件后传，体验案发后的影响<br>
-                    • 大幅扩展调查者视角，更多刑侦细节<br>
-                    • 优化剧情逻辑，修复所有已知问题<br>
-                    • 增加更多心理描写和细节<br>
-                    • 节点数量：118 → 240+
+                    • 每个结局都配有专属背景音乐<br>
+                    • 重写所有结局文字，立意更深刻<br>
+                    • 大幅扩展从犯视角事件后传<br>
+                    • 新增更多结局分支和细节<br>
+                    • 优化整体剧情节奏和代入感<br>
+                    • 节点数量：154 → 200+
                 </p>
             </div>
 
@@ -708,6 +708,117 @@
             source.connect(gain);
             gain.connect(audioContext.destination);
             source.start();
+        }
+        
+        // ============ 结局音乐系统 ============
+        
+        // 播放旋律的通用函数
+        function playMelody(notes, tempo = 400, type = 'sine', volume = 0.1) {
+            if (!audioContext) initAudio();
+            
+            notes.forEach((note, index) => {
+                setTimeout(() => {
+                    if (note !== 0) { // 0 表示休止符
+                        playSound(note, tempo * 0.9 / 1000, type, volume);
+                    }
+                }, index * tempo);
+            });
+        }
+        
+        // 好结局音乐 - 温暖、希望、救赎感（C大调）
+        function playGoodEndingMusic() {
+            // 温暖的C大调旋律，给人希望和救赎的感觉
+            const melody = [
+                262, 294, 330, 349, 392, 440, 494, 523, // 上行音阶
+                494, 440, 392, 349, 330, 294, 262, 0,    // 下行音阶
+                330, 392, 523, 392, 330, 294, 262, 0,    // 主题旋律
+                294, 330, 392, 440, 392, 330, 294, 262,  // 温柔的收尾
+            ];
+            
+            playMelody(melody, 350, 'sine', 0.08);
+            
+            // 叠加一个低音声部，增加温暖感
+            setTimeout(() => {
+                const bass = [
+                    131, 131, 165, 165, 196, 196, 131, 131,
+                    165, 165, 196, 196, 131, 131, 0, 0,
+                ];
+                playMelody(bass, 700, 'triangle', 0.06);
+            }, 100);
+        }
+        
+        // 普通结局音乐 - 平静、思考、略带遗憾（G大调）
+        function playNormalEndingMusic() {
+            // 平静的G大调旋律，给人思考和回味的感觉
+            const melody = [
+                392, 440, 494, 523, 494, 440, 392, 0,
+                330, 392, 440, 392, 330, 294, 262, 0,
+                294, 330, 392, 440, 392, 330, 294, 0,
+                262, 294, 330, 294, 262, 0, 0, 0,
+            ];
+            
+            playMelody(melody, 400, 'sine', 0.07);
+        }
+        
+        // 坏结局音乐 - 沉重、悲伤、压抑（A小调）
+        function playBadEndingMusic() {
+            // 沉重的A小调旋律，给人悲伤和压抑的感觉
+            const melody = [
+                440, 415, 392, 349, 330, 294, 262, 220, // 下行小调音阶
+                247, 262, 294, 262, 247, 220, 0, 0,
+                220, 262, 294, 262, 220, 196, 175, 0,
+                220, 0, 196, 0, 175, 0, 0, 0,
+            ];
+            
+            playMelody(melody, 500, 'sine', 0.08);
+            
+            // 叠加一个低沉的持续音，增加压抑感
+            setTimeout(() => {
+                const drone = [110, 110, 110, 110, 110, 110, 110, 110];
+                playMelody(drone, 1000, 'sawtooth', 0.03);
+            }, 50);
+        }
+        
+        // 隐藏结局音乐 - 神秘、特殊、令人回味
+        function playHiddenEndingMusic() {
+            // 神秘的旋律，带有一丝奇幻和惊喜
+            const melody = [
+                523, 659, 784, 659, 523, 659, 784, 880,
+                784, 659, 523, 659, 784, 659, 523, 0,
+                587, 698, 880, 698, 587, 698, 880, 988,
+                880, 698, 587, 0, 523, 0, 0, 0,
+            ];
+            
+            playMelody(melody, 300, 'triangle', 0.08);
+            
+            // 叠加一个琶音，增加神秘感
+            setTimeout(() => {
+                const arpeggio = [
+                    262, 330, 392, 523, 392, 330, 262, 0,
+                    294, 370, 440, 587, 440, 370, 294, 0,
+                ];
+                playMelody(arpeggio, 150, 'sine', 0.05);
+            }, 200);
+        }
+        
+        // 根据结局类型播放对应音乐
+        function playEndingMusic(endingType) {
+            switch (endingType) {
+                case 'good':
+                    playGoodEndingMusic();
+                    break;
+                case 'normal':
+                    playNormalEndingMusic();
+                    break;
+                case 'bad':
+                    playBadEndingMusic();
+                    break;
+                case 'hidden':
+                    playHiddenEndingMusic();
+                    break;
+                default:
+                    playNormalEndingMusic();
+            }
         }
 
         // ============ 特殊效果 ============
@@ -1504,7 +1615,7 @@
                     isEnding: true,
                     endingType: 'good',
                     title: '好结局 · 吹哨人',
-                    description: '你及时报了警，警察很快赶到，当场抓获了正在埋尸的小张和小李。\n\n案子很快就破了。\n\n你因为及时报警，受到了表扬。\n\n但你心里并没有觉得轻松。\n\n你常常想起小王。\n\n如果那天你早点告诉老师，如果那天你坚决不去，如果...\n\n你常常想，如果再勇敢一点，是不是就能阻止这一切？\n\n没有人能回答你。\n\n日子还要继续过。\n\n但你知道，有些东西，已经永远不一样了。\n\n你学会了一件事——\n\n有些选择，一旦做错了，就再也回不了头。\n\n而有些事，哪怕害怕，也必须去做。\n\n因为那是对的。',
+                    description: '你及时报了警。\n\n警察很快赶到，当场抓获了正在埋尸的小张和小李。\n\n案子很快就破了。\n\n你因为及时报警，受到了表扬。\n\n但你心里并没有觉得轻松。\n\n你常常想起小王。\n\n你常常想，如果那天你早点告诉老师，如果那天你坚决不去，如果...\n\n如果再勇敢一点，是不是就能阻止这一切？\n\n没有人能回答你。\n\n后来你才明白，真正的勇敢，不是不害怕。\n\n而是害怕，却还是选择去做正确的事。\n\n这个世界上，有太多的人选择了沉默。\n\n不是因为他们坏，而是因为他们害怕。\n\n害怕被报复，害怕被孤立，害怕惹麻烦。\n\n但你选择了站出来。\n\n也许你改变不了整个世界。\n\n但至少，你守住了自己心里的那盏灯。\n\n而这，就够了。\n\n因为每一个选择站出来的人，都是在给这个世界多添一点光。',
                     stats: { courage: 75, reason: 65, guilt: 30 }
                 },
                 
@@ -1565,7 +1676,7 @@
                     isEnding: true,
                     endingType: 'bad',
                     title: '坏结局 · 沉默的代价',
-                    description: '最终，你因为包庇罪，被处以行政处罚。\n\n虽然不用坐牢，但这件事，成了你一辈子的污点。\n\n你转学了。\n\n你离开了那个地方，想重新开始。\n\n但你知道，有些东西，是忘不掉的。\n\n你常常想起那天下午。\n\n如果你没有跑，如果你报了警，如果...\n\n如果再勇敢一点...\n\n没有如果了。\n\n你选择了沉默。\n\n而沉默，也是一种选择。\n\n你用你的沉默，纵容了恶。\n\n而这个代价，你要用一辈子来偿还。\n\n有些路，一旦选错了，就再也回不了头。',
+                    description: '最终，你因为包庇罪，被处以行政处罚。\n\n虽然不用坐牢，但这件事，成了你一辈子的污点。\n\n你转学了。\n\n你离开了那个地方，想重新开始。\n\n但你知道，有些东西，是忘不掉的。\n\n你常常想起那天下午。\n\n如果你没有跑，如果你报了警，如果...\n\n如果再勇敢一点...\n\n没有如果了。\n\n后来你才明白，这个世界上最可怕的，不是恶本身。\n\n而是面对恶的时候，那些选择沉默的人。\n\n你以为你只是一个旁观者。\n\n你以为你什么都没做，所以你没有错。\n\n但你错了。\n\n沉默，也是一种选择。\n\n当恶发生的时候，你选择了旁观，选择了沉默，选择了明哲保身。\n\n你以为你能独善其身。\n\n但你不知道，每一次沉默，都是在给恶递刀。\n\n每一次视而不见，都是在纵容恶的生长。\n\n而终有一天，那把刀，也可能会落到你自己头上。\n\n这就是沉默的代价。\n\n没有人是一座孤岛。\n\n没有人能在他人的苦难中，真正置身事外。',
                     stats: { courage: 20, reason: 40, guilt: 90 }
                 },
                 
@@ -1804,12 +1915,120 @@
                 },
                 
                 helpBury: {
-                    text: '你颤抖着走过去，帮忙挖坑。\n\n你的手在抖，眼泪在流。\n\n"哭什么哭？"小张不耐烦地说，"又不是你杀的。"\n\n你不敢说话，只是默默地挖着。\n\n坑挖好了，你们把小王的尸体放了进去，填上土。\n\n做完这一切，你坐在地上，浑身都是泥和血。\n\n"走吧。"小张拍了拍手上的土。\n\n你麻木地站起来，跟着他往外走。',
+                    text: '你颤抖着走过去，帮忙挖坑。\n\n你的手在抖，眼泪在流。\n\n"哭什么哭？"小张不耐烦地说，"又不是你杀的。"\n\n你不敢说话，只是默默地挖着。\n\n坑挖好了，你们把小王的尸体放了进去，填上土。\n\n做完这一切，你坐在地上，浑身都是泥和血。\n\n"走吧。"小张拍了拍手上的土。\n\n你麻木地站起来，跟着他往外走。\n\n夕阳照在你身上，你却觉得浑身冰冷。\n\n你知道，从这一刻起，你的人生，已经不一样了。',
+                    choices: [
+                        { text: '跟着小张回家', next: 'afterCrime', effects: { fear: 10, conscience: 5 } }
+                    ],
+                    onEnter: () => { setAtmosphere('shocking'); }
+                },
+                
+                // ===== 4.0 新增：从犯视角事件后传 =====
+                
+                afterCrime: {
+                    text: '你跟着小张回了家。\n\n在小张家门口，他停下来，转过身看着你。\n\n"今天的事，谁都不许说。"他的眼神很可怕，"听见了吗？"\n\n你点了点头，说不出话。\n\n"放心，只要我们都不说，没人会知道的。"他拍了拍你的肩膀。\n\n你机械地点了点头，然后转身往自己家走。\n\n路上，你觉得所有人都在看你。\n\n你觉得，你身上的血腥味，所有人都能闻到。\n\n你恨不得找个地缝钻进去。',
+                    choices: [
+                        { text: '回家', next: 'goHomeAfterCrime', effects: { fear: 10, conscience: 10 } }
+                    ]
+                },
+                
+                goHomeAfterCrime: {
+                    text: '你回了家。\n\n"怎么这么晚才回来？"妈妈问你。\n\n"在...在学校写作业。"你不敢看妈妈的眼睛。\n\n"快去洗手吃饭吧。"妈妈没有怀疑。\n\n你走进洗手间，拧开水龙头。\n\n水哗哗地流着。\n\n你看着自己的手。\n\n手上的泥已经洗干净了。\n\n但你总觉得，还没洗干净。\n\n你用力地搓，搓得手都红了。\n\n还是觉得脏。\n\n你蹲在地上，捂着脸，无声地哭了。',
+                    choices: [
+                        { text: '第二天上学', next: 'nextDaySchoolAccomplice', effects: { fear: 15, conscience: 15 } }
+                    ],
+                    onEnter: () => { playBreathing(); }
+                },
+                
+                nextDaySchoolAccomplice: {
+                    text: '第二天，你还是去上学了。\n\n你以为你能假装什么都没发生。\n\n但你错了。\n\n一进教室，你就看到了小王的空座位。\n\n你的心猛地一沉。\n\n"听说了吗？小王失踪了！"\n"真的假的？"\n"他爸妈都报警了！"\n\n同学们议论纷纷。\n\n你低着头，走到自己的座位上，坐了下来。\n\n你不敢看任何人。\n\n你总觉得，他们都知道了。\n\n他们都在看着你。\n\n他们都在说，是你干的。',
+                    choices: [
+                        { text: '假装没事', next: 'pretendNormalAccomplice', effects: { fear: 10, conscience: 10 } },
+                        { text: '偷偷告诉老师', next: 'tellTeacherAccomplice', effects: { conscience: 20, fear: -10, loyalty: -30 } }
+                    ],
+                    onEnter: () => { setAtmosphere('suspense'); playSuspense(); }
+                },
+                
+                pretendNormalAccomplice: {
+                    text: '你强迫自己假装没事。\n\n你跟同学打招呼，你认真听课，你按时交作业。\n\n你表现得和平常一模一样。\n\n但只有你自己知道，你心里有多慌。\n\n你吃不下饭，睡不着觉。\n\n你一闭眼，就看到小王倒在地上的样子。\n\n你瘦了好多。\n\n但你还是坚持着。\n\n你告诉自己：没事的，没人知道的。\n\n三天过去了。\n\n你以为，你们真的能瞒过去。',
+                    choices: [
+                        { text: '第四天', next: 'fourthDay', effects: { fear: 10, conscience: 10 } }
+                    ]
+                },
+                
+                tellTeacherAccomplice: {
+                    text: '你实在受不了了。\n\n你找到班主任，把一切都说了出来。\n\n你一边说一边哭，哭得像个孩子。\n\n班主任听完，脸色变得很凝重。\n\n"你...你说的都是真的？"\n\n你点了点头。\n\n"你做得对。"班主任拍了拍你的肩膀，"虽然晚了点，但你还是站出来了。"\n\n然后，班主任报了警。\n\n警察很快就来了。\n\n你带着他们，去了那个废弃的大棚。',
+                    choices: [
+                        { text: '指认现场', next: 'identifyScene', effects: { conscience: 20, fear: 10 } }
+                    ]
+                },
+                
+                fourthDay: {
+                    text: '第四天早上。\n\n你刚到学校，就看到了几辆警车停在门口。\n\n你的心一下子提到了嗓子眼。\n\n完了。\n\n你知道，完了。\n\n你想跑。\n\n但你的腿像灌了铅一样，动不了。\n\n就在这时，两个警察朝你走了过来。\n\n"你是李某吗？"\n\n你点了点头，说不出话。\n\n"我们是公安局的，有些事情想找你了解一下。"\n\n你没有反抗。\n\n你知道，该来的总会来的。',
+                    choices: [
+                        { text: '被带走', next: 'takenAway', effects: { fear: 20, conscience: 10 } }
+                    ],
+                    onEnter: () => { playShock(); heartbeatEffect(800); }
+                },
+                
+                identifyScene: {
+                    text: '你带着警察来到了那个废弃的大棚。\n\n你指着那个角落，声音发抖："就...就在那里。"\n\n警察开始挖。\n\n一铲，两铲，三铲...\n\n很快，尸体就露了出来。\n\n你别过头，不敢看。\n\n眼泪又流了下来。\n\n"好了，谢谢你的配合。"一个警察说，"跟我们回局里吧，做个笔录。"\n\n你点了点头。\n\n你知道，从今天起，你的人生，就要不一样了。',
+                    choices: [
+                        { text: '去派出所', next: 'policeStationAccomplice', effects: { conscience: 10, fear: 10 } }
+                    ]
+                },
+                
+                takenAway: {
+                    text: '你被带上了警车。\n\n车上，你坐在两个警察中间。\n\n你看着窗外飞逝的景色，心里一片空白。\n\n你想起了很多事。\n\n你想起了小学三年级，你被人欺负，是小张帮了你。\n\n你想起了你们一起打球，一起打游戏，一起逃课。\n\n你想起了那天下午，他叫你一起去教训小王。\n\n如果你说一句"我不去"...\n\n如果...\n\n没有如果了。\n\n车停了。\n\n你到了派出所。',
+                    choices: [
+                        { text: '走进派出所', next: 'policeStationAccomplice', effects: { fear: 10, conscience: 10 } }
+                    ]
+                },
+                
+                policeStationAccomplice: {
+                    text: '你被带进了一间审讯室。\n\n房间很小，只有一张桌子，三把椅子。\n\n你坐在桌子的一边，两个警察坐在另一边。\n\n"李某，我们已经掌握了所有证据。"一个警察说，"现在就看你自己的态度了。"\n\n你低着头，不说话。\n\n"你还年轻，未来的路还很长。"另一个警察说，"坦白从宽，抗拒从严。这个道理，你应该懂吧？"\n\n你的嘴唇在抖。\n\n你知道，你瞒不住了。',
+                    choices: [
+                        { text: '交代一切', next: 'confessEverything', effects: { conscience: 20, fear: -10 } },
+                        { text: '继续瞒着', next: 'keepLying', effects: { fear: 10, conscience: 10 } }
+                    ],
+                    onEnter: () => { setAtmosphere('suspense'); }
+                },
+                
+                confessEverything: {
+                    text: '"我...我说..."\n\n你的声音在抖。\n\n你把一切都说了出来。\n\n从小张怎么叫你，到你们怎么把小王骗到大棚，到小张怎么动手，到你们怎么埋的...\n\n你一边说一边哭，哭得像个泪人。\n\n警察静静地听着，没有打断你。\n\n等你说完，那个警察叹了口气。\n\n"你啊..."\n\n他摇了摇头。\n\n"你说你，跟着他瞎掺和什么呢？"\n\n你哭得更厉害了。\n\n是啊。\n\n你为什么要跟着去呢？',
+                    choices: [
+                        { text: '等待处理', next: 'waitingTrial', effects: { conscience: 10, fear: 5 } }
+                    ]
+                },
+                
+                keepLying: {
+                    text: '"我...我不知道你们在说什么。"\n\n你抬起头，强装镇定。\n\n但你的声音在抖，你的眼神在躲闪。\n\n警察看着你，笑了一下。\n\n"不知道？"\n\n他拿出一叠照片，放在你面前。\n\n是现场的照片。\n\n有脚印，有拖拽痕迹，还有...尸体。\n\n"这些脚印，有你的吧？"\n\n你的脸一下子白了。\n\n"还有，"警察继续说，"张某已经都交代了。他说，是你帮他埋的。"\n\n你心里咯噔一下。\n\n小张...他把你供出来了？',
+                    choices: [
+                        { text: '心理防线崩溃', next: 'confessEverything', effects: { conscience: 15, fear: 10 } }
+                    ]
+                },
+                
+                waitingTrial: {
+                    text: '你被取保候审了。\n\n你回了家，但你知道，这只是暂时的。\n\n接下来的几个月，你过得像做梦一样。\n\n你转学了。\n\n你不再去学校，整天把自己关在房间里。\n\n爸妈也老了好多。\n\n妈妈每天以泪洗面，爸爸话更少了，头发也白了好多。\n\n你看着他们，心里像刀割一样。\n\n是你，把这个家毁了。\n\n终于，开庭的日子到了。',
+                    choices: [
+                        { text: '开庭', next: 'courtTrial', effects: { fear: 15, conscience: 10 } }
+                    ]
+                },
+                
+                courtTrial: {
+                    text: '法庭上。\n\n你站在被告席上，穿着号服，戴着手铐。\n\n旁听席上，你看到了你的爸妈。\n\n他们瘦了好多，老了好多。\n\n妈妈在哭，爸爸红着眼眶，紧紧握着妈妈的手。\n\n你也看到了小王的爸妈。\n\n他们的眼神，像要把你吃了一样。\n\n你不敢看他们。\n\n你低下了头。\n\n"被告人李某，犯故意杀人罪，判处有期徒刑十二年。"\n\n十二年。\n\n你才13岁。\n\n等你出来，就25岁了。\n\n你的人生，才刚刚开始，就已经结束了。',
+                    choices: [
+                        { text: '入狱', next: 'prisonLife', effects: { fear: 20, conscience: 20 } }
+                    ],
+                    onEnter: () => { playBadEndingMusic(); }
+                },
+                
+                prisonLife: {
+                    text: '你进了少管所。\n\n刚开始的那几个月，你天天哭。\n\n你想爸妈，想家，想学校，想以前的日子。\n\n但回不去了。\n\n慢慢地，你习惯了。\n\n你每天按时起床，按时吃饭，按时干活，按时睡觉。\n\n日子一天一天地过。\n\n你常常想起那天下午。\n\n如果那天，你说一句"我不去"...\n\n如果那天，你劝劝小张...\n\n如果那天，你报了警...\n\n太多的如果。\n\n但没有一个如果，能让你回到过去。\n\n十二年，说长不长，说短不短。\n\n等你出来的时候，世界会变成什么样呢？\n\n你不知道。\n\n你只知道，你要为你做过的事，付出代价。\n\n这是你自己选的路。\n\n跪着，也要走完。',
                     isEnding: true,
                     endingType: 'bad',
                     title: '坏结局 · 深渊',
-                    description: '你跟着小张回了家。\n\n你们约好，谁都不说。\n\n你以为，你们能瞒过去。\n\n但三天后，尸体就被发现了。\n\n案子很快就破了。你们俩都被抓了。\n\n法庭上，你站在被告席上，听着判决。\n\n小张，无期徒刑。\n\n你，有期徒刑十二年。\n\n十二年。\n\n你才13岁。你的人生，才刚刚开始，就已经结束了。\n\n你看着旁听席上哭成泪人的爸妈，心里说不出是什么滋味。\n\n如果那天，你说一句"我不去"...\n\n可惜，没有如果。\n\n有些选择，一旦做错了，就要用一辈子来偿还。',
-                    stats: { conscience: 5, fear: 90, loyalty: 50 }
+                    description: '十二年的刑期，十二年的青春。\n\n你常常想，如果那天你没有去，如果那天你说了不，如果...\n\n但没有如果。\n\n你选择了跟着去，选择了帮忙埋，选择了沉默。\n\n你以为你只是帮了朋友一个忙。\n\n你以为你只是在讲哥们义气。\n\n但你不知道，有些忙，是帮不得的。\n\n有些路，一旦踏上去，就再也回不了头。\n\n恶，从来都不是一下子出现的。\n\n它是一点点，一步步，把你拖下去的。\n\n从最开始的"就去看看"，到后来的"就帮一下"，到最后的"已经这样了，算了吧"。\n\n等你反应过来的时候，你已经站在深渊里了。\n\n而这，就是恶的平庸之处。\n\n它不需要你是个坏人。\n\n它只需要你，什么都不做。\n\n或者，跟着走一步。\n\n再走一步。\n\n然后，就万劫不复了。',
+                    stats: { conscience: 30, fear: 70, loyalty: 20 }
                 }
             }
         };
@@ -2490,17 +2709,8 @@
             document.getElementById('endingDescription').innerHTML = 
                 ending.description.replace(/\n/g, '<br>');
             
-            // 播放结局音效
-            if (ending.endingType === 'good') {
-                playClueFound();
-            } else if (ending.endingType === 'bad') {
-                playShock();
-            } else if (ending.endingType === 'hidden') {
-                // 隐藏结局特殊音效
-                [523, 659, 784, 1047].forEach((freq, i) => {
-                    setTimeout(() => playSound(freq, 0.3, 'sine', 0.15), i * 150);
-                });
-            }
+            // 播放结局音乐
+            playEndingMusic(ending.endingType);
             
             setAtmosphere('truth');
         }
