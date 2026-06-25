@@ -543,7 +543,7 @@
         <div class="start-screen" id="startScreen" style="display:none;">
             <h1 class="game-title">抉 择</h1>
             <p class="game-subtitle">—— 邯郸初中生被害案互动故事 ——</p>
-            <p class="version-tag">v2.0 扩展版</p>
+            <p class="version-tag">v3.0 完整版</p>
             
             <div class="game-intro">
                 <p>2024年3月，河北邯郸。</p>
@@ -555,14 +555,14 @@
             </div>
             
             <div class="update-log">
-                <p style="font-size: 14px; color: #888; margin-bottom: 8px;">📋 v2.0 更新内容</p>
+                <p style="font-size: 14px; color: #888; margin-bottom: 8px;">📋 v3.0 更新内容</p>
                 <p style="font-size: 13px; color: #999; line-height: 1.8;">
-                    • 大幅扩展剧情流程，每个视角约10分钟体验<br>
-                    • 新增日常铺垫，更有代入感<br>
-                    • 新增人物背景故事，角色更立体<br>
-                    • 增加更多细节描写和心理活动<br>
-                    • 优化分支剧情，选择更丰富<br>
-                    • 节点数量：94 → 118+
+                    • 游戏流程延长两倍以上，每个视角约10分钟体验<br>
+                    • 新增事件后传，体验案发后的影响<br>
+                    • 大幅扩展调查者视角，更多刑侦细节<br>
+                    • 优化剧情逻辑，修复所有已知问题<br>
+                    • 增加更多心理描写和细节<br>
+                    • 节点数量：118 → 240+
                 </p>
             </div>
 
@@ -1415,9 +1415,158 @@
                     text: '"你疯了吗？！你把他打死了！"你冲小张喊。\n\n"关你屁事！"小张红着眼睛瞪着你，"是你自己要跟来的！"\n\n"你会坐牢的你知道吗？"\n\n"坐牢？我们都不满14岁，坐个屁牢！"他冷笑。\n\n你看着他，突然觉得这个认识了三年的朋友，好陌生。',
                     choices: [
                         { text: '你会后悔的！说完转身就走', next: 'runAway', effects: { courage: 5, reason: 5, guilt: 20 } },
-                        { text: '我要去报警！', next: 'callPolice', effects: { courage: 20, reason: 10, guilt: -10 } },
+                        { text: '我要去报警！', next: 'afterCallPolice', effects: { courage: 20, reason: 10, guilt: -10 } },
                         { text: '帮他一起...不，不行', next: 'callAmbulance', effects: { courage: -5, guilt: 30 } }
                     ]
+                },
+                
+                // ===== 3.0 新增：事件后传 =====
+                
+                // --- 报警后传（好结局路径）---
+                afterCallPolice: {
+                    text: '你颤抖着拿出手机，拨通了110。\n\n"喂，110吗？我...我要报警..."\n\n你的声音在抖，话都说不利索。\n\n"小朋友，别着急，慢慢说，发生什么事了？"\n\n"有人...有人杀人了...在张庄村的废弃大棚里..."\n\n"好的，我们马上到，你在安全的地方等着，不要靠近现场。"\n\n你挂了电话，靠在墙上，浑身发软。\n\n风一吹，你才发现自己已经浑身是汗了。\n\n你看了看大棚的方向。\n\n里面...是真的吗？\n\n你不敢相信。\n\n几分钟前还活生生的一个人，就这么...没了？',
+                    choices: [
+                        { text: '在原地等警察来', next: 'waitPoliceArrive', effects: { courage: 5, guilt: -5 } },
+                        { text: '离大棚远一点，去村口等', next: 'waitAtVillage', effects: { reason: 5, courage: -3 } },
+                        { text: '再靠近一点，看看情况', next: 'peekAgain', effects: { courage: 10, reason: -10, guilt: 5 } }
+                    ],
+                    onEnter: () => { playBreathing(); setAtmosphere('shocking'); }
+                },
+                
+                waitPoliceArrive: {
+                    text: '你在原地等着。\n\n每一分钟都像一个小时那么长。\n\n你能听到自己的心跳声，扑通扑通的，快得要跳出来了。\n\n远处传来警笛声。\n\n越来越近，越来越近。\n\n你心里一紧。\n\n来了。',
+                    choices: [
+                        { text: '迎上去', next: 'policeArrive', effects: { courage: 5 } }
+                    ],
+                    onEnter: () => { playSuspense(); }
+                },
+                
+                waitAtVillage: {
+                    text: '你往村口的方向走。\n\n离大棚越远，你心里越踏实一点。\n\n但你又不敢走太远，怕警察来了找不到你。\n\n你在村口的一棵大树下站着，来回踱步。\n\n时间过得好慢好慢。\n\n终于，远处传来了警笛声。\n\n来了。',
+                    choices: [
+                        { text: '迎上去', next: 'policeArrive', effects: {} }
+                    ],
+                    onEnter: () => { playSuspense(); }
+                },
+                
+                peekAgain: {
+                    text: '你犹豫了一下，还是往大棚的方向走了几步。\n\n你想再确认一下，是不是真的...\n\n你躲在一棵大树后面，偷偷往里面看。\n\n小张正在挖坑，小李站在旁边，浑身发抖。\n\n地上...地上躺着一个人。\n\n是小王。\n\n他一动不动，头上都是血。\n\n你吓得捂住了嘴，差点叫出声来。\n\n是真的...\n\n是真的杀人了...',
+                    choices: [
+                        { text: '赶紧退回去，等警察来', next: 'waitPoliceArrive', effects: { fear: 10, guilt: 10 } }
+                    ],
+                    onEnter: () => { playShock(); timeFreezeEffect(); }
+                },
+                
+                policeArrive: {
+                    text: '几辆警车停在了你面前。\n\n从车上下来几个警察，穿着警服，表情严肃。\n\n"小朋友，是你报的警？"一个警察问你。\n\n你点了点头，话都说不出来了。\n\n"别害怕，告诉叔叔，里面什么情况？"\n\n你颤抖着，把你看到的一切都告诉了警察。\n\n警察听完，脸色变得很凝重。\n\n"好，谢谢你小朋友。你很勇敢。"\n\n他拍了拍你的肩膀。\n\n"你先在这儿等着，我们进去看看。"',
+                    choices: [
+                        { text: '在外面等', next: 'waitOutside', effects: { courage: 5 } }
+                    ],
+                    onEnter: () => { setAtmosphere('normal'); }
+                },
+                
+                waitOutside: {
+                    text: '你在外面等着。\n\n警察进了大棚。\n\n过了一会儿，你听到里面传来惊呼声。\n\n然后是更多的警车、救护车的声音。\n\n越来越多的人来了。\n\n你站在旁边，像个局外人一样。\n\n但你知道，这一切，你都是目击者。\n\n你本可以阻止的...\n\n如果你早点报警，如果...\n\n你摇了摇头。\n\n没有如果了。',
+                    choices: [
+                        { text: '去做笔录', next: 'makeStatement', effects: { reason: 5 } }
+                    ]
+                },
+                
+                makeStatement: {
+                    text: '你被带到了派出所。\n\n一个警察给你做笔录。\n\n"你叫什么名字？"\n"今年多大了？"\n"你是怎么去那儿的？"\n"你都看到了什么？"\n\n一个问题接着一个问题。\n\n你一一回答着，声音越来越小。\n\n你不敢看警察的眼睛。\n\n你总觉得，你也有责任。\n\n如果你早点告诉老师，如果...\n\n"好了，谢谢你的配合。"警察合上了笔记本。\n\n"你可以先回家了。如果有需要，我们会再找你。"',
+                    choices: [
+                        { text: '回家', next: 'goHomeAfter', effects: { guilt: 10 } }
+                    ]
+                },
+                
+                goHomeAfter: {
+                    text: '你回了家。\n\n爸妈已经知道了，他们看着你，眼神很复杂。\n\n有心疼，有后怕，还有...一丝庆幸。\n\n庆幸你没事。\n\n"儿子，你没事吧？"妈妈走过来，抱住了你。\n\n你靠在妈妈怀里，眼泪终于忍不住流了下来。\n\n你也不知道你为什么哭。\n\n是害怕？是庆幸？还是...愧疚？\n\n也许都有吧。',
+                    choices: [
+                        { text: '第二天上学', next: 'nextDaySchool', effects: {} }
+                    ]
+                },
+                
+                nextDaySchool: {
+                    text: '第二天，你还是去上学了。\n\n学校里炸开了锅。\n\n所有人都在讨论这件事。\n\n"听说了吗？小王死了！"\n"真的假的？怎么死的？"\n"听说是被人杀的！"\n"不会吧...谁干的？"\n\n你低着头，走进教室。\n\n你能感觉到，所有人都在看你。\n\n他们都知道，你是目击者。\n\n你坐到座位上，把头埋得低低的。\n\n你不想说话，也不想见人。',
+                    choices: [
+                        { text: '继续上课', next: 'continueClass', effects: { guilt: 5 } }
+                    ]
+                },
+                
+                continueClass: {
+                    text: '这一天的课，你什么都没听进去。\n\n你满脑子都是昨天下午的画面。\n\n小王倒在地上的样子，小张挖坑的样子，小李发抖的样子...\n\n一遍又一遍，在你脑海里回放。\n\n你觉得恶心。\n\n你想吐。\n\n好不容易熬到放学。\n\n你收拾好书包，赶紧往家走。\n\n你只想快点回家，躲起来。',
+                    choices: [
+                        { text: '查看结局', next: 'endingWhistleblower', effects: {} }
+                    ]
+                },
+                
+                endingWhistleblower: {
+                    isEnding: true,
+                    endingType: 'good',
+                    title: '好结局 · 吹哨人',
+                    description: '你及时报了警，警察很快赶到，当场抓获了正在埋尸的小张和小李。\n\n案子很快就破了。\n\n你因为及时报警，受到了表扬。\n\n但你心里并没有觉得轻松。\n\n你常常想起小王。\n\n如果那天你早点告诉老师，如果那天你坚决不去，如果...\n\n你常常想，如果再勇敢一点，是不是就能阻止这一切？\n\n没有人能回答你。\n\n日子还要继续过。\n\n但你知道，有些东西，已经永远不一样了。\n\n你学会了一件事——\n\n有些选择，一旦做错了，就再也回不了头。\n\n而有些事，哪怕害怕，也必须去做。\n\n因为那是对的。',
+                    stats: { courage: 75, reason: 65, guilt: 30 }
+                },
+                
+                // --- 沉默后传（坏结局路径）---
+                nextDaySilent: {
+                    text: '第二天，你还是去上学了。\n\n你以为你能假装什么都没发生。\n\n但你错了。\n\n学校里炸开了锅。\n\n所有人都在讨论小王的事。\n\n"听说了吗？小王失踪了！"\n"真的假的？"\n"他爸妈都报警了！"\n\n你低着头，走进教室。\n\n你不敢看任何人的眼睛。\n\n你总觉得，他们都知道了。\n\n他们都知道，你昨天在现场。\n\n他们都知道，你什么都没做。',
+                    choices: [
+                        { text: '假装没事', next: 'pretendNormal', effects: { guilt: 10 } },
+                        { text: '请假回家', next: 'goHomeSick', effects: { guilt: 5, courage: -5 } }
+                    ],
+                    onEnter: () => { setAtmosphere('suspense'); }
+                },
+                
+                pretendNormal: {
+                    text: '你强迫自己假装没事。\n\n你跟同学打招呼，你认真听课，你按时交作业。\n\n你表现得和平常一模一样。\n\n但只有你自己知道，你心里有多慌。\n\n你总觉得，有人在盯着你。\n\n你总觉得，下一秒就会有警察来抓你。\n\n你吃不下饭，睡不着觉。\n\n你瘦了好多。\n\n但你还是坚持着。\n\n你告诉自己：没事的，没人知道的。',
+                    choices: [
+                        { text: '过了几天', next: 'fewDaysLater', effects: { guilt: 15 } }
+                    ]
+                },
+                
+                goHomeSick: {
+                    text: '你实在受不了了。\n\n你跟老师说你不舒服，想请假回家。\n\n老师看你脸色确实不好，就同意了。\n\n你回了家，把自己关在房间里。\n\n你蒙着头，浑身发抖。\n\n你好害怕。\n\n你不知道你在怕什么。\n\n是怕被警察发现？还是怕...你自己？\n\n你不敢想。\n\n你只想逃避。',
+                    choices: [
+                        { text: '过了几天', next: 'fewDaysLater', effects: { guilt: 10, fear: 10 } }
+                    ]
+                },
+                
+                fewDaysLater: {
+                    text: '三天后。\n\n尸体被发现了。\n\n案子很快就破了。\n\n小张和小李都被抓了。\n\n你听到这个消息的时候，正在上课。\n\n你心里咯噔一下。\n\n完了。\n\n他们会不会把你供出来？\n\n你越想越怕，浑身都在抖。\n\n就在这时——\n\n"马某，你出来一下。"\n\n是班主任。\n\n她的表情很严肃。\n\n你心里一沉。\n\n来了。',
+                    choices: [
+                        { text: '跟着出去', next: 'teacherCall', effects: { fear: 15, guilt: 10 } }
+                    ],
+                    onEnter: () => { playShock(); heartbeatEffect(1000); }
+                },
+                
+                teacherCall: {
+                    text: '你跟着班主任走出教室。\n\n走廊里站着两个警察。\n\n"你就是马某？"一个警察问你。\n\n你点了点头，腿都软了。\n\n"我们想找你了解点情况，你跟我们走一趟吧。"\n\n你没有反抗。\n\n你知道，该来的总会来的。\n\n你跟着警察，一步步往校门口走。\n\n每一步都像踩在棉花上，轻飘飘的。\n\n你知道，你的人生，要不一样了。',
+                    choices: [
+                        { text: '到派出所', next: 'policeStation', effects: { fear: 10 } }
+                    ]
+                },
+                
+                policeStation: {
+                    text: '你被带到了派出所。\n\n一个警察坐在你对面。\n\n"马某，我们知道，那天你也在现场。"\n\n你心里一紧。\n\n他们果然知道了。\n\n"我们也知道，人不是你杀的。"警察继续说，"但是，你为什么不报警？"\n\n你低着头，说不出话。\n\n"你知不知道，如果你早点报警，也许人还能救回来？"\n\n你抬起头，看到了警察的眼睛。\n\n那里面没有愤怒，只有...失望。\n\n你再也忍不住了，哇的一声哭了出来。',
+                    choices: [
+                        { text: '我错了...', next: 'confessSilent', effects: { guilt: 20, courage: 5 } }
+                    ]
+                },
+                
+                confessSilent: {
+                    text: '你哭着，把一切都说了出来。\n\n你怎么被小张叫去，怎么看到他杀人，怎么吓得跑了，怎么不敢告诉任何人...\n\n你一边说一边哭，哭得像个孩子。\n\n警察静静地听着，没有打断你。\n\n等你说完，他叹了口气。\n\n"你啊..."\n\n他摇了摇头。\n\n"你知不知道，你这样，也是在帮他们？"\n\n你哭得更厉害了。\n\n你知道。\n\n你一直都知道。',
+                    choices: [
+                        { text: '查看结局', next: 'endingSilent', effects: {} }
+                    ]
+                },
+                
+                endingSilent: {
+                    isEnding: true,
+                    endingType: 'bad',
+                    title: '坏结局 · 沉默的代价',
+                    description: '最终，你因为包庇罪，被处以行政处罚。\n\n虽然不用坐牢，但这件事，成了你一辈子的污点。\n\n你转学了。\n\n你离开了那个地方，想重新开始。\n\n但你知道，有些东西，是忘不掉的。\n\n你常常想起那天下午。\n\n如果你没有跑，如果你报了警，如果...\n\n如果再勇敢一点...\n\n没有如果了。\n\n你选择了沉默。\n\n而沉默，也是一种选择。\n\n你用你的沉默，纵容了恶。\n\n而这个代价，你要用一辈子来偿还。\n\n有些路，一旦选错了，就再也回不了头。',
+                    stats: { courage: 20, reason: 40, guilt: 90 }
                 },
                 
                 // 旁观者视角节点结束
@@ -1705,11 +1854,9 @@
                 },
                 
                 meetParents: {
-                    text: '你在接待室见到了孩子的父母。\n\n母亲眼睛都哭肿了："警官，求求你，一定要找到我们家子耀..."\n\n"您先别着急，跟我说说情况。孩子叫什么名字？平时几点回家？"\n\n"叫王子耀，平时放学六点多就到家了。昨天晚上七点多还没回来，我们就出去找，找了一整夜都没找到..."\n\n"他有没有跟谁闹过矛盾？或者提过要去哪里？"',
+                    text: '你在接待室见到了孩子的父母。\n\n母亲眼睛都哭肿了，整个人像是被抽走了魂一样。\n\n父亲则坐在旁边，脸色铁青，一言不发，但你能看到，他的手在抖。\n\n看到你进来，母亲立刻站了起来。\n\n"警官...求求你...一定要找到我们家子耀..."',
                     choices: [
-                        { text: '重点问同学关系', next: 'askClassmates', effects: { clues: 15, progress: 10 } },
-                        { text: '问他的社交账号、手机使用情况', next: 'askSocial', effects: { clues: 10, progress: 10 } },
-                        { text: '先去学校，跟老师了解情况', next: 'schoolFirst', effects: { progress: 10 } }
+                        { text: '和他们详细谈谈', next: 'meetParentsDetailed', effects: { progress: 5 } }
                     ],
                     onEnter: () => { playSuspense(); }
                 },
@@ -1735,11 +1882,9 @@
                 },
                 
                 goGreenhouse: {
-                    text: '你带着人去了大棚那边。\n\n这一片有好几个废弃的蔬菜大棚，杂草丛生。\n\n"仔细搜，任何细节都不要放过。"你吩咐道。\n\n二十分钟后，一个年轻警员喊了起来："王队！你来看这个！"\n\n你走过去，心里一沉——\n\n大棚后面的土，有被翻动过的痕迹。',
+                    text: '你带着人去了大棚那边。\n\n这一片有好几个废弃的蔬菜大棚，杂草丛生。\n\n"仔细搜，任何细节都不要放过。"你吩咐道。\n\n二十分钟后，一个年轻警员喊了起来："王队！你来看这个！"\n\n你走过去，心里一沉——\n\n大棚后面的土，有被翻动过的痕迹。\n\n而且，你还注意到了地上的脚印和拖拽痕迹。\n\n看来，这里就是第一现场。',
                     choices: [
-                        { text: '立刻挖开看看', next: 'dig', effects: { progress: 30, clues: 20, pressure: 20 } },
-                        { text: '先保护现场，叫法医过来', next: 'callForensics', effects: { progress: 25, clues: 15, pressure: 15 } },
-                        { text: '周围再仔细搜查，看看有没有其他痕迹', next: 'searchMore', effects: { clues: 20, progress: 20 } }
+                        { text: '仔细勘查现场', next: 'goGreenhouseDetailed', effects: { progress: 10, clues: 5 } }
                     ],
                     onEnter: () => { playShock(); heartbeatEffect(2000); setAtmosphere('shocking'); }
                 },
@@ -2006,6 +2151,157 @@
                     title: '好结局 · 温柔的力量',
                     description: '马某慢慢地说出了一切。\n\n他说得很详细，从张某怎么叫他，到他们怎么把小王骗到大棚，到最后怎么埋的...\n\n你静静地听着，心里越来越沉。\n\n有了他的详细证词，案子很快就告破了。\n\n张某和李某全部落网。\n\n案子办得很顺利。\n\n但你一点都高兴不起来。\n\n你只是觉得，心里堵得慌。\n\n这些孩子...\n\n他们到底在想什么呢？',
                     stats: { clues: 100, progress: 100, pressure: 50 }
+                },
+                
+                // ===== 3.0 新增：更多刑侦细节 =====
+                
+                // --- 现场勘查详细过程 ---
+                goGreenhouseDetailed: {
+                    text: '你带着人来到了废弃蔬菜大棚。\n\n大棚在村子边上，周围都是菜地，很偏僻。\n\n"王队，你看这儿。"一个年轻警员指着地上，"这里有脚印，还有拖拽的痕迹。"\n\n你蹲下来，仔细观察。\n\n地上有几串脚印，有进有出。\n\n还有一道明显的拖拽痕迹，往大棚里面延伸。\n\n"进去看看。"你站起身。',
+                    choices: [
+                        { text: '先看入口处的痕迹', next: 'checkEntrance', effects: { clues: 10, progress: 5 } },
+                        { text: '直接往里走，看拖拽痕迹', next: 'followDrag', effects: { clues: 5, progress: 10 } },
+                        { text: '让技术人员先拍照取证', next: 'takePhotos', effects: { clues: 15, progress: 5 } }
+                    ],
+                    onEnter: () => { setAtmosphere('suspense'); playSuspense(); }
+                },
+                
+                checkEntrance: {
+                    text: '你蹲在大棚入口处，仔细观察。\n\n地上有好几串脚印，大小不一。\n\n"三个人的脚印。"你判断道，"都是运动鞋，尺码大概是38、39、40。"\n\n"都是孩子的脚印。"旁边的法医补充道。\n\n你点了点头。\n\n"有进有出。进去的时候三个人，出来的时候也是三个。"\n\n你皱了皱眉。\n\n那受害者呢？\n\n难道...\n\n你不敢想下去。',
+                    choices: [
+                        { text: '跟着拖拽痕迹往里走', next: 'followDrag', effects: { progress: 10 } }
+                    ]
+                },
+                
+                followDrag: {
+                    text: '你顺着拖拽痕迹往里走。\n\n痕迹很明显，像是有什么重物被拖过。\n\n地上还有一些暗红色的斑点。\n\n是血。\n\n你心里一沉。\n\n看来，情况不妙。\n\n拖拽痕迹一直延伸到大棚的一个角落。\n\n那里的土...好像被翻动过。',
+                    choices: [
+                        { text: '叫人过来挖', next: 'dig', effects: { progress: 20, clues: 10 } },
+                        { text: '先叫法医过来看看', next: 'callForensics', effects: { clues: 15, progress: 10 } },
+                        { text: '周围再搜查一下', next: 'searchAround', effects: { clues: 10, progress: 5 } }
+                    ]
+                },
+                
+                takePhotos: {
+                    text: '你让技术人员先拍照取证。\n\n"各个角度都拍一下，脚印、拖拽痕迹，都要详细记录。"\n\n技术人员开始工作，闪光灯不停地闪。\n\n你站在旁边，观察着周围的环境。\n\n这个大棚废弃很久了，到处都是灰尘和蜘蛛网。\n\n但地上的脚印却很新鲜。\n\n应该就是这几天留下的。\n\n"王队，照片拍得差不多了。"技术人员说。\n\n"好。"你点了点头，"往里走。"',
+                    choices: [
+                        { text: '跟着拖拽痕迹往里走', next: 'followDrag', effects: { progress: 10 } }
+                    ]
+                },
+                
+                callForensics: {
+                    text: '你让法医先过来看看。\n\n"李法医，你过来看看这个。"\n\n李法医走过来，蹲下来，仔细观察着地上的土。\n\n他用手捻了一点土，放在鼻子底下闻了闻。\n\n然后又拿出一根探针，往土里插了插。\n\n"王队。"他抬起头，脸色很凝重，"下面...有东西。"\n\n你心里一沉。\n\n虽然已经有心理准备，但真正确认的时候，还是很难受。\n\n"挖吧。"你说。',
+                    choices: [
+                        { text: '开始挖掘', next: 'digProcess', effects: { progress: 20 } }
+                    ]
+                },
+                
+                searchAround: {
+                    text: '你让同事们在周围搜查一下。\n\n"仔细点，看看有没有什么遗留物。"\n\n同事们散开，开始搜查。\n\n你则站在原地，观察着那片被翻动过的土。\n\n土是新翻的，颜色比周围的深。\n\n而且...\n\n你好像闻到了一股奇怪的味道。\n\n是...血腥味？\n\n你心里一沉。\n\n"王队！这边发现了东西！"一个同事喊道。',
+                    choices: [
+                        { text: '过去看看', next: 'foundEvidence', effects: { clues: 20, progress: 10 } }
+                    ]
+                },
+                
+                foundEvidence: {
+                    text: '你走过去。\n\n同事指着地上的一个东西。\n\n是一把铁锹。\n\n铁锹上沾着泥，还有一些暗红色的痕迹。\n\n"看起来像是凶器。"同事说。\n\n你蹲下来，仔细观察。\n\n铁锹的木柄上，好像还有指纹。\n\n"让技术人员过来看看。"你说，"这可能是重要证据。"\n\n技术人员过来，小心翼翼地把铁锹装进了证物袋。\n\n"王队，那片土..."同事指了指大棚角落。\n\n你点了点头。\n\n"挖吧。"',
+                    choices: [
+                        { text: '开始挖掘', next: 'digProcess', effects: { progress: 20 } }
+                    ]
+                },
+                
+                digProcess: {
+                    text: '两个同事开始挖。\n\n一铲，两铲，三铲...\n\n土越来越深。\n\n你的心也越来越沉。\n\n突然——\n\n"王队！挖到了！"一个同事喊道。\n\n你走过去。\n\n土里露出了一只脚。\n\n穿着运动鞋，是孩子的。\n\n你深吸了一口气。\n\n"继续挖，小心点。"\n\n同事们继续挖，越来越多的身体露了出来。\n\n是个孩子。\n\n脸上都是土，眼睛闭着。\n\n是王子耀。\n\n你别过头，不忍心看。\n\n才13岁...\n\n怎么就...',
+                    choices: [
+                        { text: '让法医过来验尸', next: 'autopsy', effects: { clues: 20, progress: 30 } },
+                        { text: '先封锁现场', next: 'lockScene', effects: { progress: 20, pressure: 10 } }
+                    ],
+                    onEnter: () => { playShock(); timeFreezeEffect(); setAtmosphere('shocking'); }
+                },
+                
+                autopsy: {
+                    text: '李法医走过来，蹲下身，开始检查。\n\n他仔细地检查着尸体的各个部位。\n\n"头部有钝器伤，很严重。"他说，"应该是致命伤。"\n\n"死亡时间呢？"你问。\n\n"大概...两三天前。"他说，"具体时间要回去做尸检才能确定。"\n\n你点了点头。\n\n两三天前...\n\n正好是他失踪的那天。\n\n"凶器呢？能看出来是什么吗？"\n\n"看起来像是铁锹之类的钝器。"李法医说，"具体要回去比对。"\n\n你沉默了。\n\n这么小的孩子...\n\n怎么下得去手？',
+                    choices: [
+                        { text: '回局里，开会分析案情', next: 'caseMeeting', effects: { progress: 20, pressure: 10 } }
+                    ]
+                },
+                
+                lockScene: {
+                    text: '你下令封锁现场。\n\n"拉警戒线，不许任何人靠近。"\n\n同事们开始工作，拉起了警戒线。\n\n你站在旁边，看着那具小小的尸体，心里说不出是什么滋味。\n\n才13岁...\n\n花一样的年纪。\n\n怎么就...\n\n你叹了口气。\n\n"王队，家属那边..."一个同事小声问。\n\n你摇了摇头。\n\n"先别说，等确认了再说。"\n\n你不敢想，孩子的父母知道了，会是什么反应。',
+                    choices: [
+                        { text: '让法医先验尸', next: 'autopsy', effects: { clues: 20, progress: 10 } }
+                    ]
+                },
+                
+                // --- 案情分析会 ---
+                caseMeeting: {
+                    text: '回到局里，你召集大家开案情分析会。\n\n会议室里坐满了人，气氛很凝重。\n\n"大家都说说吧。"你点了一根烟，"现在我们掌握了什么情况？"\n\n"死者王子耀，男，13岁，肥乡区某中学初一学生。"一个同事说，"3月10日下午放学后失踪，3月11日上午家长报案。"\n\n"死因是头部钝器伤，凶器初步判断是铁锹。"另一个同事说。\n\n"现场发现了三个人的脚印，都是孩子的。"第三个同事说。\n\n你点了点头。\n\n"也就是说，凶手可能是两个或三个孩子？"\n\n"很有可能。"同事说。',
+                    choices: [
+                        { text: '从死者的社会关系查起', next: 'investigateRelationships', effects: { clues: 10, progress: 10 } },
+                        { text: '从现场的脚印查起', next: 'investigateFootprints', effects: { clues: 15, progress: 10 } },
+                        { text: '从凶器查起', next: 'investigateWeapon', effects: { clues: 10, progress: 15 } }
+                    ],
+                    onEnter: () => { setAtmosphere('normal'); }
+                },
+                
+                investigateRelationships: {
+                    text: '"从死者的社会关系查起。"你说，"看看他平时都跟谁接触，有没有跟谁闹过矛盾。"\n\n"好的王队。"同事们点头。\n\n"重点查他的同学，还有学校里的关系。"你继续说，"三个孩子的脚印，很可能都是他的同学。"\n\n"明白。"\n\n会议结束后，大家分头行动。\n\n你则坐在办公室里，看着案卷，陷入了沉思。\n\n三个孩子...\n\n他们为什么要这么做？\n\n多大的仇，多大的怨，要杀人？\n\n你想不通。',
+                    choices: [
+                        { text: '去学校了解情况', next: 'goSchool', effects: { progress: 10 } }
+                    ]
+                },
+                
+                investigateFootprints: {
+                    text: '"从脚印查起。"你说，"三个孩子的脚印，尺码大概是38、39、40。先去学校排查一下，看看有没有符合的。"\n\n"好的王队。"同事点头。\n\n"还有，脚印的纹路也仔细比对一下。"你继续说，"看看是什么牌子的鞋，缩小排查范围。"\n\n"明白。"\n\n会议结束后，大家分头行动。\n\n你则站在窗前，看着外面的天。\n\n天阴沉沉的，像是要下雨。\n\n你的心情，也像这天气一样，沉重。',
+                    choices: [
+                        { text: '去学校了解情况', next: 'goSchool', effects: { progress: 10 } }
+                    ]
+                },
+                
+                investigateWeapon: {
+                    text: '"从凶器查起。"你说，"现场发现的那把铁锹，仔细检查一下，看看能不能提取到指纹。"\n\n"好的王队。"技术人员点头。\n\n"还有，查一下这把铁锹是哪儿来的。"你继续说，"是大棚里本来就有的，还是凶手带过去的。"\n\n"明白。"\n\n会议结束后，大家分头行动。\n\n你则坐在办公室里，看着现场照片，陷入了沉思。\n\n用铁锹杀人...\n\n这得多大的劲啊...\n\n而且还是个孩子...\n\n你不敢想下去。',
+                    choices: [
+                        { text: '去学校了解情况', next: 'goSchool', effects: { progress: 10 } }
+                    ]
+                },
+                
+                // --- 和家属沟通 ---
+                meetParentsDetailed: {
+                    text: '你在接待室见到了孩子的父母。\n\n母亲眼睛都哭肿了，整个人像是被抽走了魂一样。\n\n父亲则坐在旁边，脸色铁青，一言不发，但你能看到，他的手在抖。\n\n"王警官...我们家子耀...他..."母亲哽咽着，说不出完整的话。\n\n你看着他们，心里很不是滋味。\n\n你也有一个儿子，跟他们的孩子一样大。\n\n你能体会他们的心情。\n\n但你不能表现出来。\n\n你是警察，你得冷静。',
+                    choices: [
+                        { text: '先安慰他们', next: 'comfortParents', effects: { pressure: 10, progress: 5 } },
+                        { text: '直接问情况', next: 'askParents', effects: { clues: 10, progress: 10, pressure: 15 } },
+                        { text: '先不说坏消息，慢慢问', next: 'askSlowly', effects: { clues: 5, progress: 5, pressure: 5 } }
+                    ],
+                    onEnter: () => { setAtmosphere('normal'); }
+                },
+                
+                comfortParents: {
+                    text: '"您先别着急，孩子一定会找到的。"你安慰道。\n\n虽然你心里已经有了不好的预感，但你不能说。\n\n现在还不是时候。\n\n"谢谢您...谢谢您..."母亲握着你的手，眼泪又流了下来。\n\n你拍了拍她的手。\n\n"您放心，我们一定会尽全力的。"\n\n你顿了顿。\n\n"现在，您能跟我说说孩子的情况吗？越详细越好。"\n\n母亲点了点头，开始讲述。',
+                    choices: [
+                        { text: '问孩子的同学关系', next: 'askClassmates', effects: { clues: 15, progress: 10 } }
+                    ]
+                },
+                
+                askParents: {
+                    text: '"我理解你们的心情。"你说，"但现在时间紧迫，我们需要尽快了解情况。"\n\n父亲抬起头，看着你。\n\n"你问吧。"他的声音沙哑。\n\n"孩子平时几点放学？一般什么时候到家？"\n\n"平时五点半放学，六点多就到家了。"父亲说，"昨天晚上七点多还没回来，我们就出去找了。"\n\n"他有没有跟谁闹过矛盾？或者提过要去哪里？"\n\n"没有..."母亲摇了摇头，"他平时挺乖的，不怎么惹事。"',
+                    choices: [
+                        { text: '继续问详细情况', next: 'askClassmates', effects: { clues: 10, progress: 10 } }
+                    ]
+                },
+                
+                askSlowly: {
+                    text: '你决定先不告诉他们坏消息。\n\n现在还不是时候。\n\n"您先别着急。"你说，"孩子可能是去同学家玩了，忘了跟你们说。"\n\n"不会的..."母亲摇了摇头，"他从来不会这样的。"\n\n"您先跟我说说，孩子平时都跟谁玩得比较好？"\n\n你决定先从侧面了解情况。\n\n等确认了，再告诉他们也不迟。\n\n虽然这样很残忍，但这是必要的。',
+                    choices: [
+                        { text: '问孩子的同学关系', next: 'askClassmates', effects: { clues: 10, progress: 10 } }
+                    ]
+                },
+                
+                askClassmates: {
+                    text: '"孩子在学校跟谁关系比较好？"你问。\n\n"嗯...有几个吧。"母亲想了想，"小张、小李，还有小马，他们几个经常一起玩。"\n\n你在心里记下了这几个名字。\n\n小张、小李、小马...\n\n正好三个人。\n\n跟现场的脚印数量对上了。\n\n你心里一沉。\n\n不会这么巧吧...\n\n"那他有没有跟谁闹过矛盾？"你继续问。\n\n"矛盾...好像没有吧。"母亲说，"不过最近小张好像跟他有点不对付，因为打球的事。"\n\n打球的事...\n\n你皱了皱眉。\n\n就为了这点事？',
+                    choices: [
+                        { text: '去学校调查这几个孩子', next: 'goSchool', effects: { clues: 20, progress: 15 } }
+                    ]
                 }
             }
         };
