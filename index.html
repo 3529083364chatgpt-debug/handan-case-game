@@ -521,6 +521,346 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
         }
+        
+        /* ===== 游戏底部按钮 ===== */
+        .game-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .save-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .save-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* ===== 开始按钮组 ===== */
+        .start-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .secondary-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .start-btn.secondary {
+            padding: 10px 25px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .start-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* ===== 存档界面 ===== */
+        .save-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .save-modal {
+            background: linear-gradient(135deg, #2c3e50, #1a252f);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.3s ease;
+        }
+        
+        .save-title {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .save-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .save-slot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .save-slot:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .save-slot-info {
+            flex: 1;
+        }
+        
+        .save-slot-name {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .save-slot-time {
+            color: #888;
+            font-size: 12px;
+        }
+        
+        .save-slot-btn {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .save-slot-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .save-slot-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .save-close-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .save-close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* ===== 成就界面 ===== */
+        .achievement-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .achievement-modal {
+            background: linear-gradient(135deg, #2c3e50, #1a252f);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.3s ease;
+        }
+        
+        .achievement-title {
+            text-align: center;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .achievement-stats {
+            text-align: center;
+            color: #888;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .achievement-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .achievement-item.unlocked {
+            background: rgba(46, 204, 113, 0.1);
+            border-color: rgba(46, 204, 113, 0.3);
+        }
+        
+        .achievement-item.locked {
+            opacity: 0.6;
+        }
+        
+        .achievement-item-icon {
+            font-size: 32px;
+            width: 50px;
+            text-align: center;
+        }
+        
+        .achievement-item-info {
+            flex: 1;
+        }
+        
+        .achievement-item-name {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .achievement-item-desc {
+            color: #888;
+            font-size: 12px;
+        }
+        
+        .achievement-item-status {
+            font-size: 14px;
+        }
+        
+        .achievement-close-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .achievement-close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* ===== 成就解锁通知 ===== */
+        .achievement-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #2c3e50, #1a252f);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(46, 204, 113, 0.5);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 4000;
+            animation: slideInRight 0.5s ease-out;
+        }
+        
+        .achievement-icon {
+            font-size: 36px;
+        }
+        
+        .achievement-info {
+            flex: 1;
+        }
+        
+        .achievement-title {
+            color: #2ecc71;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .achievement-name {
+            color: white;
+            font-size: 16px;
+        }
+        
+        /* ===== 动画 ===== */
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -543,7 +883,7 @@
         <div class="start-screen" id="startScreen" style="display:none;">
             <h1 class="game-title">抉 择</h1>
             <p class="game-subtitle">—— 邯郸初中生被害案互动故事 ——</p>
-            <p class="version-tag">v4.0 深度版</p>
+            <p class="version-tag">v5.0 存档成就版</p>
             
             <div class="game-intro">
                 <p>2024年3月，河北邯郸。</p>
@@ -555,18 +895,24 @@
             </div>
             
             <div class="update-log">
-                <p style="font-size: 14px; color: #888; margin-bottom: 8px;">📋 v4.0 更新内容</p>
+                <p style="font-size: 14px; color: #888; margin-bottom: 8px;">📋 v5.0 更新内容</p>
                 <p style="font-size: 13px; color: #999; line-height: 1.8;">
-                    • 每个结局都配有专属背景音乐<br>
-                    • 重写所有结局文字，立意更深刻<br>
-                    • 大幅扩展从犯视角事件后传<br>
-                    • 新增更多结局分支和细节<br>
-                    • 优化整体剧情节奏和代入感<br>
-                    • 节点数量：154 → 200+
+                    • 新增存档/读档系统，支持5个存档位<br>
+                    • 新增成就系统，13个成就等你解锁<br>
+                    • 自动存档功能，每次选择自动保存<br>
+                    • 修复部分剧情节点问题<br>
+                    • 优化游戏体验和界面设计<br>
+                    • 节点数量：200+ → 220+
                 </p>
             </div>
 
-            <button class="start-btn" id="startBtn">开 始 游 戏</button>
+            <div class="start-buttons">
+                <button class="start-btn primary" id="startBtn">开 始 游 戏</button>
+                <div class="secondary-buttons">
+                    <button class="start-btn secondary" id="continueBtn" onclick="showSaveScreen('load')">💾 继续游戏</button>
+                    <button class="start-btn secondary" id="achievementBtn" onclick="showAchievementScreen()">🏆 成就</button>
+                </div>
+            </div>
         </div>
 
         <!-- 视角选择 -->
@@ -610,7 +956,10 @@
                 <!-- 选项动态生成 -->
             </div>
 
-            <button class="back-btn" id="backBtn" style="display:none;">← 回到上一步</button>
+            <div class="game-footer">
+                <button class="back-btn" id="backBtn" style="display:none;">← 回到上一步</button>
+                <button class="save-btn" id="saveBtn" onclick="showSaveScreen('save')">💾 存档</button>
+            </div>
         </div>
 
         <!-- 结局界面 -->
@@ -626,6 +975,29 @@
             <div class="ending-buttons">
                 <button class="ending-btn primary" id="restartBtn">重新开始</button>
                 <button class="ending-btn secondary" id="changePerspectiveBtn">切换视角</button>
+            </div>
+        </div>
+        
+        <!-- 存档界面 -->
+        <div class="save-screen" id="saveScreen" style="display:none;">
+            <div class="save-modal">
+                <h2 class="save-title" id="saveTitle">保存游戏</h2>
+                <div class="save-list" id="saveList">
+                    <!-- 存档列表动态生成 -->
+                </div>
+                <button class="save-close-btn" onclick="closeSaveScreen()">关闭</button>
+            </div>
+        </div>
+        
+        <!-- 成就界面 -->
+        <div class="achievement-screen" id="achievementScreen" style="display:none;">
+            <div class="achievement-modal">
+                <h2 class="achievement-title">🏆 成就</h2>
+                <div class="achievement-stats" id="achievementStats">已解锁 0 / 13 个成就</div>
+                <div class="achievement-list" id="achievementList">
+                    <!-- 成就列表动态生成 -->
+                </div>
+                <button class="achievement-close-btn" onclick="closeAchievementScreen()">关闭</button>
             </div>
         </div>
     </div>
@@ -2531,6 +2903,448 @@
         let currentNode = null;
         let stats = {};
         let history = []; // 历史记录，用于返回上一步
+        
+        // ============ 存档系统 ============
+        const SAVE_KEY = 'handan_case_game_saves';
+        const MAX_SAVES = 5;
+        
+        // 获取所有存档
+        function getAllSaves() {
+            try {
+                const saves = localStorage.getItem(SAVE_KEY);
+                return saves ? JSON.parse(saves) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+        
+        // 保存游戏
+        function saveGame(slotIndex, slotName = '') {
+            const saves = getAllSaves();
+            
+            const saveData = {
+                perspective: currentPerspective,
+                node: currentNode,
+                stats: { ...stats },
+                history: [...history],
+                timestamp: Date.now(),
+                name: slotName || `存档 ${slotIndex + 1}`
+            };
+            
+            saves[slotIndex] = saveData;
+            
+            try {
+                localStorage.setItem(SAVE_KEY, JSON.stringify(saves));
+                showNotification('存档成功', saveData.name, 2000);
+                return true;
+            } catch (e) {
+                showNotification('存档失败', '存储空间不足', 2000);
+                return false;
+            }
+        }
+        
+        // 读取游戏
+        function loadGame(slotIndex) {
+            const saves = getAllSaves();
+            const saveData = saves[slotIndex];
+            
+            if (!saveData) {
+                showNotification('读档失败', '存档不存在', 2000);
+                return false;
+            }
+            
+            // 恢复视角
+            currentPerspective = saveData.perspective;
+            
+            // 恢复故事数据
+            if (currentPerspective === 'bystander') {
+                currentStory = bystanderStory;
+            } else if (currentPerspective === 'accomplice') {
+                currentStory = accompliceStory;
+            } else if (currentPerspective === 'detective') {
+                currentStory = detectiveStory;
+            }
+            
+            // 恢复状态
+            currentNode = saveData.node;
+            stats = { ...saveData.stats };
+            history = [...saveData.history];
+            
+            // 显示游戏界面
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('perspectiveSelect').style.display = 'none';
+            document.getElementById('endingScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+            
+            // 显示当前节点
+            renderNode();
+            
+            // 隐藏存档界面
+            document.getElementById('saveScreen').style.display = 'none';
+            
+            showNotification('读档成功', saveData.name, 2000);
+            
+            // 检查成就
+            checkAchievements();
+            
+            return true;
+        }
+        
+        // 自动存档
+        function autoSave() {
+            if (currentNode && currentStory) {
+                const saves = getAllSaves();
+                const saveData = {
+                    perspective: currentPerspective,
+                    node: currentNode,
+                    stats: { ...stats },
+                    history: [...history],
+                    timestamp: Date.now(),
+                    name: '自动存档'
+                };
+                saves[0] = saveData; // 0号槽位是自动存档
+                try {
+                    localStorage.setItem(SAVE_KEY, JSON.stringify(saves));
+                } catch (e) {
+                    // 自动存档失败不提示
+                }
+            }
+        }
+        
+        // 显示存档界面
+        function showSaveScreen(mode = 'save') {
+            const saveScreen = document.getElementById('saveScreen');
+            const saveTitle = document.getElementById('saveTitle');
+            
+            saveTitle.textContent = mode === 'save' ? '保存游戏' : '读取游戏';
+            saveScreen.dataset.mode = mode;
+            
+            // 更新存档列表
+            updateSaveList();
+            
+            saveScreen.style.display = 'block';
+        }
+        
+        // 更新存档列表
+        function updateSaveList() {
+            const saveList = document.getElementById('saveList');
+            const saves = getAllSaves();
+            const mode = document.getElementById('saveScreen').dataset.mode;
+            
+            saveList.innerHTML = '';
+            
+            for (let i = 0; i < MAX_SAVES; i++) {
+                const save = saves[i];
+                const item = document.createElement('div');
+                item.className = 'save-slot';
+                
+                if (save) {
+                    const date = new Date(save.timestamp);
+                    const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+                    
+                    item.innerHTML = `
+                        <div class="save-slot-info">
+                            <div class="save-slot-name">${save.name}</div>
+                            <div class="save-slot-time">${dateStr}</div>
+                        </div>
+                        <button class="save-slot-btn" onclick="${mode === 'save' ? `confirmSave(${i})` : `loadGame(${i})`}">
+                            ${mode === 'save' ? '保存' : '读取'}
+                        </button>
+                    `;
+                } else {
+                    item.innerHTML = `
+                        <div class="save-slot-info">
+                            <div class="save-slot-name">空存档位</div>
+                            <div class="save-slot-time">-</div>
+                        </div>
+                        <button class="save-slot-btn" onclick="${mode === 'save' ? `confirmSave(${i})` : ''}" ${mode === 'load' ? 'disabled' : ''}>
+                            ${mode === 'save' ? '保存' : '空'}
+                        </button>
+                    `;
+                }
+                
+                saveList.appendChild(item);
+            }
+        }
+        
+        // 确认保存
+        function confirmSave(slotIndex) {
+            const saves = getAllSaves();
+            if (saves[slotIndex]) {
+                if (confirm(`确定要覆盖存档 ${slotIndex + 1} 吗？`)) {
+                    saveGame(slotIndex);
+                    updateSaveList();
+                }
+            } else {
+                saveGame(slotIndex);
+                updateSaveList();
+            }
+        }
+        
+        // 关闭存档界面
+        function closeSaveScreen() {
+            document.getElementById('saveScreen').style.display = 'none';
+        }
+        
+        // ============ 成就系统 ============
+        const ACHIEVEMENT_KEY = 'handan_case_game_achievements';
+        
+        // 成就定义
+        const achievements = [
+            {
+                id: 'first_start',
+                name: '初入江湖',
+                description: '第一次开始游戏',
+                icon: '🎮'
+            },
+            {
+                id: 'first_choice',
+                name: '抉择',
+                description: '做出第一个选择',
+                icon: '🤔'
+            },
+            {
+                id: 'good_ending',
+                name: '光明之路',
+                description: '达成一个好结局',
+                icon: '🌟'
+            },
+            {
+                id: 'bad_ending',
+                name: '深渊凝视',
+                description: '达成一个坏结局',
+                icon: '💀'
+            },
+            {
+                id: 'normal_ending',
+                name: '平凡人生',
+                description: '达成一个普通结局',
+                icon: '😐'
+            },
+            {
+                id: 'hidden_ending',
+                name: '隐藏的真相',
+                description: '达成一个隐藏结局',
+                icon: '🔮'
+            },
+            {
+                id: 'all_perspectives',
+                name: '全景视角',
+                description: '体验过所有三个视角',
+                icon: '👁️'
+            },
+            {
+                id: 'save_game',
+                name: '未雨绸缪',
+                description: '第一次手动存档',
+                icon: '💾'
+            },
+            {
+                id: 'load_game',
+                name: '时光倒流',
+                description: '第一次读档',
+                icon: '⏪'
+            },
+            {
+                id: 'bystander_full',
+                name: '旁观者的觉悟',
+                description: '完成旁观者视角的所有结局',
+                icon: '👀'
+            },
+            {
+                id: 'accomplice_full',
+                name: '从犯的救赎',
+                description: '完成从犯视角的所有结局',
+                icon: '⚖️'
+            },
+            {
+                id: 'detective_full',
+                name: '神探',
+                description: '完成调查者视角的所有结局',
+                icon: '🔍'
+            },
+            {
+                id: 'all_endings',
+                name: '全结局收集',
+                description: '达成所有结局',
+                icon: '🏆'
+            }
+        ];
+        
+        // 获取已解锁的成就
+        function getUnlockedAchievements() {
+            try {
+                const unlocked = localStorage.getItem(ACHIEVEMENT_KEY);
+                return unlocked ? JSON.parse(unlocked) : {};
+            } catch (e) {
+                return {};
+            }
+        }
+        
+        // 解锁成就
+        function unlockAchievement(achievementId) {
+            const unlocked = getUnlockedAchievements();
+            
+            if (unlocked[achievementId]) {
+                return false; // 已经解锁过了
+            }
+            
+            const achievement = achievements.find(a => a.id === achievementId);
+            if (!achievement) return false;
+            
+            unlocked[achievementId] = {
+                unlockedAt: Date.now()
+            };
+            
+            try {
+                localStorage.setItem(ACHIEVEMENT_KEY, JSON.stringify(unlocked));
+            } catch (e) {
+                return false;
+            }
+            
+            // 显示成就解锁提示
+            showAchievementNotification(achievement);
+            
+            return true;
+        }
+        
+        // 显示成就解锁提示
+        function showAchievementNotification(achievement) {
+            const notification = document.createElement('div');
+            notification.className = 'achievement-notification';
+            notification.innerHTML = `
+                <div class="achievement-icon">${achievement.icon}</div>
+                <div class="achievement-info">
+                    <div class="achievement-title">成就解锁！</div>
+                    <div class="achievement-name">${achievement.name}</div>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // 播放成就音效
+            playClueFound();
+            
+            // 3秒后移除
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.5s ease-out';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+        
+        // 检查成就
+        function checkAchievements() {
+            const unlocked = getUnlockedAchievements();
+            
+            // 第一次开始游戏
+            if (!unlocked.first_start && currentStory) {
+                unlockAchievement('first_start');
+            }
+            
+            // 做出第一个选择
+            if (!unlocked.first_choice && history.length > 0) {
+                unlockAchievement('first_choice');
+            }
+            
+            // 检查是否体验过所有视角
+            if (!unlocked.all_perspectives) {
+                const perspectiveKey = 'handan_case_perspectives';
+                try {
+                    let perspectives = JSON.parse(localStorage.getItem(perspectiveKey) || '[]');
+                    if (!perspectives.includes(currentPerspective)) {
+                        perspectives.push(currentPerspective);
+                        localStorage.setItem(perspectiveKey, JSON.stringify(perspectives));
+                    }
+                    if (perspectives.length >= 3) {
+                        unlockAchievement('all_perspectives');
+                    }
+                } catch (e) {}
+            }
+        }
+        
+        // 检查结局成就
+        function checkEndingAchievements(endingType) {
+            const unlocked = getUnlockedAchievements();
+            
+            if (endingType === 'good' && !unlocked.good_ending) {
+                unlockAchievement('good_ending');
+            } else if (endingType === 'bad' && !unlocked.bad_ending) {
+                unlockAchievement('bad_ending');
+            } else if (endingType === 'normal' && !unlocked.normal_ending) {
+                unlockAchievement('normal_ending');
+            } else if (endingType === 'hidden' && !unlocked.hidden_ending) {
+                unlockAchievement('hidden_ending');
+            }
+            
+            // 记录已达成的结局
+            const endingsKey = 'handan_case_endings';
+            try {
+                let endings = JSON.parse(localStorage.getItem(endingsKey) || '{}');
+                if (!endings[currentPerspective]) {
+                    endings[currentPerspective] = [];
+                }
+                if (!endings[currentPerspective].includes(endingType)) {
+                    endings[currentPerspective].push(endingType);
+                    localStorage.setItem(endingsKey, JSON.stringify(endings));
+                }
+                
+                // 检查是否完成了某个视角的所有结局
+                const perspectiveEndings = endings[currentPerspective] || [];
+                if (perspectiveEndings.length >= 4) { // 假设每个视角至少有4种结局类型
+                    if (currentPerspective === 'bystander' && !unlocked.bystander_full) {
+                        unlockAchievement('bystander_full');
+                    } else if (currentPerspective === 'accomplice' && !unlocked.accomplice_full) {
+                        unlockAchievement('accomplice_full');
+                    } else if (currentPerspective === 'detective' && !unlocked.detective_full) {
+                        unlockAchievement('detective_full');
+                    }
+                }
+                
+                // 检查是否完成了所有结局
+                let totalEndings = 0;
+                Object.values(endings).forEach(arr => totalEndings += arr.length);
+                if (totalEndings >= 10 && !unlocked.all_endings) { // 假设至少有10种不同的结局
+                    unlockAchievement('all_endings');
+                }
+            } catch (e) {}
+        }
+        
+        // 显示成就界面
+        function showAchievementScreen() {
+            const achievementScreen = document.getElementById('achievementScreen');
+            const achievementList = document.getElementById('achievementList');
+            const unlocked = getUnlockedAchievements();
+            
+            achievementList.innerHTML = '';
+            
+            achievements.forEach(achievement => {
+                const isUnlocked = !!unlocked[achievement.id];
+                const item = document.createElement('div');
+                item.className = 'achievement-item ' + (isUnlocked ? 'unlocked' : 'locked');
+                item.innerHTML = `
+                    <div class="achievement-item-icon">${achievement.icon}</div>
+                    <div class="achievement-item-info">
+                        <div class="achievement-item-name">${achievement.name}</div>
+                        <div class="achievement-item-desc">${achievement.description}</div>
+                    </div>
+                    <div class="achievement-item-status">${isUnlocked ? '✅ 已解锁' : '🔒 未解锁'}</div>
+                `;
+                achievementList.appendChild(item);
+            });
+            
+            // 统计
+            const unlockedCount = Object.keys(unlocked).length;
+            const totalCount = achievements.length;
+            document.getElementById('achievementStats').textContent = 
+                `已解锁 ${unlockedCount} / ${totalCount} 个成就`;
+            
+            achievementScreen.style.display = 'block';
+        }
+        
+        // 关闭成就界面
+        function closeAchievementScreen() {
+            document.getElementById('achievementScreen').style.display = 'none';
+        }
 
         // ============ 游戏逻辑 ============
 
@@ -2665,6 +3479,12 @@
             // 跳转到下一个节点
             currentNode = choice.next;
             
+            // 自动存档
+            autoSave();
+            
+            // 检查成就
+            checkAchievements();
+            
             // 渲染下一个节点
             renderNode();
         }
@@ -2711,6 +3531,9 @@
             
             // 播放结局音乐
             playEndingMusic(ending.endingType);
+            
+            // 检查结局成就
+            checkEndingAchievements(ending.endingType);
             
             setAtmosphere('truth');
         }
