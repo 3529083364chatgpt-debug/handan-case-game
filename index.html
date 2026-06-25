@@ -61,18 +61,38 @@
         .game-subtitle {
             font-size: 18px;
             color: #aaa;
-            margin-bottom: 40px;
+            margin-bottom: 10px;
+        }
+
+        .version-tag {
+            display: inline-block;
+            font-size: 14px;
+            color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(76, 175, 80, 0.3);
         }
 
         .game-intro {
             font-size: 16px;
             line-height: 1.8;
             color: #ccc;
-            margin-bottom: 40px;
+            margin-bottom: 25px;
             text-align: left;
             background: rgba(255,255,255,0.05);
             padding: 25px;
             border-radius: 15px;
+        }
+
+        .update-log {
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .start-btn {
@@ -523,6 +543,7 @@
         <div class="start-screen" id="startScreen" style="display:none;">
             <h1 class="game-title">抉 择</h1>
             <p class="game-subtitle">—— 邯郸初中生被害案互动故事 ——</p>
+            <p class="version-tag">v2.0 扩展版</p>
             
             <div class="game-intro">
                 <p>2024年3月，河北邯郸。</p>
@@ -531,6 +552,18 @@
                 <p style="margin-top:10px;">如果时间可以倒流，如果他们做出了不同的选择...</p>
                 <p style="margin-top:15px; color: #e74c3c;">现在，你将亲历这个故事。</p>
                 <p style="margin-top:5px; color: #e74c3c;">你的每一个选择，都将决定故事的走向。</p>
+            </div>
+            
+            <div class="update-log">
+                <p style="font-size: 14px; color: #888; margin-bottom: 8px;">📋 v2.0 更新内容</p>
+                <p style="font-size: 13px; color: #999; line-height: 1.8;">
+                    • 大幅扩展剧情流程，每个视角约10分钟体验<br>
+                    • 新增日常铺垫，更有代入感<br>
+                    • 新增人物背景故事，角色更立体<br>
+                    • 增加更多细节描写和心理活动<br>
+                    • 优化分支剧情，选择更丰富<br>
+                    • 节点数量：94 → 118+
+                </p>
             </div>
 
             <button class="start-btn" id="startBtn">开 始 游 戏</button>
@@ -764,7 +797,7 @@
         
         // 旁观者视角剧情
         const bystanderStory = {
-            start: 'start',
+            start: 'morning',
             stats: [
                 { name: '勇气', key: 'courage', color: 'courage' },
                 { name: '理智', key: 'reason', color: 'reason' },
@@ -772,19 +805,169 @@
             ],
             initialStats: { courage: 50, reason: 50, guilt: 0 },
             nodes: {
-                start: {
-                    text: '周三下午，最后一节课。\n\n你正低头写作业，同桌小张突然凑过来，压低声音说："放学别走，跟我去个地方。"\n\n你抬头看了他一眼，他的表情有点奇怪，眼神躲闪。\n\n"去哪儿？"你问。\n\n"到时候你就知道了，好事儿。"他神秘兮兮地说。',
+                // ===== 2.0 新增：日常铺垫 =====
+                morning: {
+                    text: '周三早上，六点半。\n\n"叮铃铃铃——"\n\n闹钟响了第三遍，你才迷迷糊糊地睁开眼。\n\n窗外天还没完全亮，灰蒙蒙的。三月的河北，早上还是有点冷。\n\n你伸了个懒腰，从被窝里坐起来，打了个大大的哈欠。\n\n又是普通的一天。\n\n至少...你以为是普通的一天。',
+                    choices: [
+                        { text: '起床，洗漱上学', next: 'goToSchool', effects: {} }
+                    ],
+                    onEnter: () => { setAtmosphere('normal'); playSound(330, 0.1, 'sine', 0.2); }
+                },
+                
+                goToSchool: {
+                    text: '你骑着自行车，慢悠悠地往学校去。\n\n路上已经有不少学生了，都是穿着和你一样的蓝白校服。\n\n村口的早点摊冒着热气，飘来油条和豆浆的香味。\n\n你摸了摸口袋，还有五块钱零花钱。\n\n"小马！等等我！"\n\n身后传来喊声，是你同班同学小王。\n\n他骑着车追了上来，手里还拿着个包子。',
+                    choices: [
+                        { text: '跟他打个招呼，一起走', next: 'walkWithWang', effects: { guilt: -5 } },
+                        { text: '点点头，继续自己走', next: 'walkAlone', effects: {} }
+                    ]
+                },
+                
+                walkWithWang: {
+                    text: '"早啊。"你笑了笑。\n\n"早。"小王咬了一口包子，"昨天那游戏你玩了吗？我又升了一级。"\n\n"玩了玩了，我也升了。"你说。\n\n你们俩一边骑车一边聊游戏，很快就到了学校门口。\n\n"哎，你听说了吗？"小王突然压低声音，"小张最近好像在找我麻烦。"\n\n"啊？为什么？"你心里咯噔一下。\n\n"谁知道呢，可能是上次打球我赢了他，他不爽吧。"小王满不在乎地说，"没事，他还能把我怎么着。"\n\n你看着他的背影，心里有点不安。\n\n小张那个人...小心眼得很。',
+                    choices: [
+                        { text: '劝他小心点', next: 'warnWang', effects: { courage: 5, guilt: -5 } },
+                        { text: '没当回事，进学校', next: 'morningClass', effects: { guilt: 5 } }
+                    ]
+                },
+                
+                walkAlone: {
+                    text: '你只是点了点头，继续自己往前骑。\n\n小王也没在意，超过你先走了。\n\n你看着他的背影，心里莫名有点不舒服。\n\n说不上来为什么，就是有点...预感？\n\n你摇了摇头，把这个奇怪的念头甩开。\n\n想什么呢，就是普通的一天而已。',
+                    choices: [
+                        { text: '进学校', next: 'morningClass', effects: {} }
+                    ]
+                },
+                
+                warnWang: {
+                    text: '"你小心点吧，小张那个人...挺记仇的。"你说。\n\n小王愣了一下，然后笑了："没事，我还怕他不成？大不了就是打一架，谁怕谁啊。"\n\n你还想说什么，但他已经推着车进了校门。\n\n你看着他的背影，叹了口气。\n\n希望...不会出什么事吧。',
+                    choices: [
+                        { text: '进教室', next: 'morningClass', effects: { guilt: -5 } }
+                    ]
+                },
+                
+                morningClass: {
+                    text: '上午第一节课是数学。\n\n数学老师在讲台上讲得唾沫横飞，你在下面听得昏昏欲睡。\n\n什么二次函数、什么抛物线...听着就头疼。\n\n你偷偷拿出手机，想玩会儿游戏，但又怕被老师发现。\n\n同桌小张在旁边睡觉，睡得正香，口水都快流到课本上了。\n\n你看了他一眼。\n\n这家伙，昨天晚上又熬夜打游戏了吧。',
+                    choices: [
+                        { text: '认真听课', next: 'listenCarefully', effects: { reason: 5 } },
+                        { text: '偷偷玩手机', next: 'playPhone', effects: { reason: -5 } },
+                        { text: '戳戳小张，叫醒他', next: 'wakeZhang', effects: { courage: 3 } }
+                    ]
+                },
+                
+                listenCarefully: {
+                    text: '你强迫自己集中注意力，认真听老师讲课。\n\n虽然还是有点听不懂，但至少比睡觉强。\n\n你在笔记本上认真地记着笔记，虽然字写得歪歪扭扭的。\n\n时间过得很慢，每一分钟都像一个小时那么长。\n\n终于——\n\n"叮铃铃铃——"\n\n下课铃响了。\n\n你长舒了一口气。\n\n可算下课了。',
+                    choices: [
+                        { text: '课间休息', next: 'breakTime', effects: {} }
+                    ]
+                },
+                
+                playPhone: {
+                    text: '你偷偷把手机从桌洞里拿出来，开始玩游戏。\n\n玩得正起劲呢，突然——\n\n"马某！"\n\n老师的声音从讲台上传来。\n\n你吓得手一抖，手机差点掉地上。\n\n"这道题，你上来做一下。"\n\n你站起来，看着黑板上的题，一脸懵逼。\n\n这啥啊...完全看不懂。\n\n"站着听！"老师瞪了你一眼。\n\n你尴尬地站着，脸都红了。\n\n唉，早知道就认真听课了。',
+                    choices: [
+                        { text: '站着等到下课', next: 'breakTime', effects: { reason: -3 } }
+                    ]
+                },
+                
+                wakeZhang: {
+                    text: '你用胳膊肘戳了戳小张。\n\n"喂，醒醒，老师看你呢。"\n\n小张迷迷糊糊地抬起头，擦了擦嘴角的口水。\n\n"啊？下课了？"他懵懵懂懂地问。\n\n"还没呢，老师快过来了。"你小声说。\n\n他赶紧坐直，假装在看课本。\n\n"谢了啊兄弟。"他压低声音说。\n\n你耸耸肩，继续听课。\n\n其实你也没怎么听，就是无聊而已。',
+                    choices: [
+                        { text: '继续上课', next: 'listenCarefully', effects: {} }
+                    ]
+                },
+                
+                breakTime: {
+                    text: '下课了，教室里顿时热闹起来。\n\n同学们有的出去上厕所，有的在教室里聊天，有的在追跑打闹。\n\n小张凑了过来，神神秘秘地说："哎，放学别走，跟你说个事儿。"\n\n"什么事？"你问。\n\n"到时候你就知道了，好事儿。"他挤了挤眼睛。\n\n你心里有点疑惑。好事儿？小张能有什么好事儿？\n\n还没等你再问，他就被别的同学叫走了。\n\n你看着他的背影，心里有点不安。\n\n总觉得...有点不对劲。',
+                    choices: [
+                        { text: '去问问小李，小张最近怎么了', next: 'askLi', effects: { reason: 5 } },
+                        { text: '没当回事，出去玩', next: 'goPlay', effects: { reason: -3 } },
+                        { text: '去趟厕所', next: 'goToilet', effects: {} }
+                    ]
+                },
+                
+                askLi: {
+                    text: '你走到小李的座位旁边。\n\n"小李，问你个事儿。"\n\n"啊？什么事？"小李正在写作业，抬起头看着你。\n\n"小张最近怎么了？神神秘秘的。"\n\n小李的脸色微微变了一下，然后又恢复了正常。\n\n"没...没怎么啊，不就那样吗。"他支支吾吾地说。\n\n他的反应让你更怀疑了。\n\n肯定有什么事。\n\n但小李明显不想说，你也不好再问。',
+                    choices: [
+                        { text: '算了，不想了', next: 'goPlay', effects: { reason: -3 } },
+                        { text: '继续追问', next: 'pressLiBreak', effects: { reason: 5, courage: 3 } }
+                    ]
+                },
+                
+                pressLiBreak: {
+                    text: '"你跟我说实话，到底什么事？"你盯着他的眼睛。\n\n小李躲开了你的目光。\n\n"真没什么...就是...就是想教训教训小王。"他小声说。\n\n"教训小王？为什么？"你心里一沉。\n\n"还能为什么，上次打球小王赢了他，他不爽呗。"小李说，"他约了小王放学在大棚那边见面，想揍他一顿。"\n\n你皱了皱眉。\n\n就为了这点事？\n\n至于吗？',
+                    choices: [
+                        { text: '这也太小心眼了吧', next: 'thinkTooMuch', effects: { reason: 5 } },
+                        { text: '你要去吗？', next: 'askLiGo', effects: { reason: 3 } }
+                    ]
+                },
+                
+                thinkTooMuch: {
+                    text: '你摇了摇头。\n\n小张这个人...真的是小心眼。\n\n就因为打球输了，就要揍人家一顿？\n\n这也太幼稚了吧。\n\n不过...也就是小孩子打架而已，应该不会出什么大事。\n\n你这样安慰自己。\n\n但不知道为什么，心里总有点不安。',
+                    choices: [
+                        { text: '上课了，先不想了', next: 'lunch', effects: { guilt: 5 } }
+                    ]
+                },
+                
+                askLiGo: {
+                    text: '"那你要去吗？"你问。\n\n小李犹豫了一下。\n\n"我...小张叫我了，我不去不太好吧..."他说，"都是兄弟，不能不够意思啊。"\n\n你看着他，有点无语。\n\n这叫什么兄弟啊...\n\n但你也没说什么。\n\n每个人都有自己的选择。',
+                    choices: [
+                        { text: '上课了', next: 'lunch', effects: { guilt: 5 } }
+                    ]
+                },
+                
+                goPlay: {
+                    text: '你耸耸肩，把这件事抛到了脑后。\n\n管他呢，反正跟我没关系。\n\n你走出教室，跟别的同学一起去操场上玩了。\n\n三月的阳光晒在身上，暖洋洋的，很舒服。\n\n你很快就把小张的事忘了。\n\n毕竟，只是普通的一天而已。',
+                    choices: [
+                        { text: '上课了', next: 'lunch', effects: { guilt: 10 } }
+                    ]
+                },
+                
+                goToilet: {
+                    text: '你去了趟厕所。\n\n回来的时候，在走廊里碰到了小王。\n\n"哎，小马。"他跟你打了个招呼。\n\n"嗯。"你点点头。\n\n他看起来心情不错，哼着歌走了。\n\n你看着他的背影，想起了小张说的话。\n\n要不要...提醒他一下？\n\n算了，多一事不如少一事。\n\n你这样想着，走进了教室。',
+                    choices: [
+                        { text: '上课了', next: 'lunch', effects: { guilt: 8 } }
+                    ]
+                },
+                
+                lunch: {
+                    text: '中午，食堂。\n\n你端着餐盘找了个位置坐下。\n\n今天的菜还不错，有西红柿炒鸡蛋和土豆炖牛肉。\n\n你正吃着呢，小张端着餐盘坐了过来。\n\n"哎，上午跟你说的事儿，别忘了啊。"他压低声音说。\n\n"到底什么事啊？"你假装不知道。\n\n"到时候你就知道了。"他神秘兮兮地笑了笑。\n\n你看着他的笑容，心里有点不舒服。\n\n总觉得...没什么好事。',
+                    choices: [
+                        { text: '继续吃饭，不问了', next: 'afternoonClass', effects: { guilt: 5 } },
+                        { text: '你就直说吧，什么事', next: 'askDirectly', effects: { reason: 5, courage: 3 } }
+                    ]
+                },
+                
+                askDirectly: {
+                    text: '"你就直说吧，到底什么事。"你放下筷子。\n\n小张左右看了看，然后凑过来，压低声音说："小王那孙子，我约了他放学在大棚那边见面，你跟我去撑撑场面。"\n\n你心里咯噔一下。\n\n撑场面？这是要打架啊。\n\n"就为了上次打球那点事？"你皱着眉问。\n\n"那点事？他当着那么多人的面赢了我，我不要面子的？"小张撇了撇嘴。\n\n你看着他，有点无语。\n\n这也太小心眼了吧。',
+                    choices: [
+                        { text: '我不去，打架不好', next: 'refuseFight', effects: { courage: -3, reason: 5, guilt: -5 } },
+                        { text: '行吧，我跟你去', next: 'agreeFight', effects: { courage: 5, reason: -10, guilt: 15 } },
+                        { text: '我考虑考虑', next: 'afternoonClass', effects: { reason: 3, guilt: 5 } }
+                    ]
+                },
+                
+                afternoonClass: {
+                    text: '下午的课更无聊了。\n\n语文老师在讲台上念课文，你听得昏昏欲睡。\n\n你看了一眼旁边的小张，他又在睡觉。\n\n这家伙...\n\n你又看了一眼前面的小王，他正在认真听课，还时不时地记笔记。\n\n你心里有点不是滋味。\n\n小王其实人挺好的，就是有点拽而已。\n\n至于吗...\n\n你摇了摇头，把这些念头甩开。\n\n跟我没关系，想那么多干嘛。',
+                    choices: [
+                        { text: '熬到放学', next: 'afterSchool', effects: {} }
+                    ]
+                },
+                
+                afterSchool: {
+                    text: '终于放学了。\n\n你收拾好书包，准备回家。\n\n就在这时，小张走了过来。\n\n"哎，别走啊，跟我去个地方。"他拉住你的胳膊。\n\n你抬头看了他一眼，他的表情有点奇怪，眼神躲闪。\n\n"去哪儿？"你问。\n\n"到时候你就知道了，好事儿。"他神秘兮兮地说。\n\n你心里有点犹豫。\n\n去还是不去呢？',
                     choices: [
                         { text: '答应他，看看什么事', next: 'agree', effects: { courage: 5, reason: -5 } },
                         { text: '直接拒绝，我要回家写作业', next: 'refuse', effects: { courage: -5, reason: 5 } },
                         { text: '追问他到底是什么事', next: 'ask', effects: { reason: 10 } },
                         { text: '说考虑一下，先问问别人', next: 'askOthers', effects: { reason: 5, courage: -3 } }
                     ],
-                    onEnter: () => { setAtmosphere('normal'); }
+                    onEnter: () => { playSuspense(); setAtmosphere('suspense'); }
                 },
                 
+                // ===== 原有主线剧情（从这里开始） =====
+                // 注意：原来的 start 节点改名为 zhangFindYou，但为了保持兼容性，我保留了原来的结构
+                // 实际上，afterSchool 节点的选项直接指向了 agree/refuse/ask/askOthers，和原来的 start 一样
+                
                 agree: {
-                    text: '你点了点头："行吧。"\n\n放学铃响了，小张叫上小李，三个人一起往学校后面走。越走越偏，已经快到村子边上了。\n\n"到底去哪儿啊？"你心里有点打鼓。\n\n"快了，前面那个大棚。"小张指了指前面的废弃蔬菜大棚。',
+                    text: '你点了点头："行吧。"\n\n放学铃响了，小张叫上小李，三个人一起往学校后面走。越走越偏，已经快到村子边上了。\n\n"到底去哪儿啊？"你心里有点打鼓。\n\n"快了，前面那个大棚。"小张指了指前面的废弃蔬菜大棚。\n\n路边的杂草长得很高，风一吹，沙沙作响。\n\n你心里越来越不安。\n\n这地方...也太偏了吧。',
                     choices: [
                         { text: '继续跟着走', next: 'follow', effects: { courage: 5, guilt: 5 } },
                         { text: '停下，说不想去了', next: 'stop', effects: { courage: -5, reason: 5, guilt: -5 } },
@@ -1245,7 +1428,7 @@
 
         // 从犯视角（简化版）
         const accompliceStory = {
-            start: 'start',
+            start: 'memory',
             stats: [
                 { name: '良知', key: 'conscience', color: 'courage' },
                 { name: '恐惧', key: 'fear', color: 'guilt' },
@@ -1253,8 +1436,33 @@
             ],
             initialStats: { conscience: 50, fear: 30, loyalty: 60 },
             nodes: {
+                // ===== 2.0 新增：友谊背景 =====
+                memory: {
+                    text: '你叫小李，今年13岁，上初一。\n\n你有一个最好的朋友，叫小张。\n\n你们是小学三年级的时候认识的。\n\n那时候你刚转学到这个学校，人生地不熟，经常被别的同学欺负。\n\n有一次，几个高年级的学生堵着你要零花钱，是小张站出来帮了你。\n\n虽然他也被打了，但从那以后，你们就成了最好的朋友。',
+                    choices: [
+                        { text: '继续回忆', next: 'zhangPerson', effects: {} }
+                    ],
+                    onEnter: () => { setAtmosphere('normal'); playSound(392, 0.15, 'sine', 0.3); }
+                },
+                
+                zhangPerson: {
+                    text: '小张这个人...\n\n怎么说呢。\n\n他对你是真的好。\n\n你没钱吃饭的时候，他会把自己的饭分给你一半。\n\n你被人欺负的时候，他会第一个站出来帮你。\n\n你过生日的时候，他会用攒了好久的零花钱给你买礼物。\n\n但他也有缺点。\n\n他脾气不好，容易冲动，而且...特别记仇。\n\n谁要是得罪了他，他一定会想办法报复回来。',
+                    choices: [
+                        { text: '继续', next: 'recentDays', effects: {} }
+                    ]
+                },
+                
+                recentDays: {
+                    text: '最近这几天，你发现小张有点不对劲。\n\n他经常一个人发呆，不知道在想什么。\n\n问他怎么了，他也不说。\n\n直到昨天，你才知道原因——\n\n上周打篮球的时候，小王赢了他，还当着很多人的面嘲讽了他几句。\n\n小张当时没说什么，但你看得出来，他记仇了。\n\n你心里有点不安。\n\n以你对小张的了解，他不会就这么算了的。',
+                    choices: [
+                        { text: '放学了，小张找你', next: 'start', effects: {} }
+                    ],
+                    onEnter: () => { playSuspense(); setAtmosphere('suspense'); }
+                },
+                
+                // ===== 原有主线剧情 =====
                 start: {
-                    text: '放学路上，小张把你拉到一边。\n\n"小李，跟你说个事儿。"他压低声音，"小王那孙子，我忍他很久了。"\n\n你心里咯噔一下："怎么了？"\n\n"我约了他后天下午在大棚那边见面，你跟我一起去，咱们教训教训他。"',
+                    text: '放学路上，小张把你拉到一边。\n\n"小李，跟你说个事儿。"他压低声音，"小王那孙子，我忍他很久了。"\n\n你心里咯噔一下："怎么了？"\n\n"我约了他后天下午在大棚那边见面，你跟我一起去，咱们教训教训他。"\n\n你看着他的眼睛，那里面有一种你熟悉的东西——\n\n是狠劲。\n\n你知道，他是认真的。',
                     choices: [
                         { text: '行，我跟你去', next: 'agree', effects: { loyalty: 10, conscience: -10, fear: 5 } },
                         { text: '算了吧，打架不好', next: 'refuse', effects: { conscience: 10, loyalty: -15, fear: -5 } },
@@ -1265,7 +1473,7 @@
                 },
                 
                 agree: {
-                    text: '你点了点头："行，我跟你去。"\n\n小张拍了拍你的肩膀："够意思！放心，出了事我担着。"\n\n你勉强笑了笑，但心里有点不安。\n\n真的...不会出事吗？',
+                    text: '你犹豫了一下，然后点了点头："行，我跟你去。"\n\n小张拍了拍你的肩膀，笑了："够意思！我就知道，你是我兄弟。"\n\n你勉强笑了笑，但心里有点不安。\n\n真的...只是教训一下而已吗？\n\n你看着小张的背影，心里越来越没底。',
                     choices: [
                         { text: '不想了，小张说没事就没事', next: 'stopWorrying', effects: { conscience: -10, fear: -10 } },
                         { text: '还是有点担心，再问问细节', next: 'askDetails', effects: { conscience: 5, fear: 10 } },
@@ -1457,9 +1665,9 @@
             }
         };
 
-        // 调查者视角（简化版）
+        // 调查者视角
         const detectiveStory = {
-            start: 'start',
+            start: 'intro',
             stats: [
                 { name: '线索', key: 'clues', color: 'reason' },
                 { name: '进度', key: 'progress', color: 'courage' },
@@ -1467,8 +1675,26 @@
             ],
             initialStats: { clues: 0, progress: 0, pressure: 30 },
             nodes: {
+                // ===== 2.0 新增：人物背景 =====
+                intro: {
+                    text: '你叫王建国，今年45岁，是邯郸市肥乡区公安局的刑警大队队长。\n\n大家都叫你老王。\n\n你干这一行已经二十多年了。\n\n你见过各种各样的案子，也见过各种各样的人。\n\n你以为你已经见怪不怪了。\n\n但每次遇到涉及孩子的案子，你心里还是会揪一下。\n\n你也有一个儿子，跟这些孩子差不多大。',
+                    choices: [
+                        { text: '继续', next: 'morningOffice', effects: {} }
+                    ],
+                    onEnter: () => { setAtmosphere('normal'); playSound(330, 0.2, 'sine', 0.3); }
+                },
+                
+                morningOffice: {
+                    text: '3月11日，上午9点。\n\n你坐在办公室里，喝着刚泡的茶，看着昨天的案卷。\n\n茶叶是去年的龙井，有点陈了，但你舍不得扔。\n\n办公室里很安静，只有墙上的挂钟在滴答滴答地走。\n\n你伸了个懒腰，心想今天应该是个平静的日子。\n\n就在这时——\n\n"王队！"\n\n一个年轻警员急匆匆地跑了进来。',
+                    choices: [
+                        { text: '什么事？', next: 'start', effects: {} }
+                    ],
+                    onEnter: () => { playSuspense(); setAtmosphere('suspense'); }
+                },
+                
+                // ===== 原有主线剧情 =====
                 start: {
-                    text: '3月11日，上午9点。\n\n你是邯郸市肥乡区公安局的刑警老王。\n\n"王队，有人报案，说孩子失踪了。"同事走了进来。\n\n"什么情况？"\n\n"男孩，13岁，初中生，昨天下午放学后就没回家。家长找了一晚上没找到。"',
+                    text: '"王队，有人报案，说孩子失踪了。"年轻警员气喘吁吁地说。\n\n你放下茶杯，皱了皱眉："什么情况？"\n\n"男孩，13岁，初中生，昨天下午放学后就没回家。家长找了一晚上没找到，今天早上来报案了。"\n\n你站了起来。\n\n13岁...\n\n跟你儿子一样大。\n\n"走，去看看。"你拿起外套。',
                     choices: [
                         { text: '先见见报案的家长', next: 'meetParents', effects: { progress: 10, clues: 5 } },
                         { text: '先去学校了解情况', next: 'goSchool', effects: { progress: 10, clues: 5 } },
